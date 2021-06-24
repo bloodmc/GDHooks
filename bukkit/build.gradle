@@ -1,0 +1,167 @@
+buildscript {
+    repositories {
+        maven {
+            url = 'https://plugins.gradle.org/m2/'
+        }
+        gradlePluginPortal()
+    }
+
+    dependencies {
+        classpath 'gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0'
+    }
+}
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'java'
+    id 'maven-publish'
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+// Environment variables for the build set by the build server
+ext.buildNumber = System.env.BUILD_NUMBER ?: '0'
+
+defaultTasks 'clean', 'build'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+archivesBaseName = 'gdhooks'
+
+project.ext.getGitHash = {
+    def command = Runtime.getRuntime().exec("git rev-parse --short HEAD")
+    def result = command.waitFor()
+    return (result == 0) ? command.inputStream.text.trim() : "nogit"
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        name = 'aikar'
+        url = 'https://repo.aikar.co/content/groups/aikar'
+    }
+    maven {
+        name = 'bstats'
+        url = 'https://repo.codemc.org/repository/maven-public'
+    }
+    maven {
+        name = 'dynmap-repo'
+        url = 'https://repo.mikeprimm.com'
+    }
+    maven {
+        name = 'essentials'
+        url = 'https://ci.ender.zone/plugin/repository/everything/'
+    }
+    maven {
+        name = 'griefdefender'
+        url = 'https://repo.glaremasters.me/repository/bloodshot'
+    }
+    maven {
+        name = 'jitpack'
+        url = 'https://jitpack.io'
+    }
+    maven {
+        name = 'permissionsex'
+        url = 'https://repo.glaremasters.me/repository/permissionsex'
+    }
+    maven {
+        name = 'placeholderapi'
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi'
+    }
+    maven {
+        name = 'sk89q'
+        url = 'https://maven.sk89q.com/repo'
+    }
+    maven {
+        name = 'sonatype_releases'
+        url = 'https://oss.sonatype.org/content/repositories/releases'
+    }
+    maven {
+        name = 'spigot'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots'
+    }
+    maven {
+        name = 'sponge'
+        url = 'https://repo.spongepowered.org/maven/'
+    }
+    maven {
+        name = 'sonatype_snapshots'
+        url = 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
+    maven {
+        name = 'worldedit'
+        url = 'https://maven.sk89q.com/artifactory/repo'
+    }
+    maven {
+        name = 'vault'
+        url = 'https://nexus.hc.to/content/repositories/pub_releases'
+    }
+}
+
+dependencies {
+    compileOnly fileTree(dir: 'libs', include: ['*.jar'])
+    compileOnly(project(path: ":GriefDefenderAPI"))
+    compileOnly project (':common:loader-utils')
+    compileOnly 'org.bukkit:bukkit:1.16.4-R0.1-SNAPSHOT'
+    compileOnly "com.flowpowered:flow-math:1.0.3"
+    compileOnly "io.leangen.geantyref:geantyref:1.3.11"
+    compileOnly "me.lucko:jar-relocator:1.4"
+    compileOnly "us.dynmap:dynmap-api:3.0-SNAPSHOT"
+    compileOnly "com.github.bluemap-minecraft:bluemapapi:v1.5.0"
+    compileOnly "org.spongepowered:configurate-core:4.0.0"
+    compileOnly "org.spongepowered:configurate-gson:4.0.0"
+    compileOnly "org.spongepowered:configurate-hocon:4.0.0"
+    compileOnly "org.spongepowered:configurate-yaml:4.0.0"
+    compileOnly "net.kyori:adventure-text-serializer-plain:4.8.0"
+    compileOnly "net.kyori:adventure-text-serializer-legacy:4.8.0"
+    compileOnly "net.kyori:event-api:5.0.0-SNAPSHOT"
+    compileOnly "com.googlecode.json-simple:json-simple:1.1"
+    compileOnly "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
+    compileOnly "co.aikar:acf-paper:0.5.0-SNAPSHOT"
+    compileOnly "commons-io:commons-io:2.6"
+
+}
+
+jar {
+    manifest.attributes('Implementation-Title': 'GDHooks')
+    manifest.attributes('Implementation-Version': "$version")
+    manifest.attributes('Git-Hash': project.ext.getGitHash())
+    manifest.attributes('Main-Class': 'com.griefdefender.hooks.GDHooks')
+    classifier = ''
+}
+
+
+tasks.assemble {
+   dependsOn(tasks.shadowJar)
+}
+
+artifacts {
+    archives shadowJar
+}
+
+shadowJar {
+    archiveName = 'gdhooks-bukkit.jarinjar'
+
+    dependencies {
+        include(dependency('com.griefdefender.hooks:.*'))
+    }
+    classifier = ""
+    relocate("co.aikar.commands", "com.griefdefender.lib.aikar.commands")
+    relocate("com.github.benmanes.caffeine", "com.griefdefender.lib.caffeine")
+    relocate("com.google.inject", "com.griefdefender.lib.google.inject")
+    relocate("com.typesafe", "com.griefdefender.lib.typesafe")
+    relocate("it.unimi.dsi", "com.griefdefender.lib.fastutil")
+    relocate("net.jodah", "com.griefdefender.lib.jodah")
+    relocate("net.kyori", "com.griefdefender.lib.kyori")
+    relocate("org.spongepowered.configurate", "com.griefdefender.lib.configurate")
+    relocate("okhttp3", "com.griefdefender.lib.okhttp3")
+    relocate("okio", "com.griefdefender.lib.okio")
+    relocate("org.apache.commons.io", "com.griefdefender.lib.commonsio")
+    relocate("org.apache.commons.lang3", "com.griefdefender.lib.commonslang3")
+    relocate("org.checkerframework", "com.griefdefender.lib.checkerframework")
+    relocate("org.jetbrains", "com.griefdefender.lib.jetbrains")
+    relocate("org.objectweb.asm", "com.griefdefender.lib.asm")
+
+    exclude "dummyThing"
+}

@@ -1,0 +1,7 @@
+name: GDHooks
+main: com.griefdefender.hooks.loader.BukkitLoaderPlugin
+depend: [GriefDefender]
+softdepend: [mcMMO, MyPet, MMOItems, MythicMobs]
+load: POSTWORLD
+version: '0.1'
+api-version: 1.13

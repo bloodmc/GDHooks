@@ -1,0 +1,5 @@
+rootProject.name = 'gdhooks'
+include "bukkit"
+include "bukkit:loader"
+include "common:loader-utils"
+include "GriefDefenderAPI"

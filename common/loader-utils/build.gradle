@@ -1,0 +1,46 @@
+buildscript {
+    repositories {
+        maven {
+            url = 'https://plugins.gradle.org/m2/'
+        }
+        gradlePluginPortal()
+    }
+
+    dependencies {
+        classpath 'gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0'
+    }
+}
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'java'
+    id 'maven-publish'
+}
+
+repositories {
+    maven { url 'https://papermc.io/repo/repository/maven-public/' }
+}
+
+dependencies {
+
+}
+
+tasks.assemble {
+   dependsOn(tasks.shadowJar)
+}
+
+artifacts {
+    archives shadowJar
+}
+
+shadowJar {
+    archiveName = "gdhooks-bukkit-${version}.jar"
+
+    from {
+        project(':bukkit').tasks.shadowJar.archiveFile
+    }
+}
+
+artifacts {
+    archives shadowJar
+}
