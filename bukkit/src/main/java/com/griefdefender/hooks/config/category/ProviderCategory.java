@@ -68,14 +68,14 @@ public class ProviderCategory extends ConfigCategory {
     @Setting(value = "DynamicShop")
     public boolean dynamicShop = true;
 
+    @Setting(value = "EliteMobs")
+    public boolean eliteMobs = true;
+
     @Setting(value = "RevoltCrates")
     public boolean revoltCrates = true;
 
     @Setting(value = "SimpleClans")
     public boolean simpleClans = true;
-
-    @Setting(value = "Slimefun")
-    public boolean slimefun = true;
 
     @Setting(value = "McMMO")
     public boolean mcMMO = true;

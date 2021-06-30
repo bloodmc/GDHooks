@@ -54,6 +54,7 @@ import com.griefdefender.hooks.listener.GDShopEventListener;
 import com.griefdefender.hooks.provider.BluemapProvider;
 import com.griefdefender.hooks.provider.CustomItemsProvider;
 import com.griefdefender.hooks.provider.DynmapProvider;
+import com.griefdefender.hooks.provider.EliteMobsProvider;
 import com.griefdefender.hooks.provider.MMOItemsProvider;
 import com.griefdefender.hooks.provider.McMMOProvider;
 import com.griefdefender.hooks.provider.MyPetProvider;
@@ -107,6 +108,7 @@ public class GDHooks {
     private ClanProvider clanProvider;
     private CustomItemsProvider customItemsProvider;
     private DynmapProvider dynmapProvider;
+    private EliteMobsProvider eliteMobsProvider;
     private GDShopProvider shopProvider;
     private McMMOProvider mcmmoProvider;
     private MMOItemsProvider mmoItemsProvider;
@@ -184,6 +186,10 @@ public class GDHooks {
         if (Bukkit.getPluginManager().getPlugin("CustomItems") != null && Bukkit.getPluginManager().getPlugin("CustomItems").isEnabled() && this.config.getData().providerCategory.customItems) {
             this.customItemsProvider = new CustomItemsProvider();
             this.getLogger().info("CustomItems provider enabled!");
+        }
+        if (Bukkit.getPluginManager().getPlugin("EliteMobs") != null && Bukkit.getPluginManager().getPlugin("EliteMobs").isEnabled() && this.config.getData().providerCategory.eliteMobs) {
+            this.eliteMobsProvider = new EliteMobsProvider();
+            this.getLogger().info("EliteMobs provider enabled!");
         }
         if (Bukkit.getPluginManager().getPlugin("MMOItems") != null && Bukkit.getPluginManager().getPlugin("MMOItems").isEnabled() && this.config.getData().providerCategory.mmoItems) {
             this.mmoItemsProvider = new MMOItemsProvider();
@@ -318,8 +324,13 @@ public class GDHooks {
     public ClanProvider getClanProvider() {
         return this.clanProvider;
     }
-    public CustomItemsProvider CustomItemsProvider() {
+
+    public CustomItemsProvider getCustomItemsProvider() {
         return this.customItemsProvider;
+    }
+
+    public EliteMobsProvider getEliteMobsProvider() {
+        return this.eliteMobsProvider;
     }
 
     public MMOItemsProvider getMMOItemsProvider() {

@@ -38,4 +38,5 @@ public class ContextGroups {
     public static final Context TARGET_MYPET = new Context(ContextKeys.TARGET, "#mypet:any");
     public static final Context SOURCE_MYTHICMOBS = new Context(ContextKeys.SOURCE, "#mythicmobs:any");
     public static final Context TARGET_MYTHICMOBS = new Context(ContextKeys.TARGET, "#mythicmobs:any");
+    public static final Context TARGET_ELITEMOBS = new Context(ContextKeys.TARGET, "#elitemobs:any");
 }

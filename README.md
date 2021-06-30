@@ -14,6 +14,7 @@ GDHooks currently provides GriefDefender hooks for the following plugins:
 * CustomItems
 * DynamicShop
 * Dynmap
+* EliteMobs
 * InsaneShops
 * MMOItems
 * McMMO
@@ -25,7 +26,6 @@ GDHooks currently provides GriefDefender hooks for the following plugins:
 * ShopChest
 * SimpleClans
 * Slabbo
-* Slimefun
 * UltimateShops
 
 ## Prerequisites

@@ -117,6 +117,10 @@ public class GDPermissionEventListener {
                         }
                         final String id = "mythicmobs:" + GDHooks.getInstance().getMythicMobsProvider().getMobType(targetEntity).toLowerCase();
                         event.setNewIdentifier(id);
+                    } else if (GDHooks.getInstance().getEliteMobsProvider() != null && GDHooks.getInstance().getEliteMobsProvider().isEliteMob(targetEntity)) {
+                        final Set<Context> mobContexts = GDHooks.getInstance().getEliteMobsProvider().getEliteMobContexts(targetEntity);
+                        contexts.addAll(mobContexts);
+                        event.setNewIdentifier(GDHooks.getInstance().getEliteMobsProvider().getEliteMobId(targetEntity));
                     }
                 }
             }

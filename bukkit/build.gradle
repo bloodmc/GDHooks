@@ -148,6 +148,7 @@ shadowJar {
     }
     classifier = ""
     relocate("co.aikar.commands", "com.griefdefender.lib.aikar.commands")
+    relocate("com.flowpowered", "com.griefdefender.lib.flowpowered")
     relocate("com.github.benmanes.caffeine", "com.griefdefender.lib.caffeine")
     relocate("com.google.inject", "com.griefdefender.lib.google.inject")
     relocate("com.typesafe", "com.griefdefender.lib.typesafe")
