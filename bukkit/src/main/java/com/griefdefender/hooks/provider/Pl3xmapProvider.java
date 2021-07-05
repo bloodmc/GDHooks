@@ -1,6 +1,13 @@
 package com.griefdefender.hooks.provider;
 
-import com.griefdefender.api.Core;
+import java.awt.Color;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.ArrayList;
+import java.util.logging.Logger;
+
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.ClaimTypes;
@@ -12,31 +19,23 @@ import com.griefdefender.hooks.GDHooks;
 import com.griefdefender.hooks.GDHooksBootstrap;
 import com.griefdefender.hooks.config.category.Pl3xmapCategory;
 import com.griefdefender.hooks.config.category.Pl3xmapOwnerStyleCategory;
+
 import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 import net.pl3x.map.api.Point;
 import net.pl3x.map.api.*;
 import net.pl3x.map.api.marker.Marker;
 import net.pl3x.map.api.marker.MarkerOptions;
 import net.pl3x.map.api.marker.Rectangle;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.awt.*;
-import java.util.List;
-import java.util.*;
-import java.util.logging.Logger;
-
 
 public class Pl3xmapProvider {
 
     private final Logger logger;
     private final Pl3xmapCategory cfg;
-    private final Pl3xMap api = Pl3xMapProvider.get();
-    private final Core GDCore = GriefDefender.getCore();
+    private Pl3xMap api;
     private final Map<UUID, Pl3xmapTask> provider = new HashMap<>();
     public boolean disabled = false;
     private boolean reload = false;
-    private Object Pl3xmapProvider;
 
     public Pl3xmapProvider() {
         this.logger = GDHooks.getInstance().getLogger();
@@ -47,8 +46,7 @@ public class Pl3xmapProvider {
 
     public void activate() {
         try {
-            Pl3xMapProvider.get();
-            disabled = false;
+            this.api = Pl3xMapProvider.get();
         } catch (IllegalStateException e) {
             e.printStackTrace();
             logger.severe("Could not initialize GriefDefender Pl3xMap provider.");
@@ -67,7 +65,7 @@ public class Pl3xmapProvider {
         }
 
         Pl3xMapProvider.get().mapWorlds().forEach(world -> {
-            if (GDCore.isEnabled(world.uuid())) {
+            if (GriefDefender.getCore().isEnabled(world.uuid())) {
                 SimpleLayerProvider provider = SimpleLayerProvider
                         .builder(cfg.control_label)
                         .showControls(cfg.control_show)
@@ -75,7 +73,7 @@ public class Pl3xmapProvider {
                         .build();
                 world.layerRegistry().register(Key.of("griefdefender_" + world.uuid()), provider);
                 Pl3xmapTask task = new Pl3xmapTask(world, provider);
-                task.runTaskTimerAsynchronously((Plugin) Pl3xmapProvider, 0, 20L * cfg.UPDATE_INTERVAL);
+                task.runTaskTimerAsynchronously(GDHooksBootstrap.getInstance().getLoader(), 0, 20L * cfg.UPDATE_INTERVAL);
                 this.provider.put(world.uuid(), task);
             }
     });
@@ -108,7 +106,7 @@ public class Pl3xmapProvider {
         }
 
         void updateClaims() {
-            List<Claim> claims = GDCore.getAllClaims();
+            List<Claim> claims = GriefDefender.getCore().getAllClaims();
             if (claims != null) {
                 claims.stream()
                         .filter(claim -> claim.getWorldUniqueId().equals(this.world.uuid()))
