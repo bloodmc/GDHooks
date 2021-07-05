@@ -5,7 +5,7 @@
 [**Support Me**](https://www.patreon.com/bloodmc)  
 [**GriefDefender**](https://www.spigotmc.org/resources/griefdefender.68900/)  
 
-GriefDefender hooks for the following plugins:  
+GriefDefender currently support following plugins:  
 
 #### Supported By GDHook
 
@@ -41,12 +41,12 @@ GriefDefender hooks for the following plugins:
 #### Supported By Plugin Side
 
 * [BanFromClaim]: [ [Spigot](https://www.spigotmc.org/resources/70897/) | [Github](https://github.com/Baktus79/BanFromClaim)]
-* [[Parties](https://alessiodp.com/parties)]: [ Spigot | Github ]
+* [[Parties](https://alessiodp.com/parties)]: [ [Spigot](https://bit.ly/parties-spigot) | [Bukkit](https://bit.ly/parties-bukkit) | [Github](https://github.com/AlessioDP/Parties) ]
 * [Printer]: [ [Spigot](https://www.spigotmc.org/resources/79811/) | [Github](https://github.com/bsalha1/Printer) ]
 * [Plan]: [ [Github](https://github.com/plan-player-analytics/Plan) | [Spigot](https://www.spigotmc.org/resources/32536/) | [Ore](https://ore.spongepowered.org/AuroraLS3/Plan) ]
-* [WildernessTp]: [ [Spigot](https://www.spigotmc.org/resources/wilderness-tp.22853/) | [Github](https://github.com/AcmeProject/WildernessTp)]
+* [WildernessTp]: [ [Spigot](https://www.spigotmc.org/resources/wilderness-tp.22853/) | [Github](https://github.com/AcmeProject/WildernessTp) ]
 * [BetterRTP]: [ [Spigot](https://www.spigotmc.org/resources/betterrtp-random-wild-teleport.36081/) | [Github](https://github.com/SuperRonanCraft/BetterRTP) ]
-* [Furniture]: [ [Spigot](https://www.spigotmc.org/resources/furniturelibary-protectionlib.9368/) ]
+* [Furniture]: [ [Spigot](https://www.spigotmc.org/resources/furniturelibary-protectionlib.9368/) | [Github](https://github.com/Ste3et/FurnitureLib) ]
   
   ##### WIP
   
