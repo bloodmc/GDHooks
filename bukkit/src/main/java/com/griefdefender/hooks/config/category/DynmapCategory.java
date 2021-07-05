@@ -77,7 +77,7 @@ public class DynmapCategory {
 
     @Setting("info-window-admin")
     public String infoWindowAdmin = "<div class=\"infowindow\">"
-            + "<span style=\"font-weight:bold;\">%claimname%</span><br/>"
+            + "<span style=\"font-weight:bold;\">Administrator Claim</span><br/>"
             + "Manager Trust: <span style=\"font-weight:bold;\">%managers%</span><br/>"
             + "Builder Trust: <span style=\"font-weight:bold;\">%builders%</span><br/>"
             + "Container Trust: <span style=\"font-weight:bold;\">%containers%</span><br/>"
