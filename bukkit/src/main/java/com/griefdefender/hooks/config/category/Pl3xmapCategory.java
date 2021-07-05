@@ -65,8 +65,7 @@ public class Pl3xmapCategory {
     public Map<String, Pl3xmapOwnerStyleCategory> ownerStyles = new HashMap<>();
 
     @Setting("claim-tooltip")
-    public String CLAIM_TOOLTIP = "<div class=\"infowindow\">"
-            + "Name: <span style=\"font-weight:bold;\">%claimname%</span><br/>"
+    public String CLAIM_TOOLTIP = "Name: <span style=\"font-weight:bold;\">%claimname%</span><br/>"
             + "Owner: <span style=\"font-weight:bold;\">%owner%</span><br/>"
             + "OwnerUUID: <span style=\"font-weight:bold;\">%owneruuid%</span><br/>"
             + "Type: <span style=\"font-weight:bold;\">%gdtype%</span><br/>"
@@ -74,15 +73,14 @@ public class Pl3xmapCategory {
             + "Manager Trust: <span style=\"font-weight:bold;\">%managers%</span><br/>"
             + "Builder Trust: <span style=\"font-weight:bold;\">%builders%</span><br/>"
             + "Container Trust: <span style=\"font-weight:bold;\">%containers%</span><br/>"
-            + "Access Trust: <span style=\"font-weight:bold;\">%accessors%</span></div>";
+            + "Access Trust: <span style=\"font-weight:bold;\">%accessors%</span>";
 
     @Setting("claim-tooltip-admin")
-    public String ADMIN_CLAIM_TOOLTIP = "<div class=\"infowindow\">"
-            + "<span style=\"font-weight:bold;\">%claimname%</span><br/>"
+    public String ADMIN_CLAIM_TOOLTIP = "<span style=\"font-weight:bold;\">%claimname%</span><br/>"
             + "Manager Trust: <span style=\"font-weight:bold;\">%managers%</span><br/>"
             + "Builder Trust: <span style=\"font-weight:bold;\">%builders%</span><br/>"
             + "Container Trust: <span style=\"font-weight:bold;\">%containers%</span><br/>"
-            + "Access Trust: <span style=\"font-weight:bold;\">%accessors%</span></div>";
+            + "Access Trust: <span style=\"font-weight:bold;\">%accessors%</span> ";
 
     public Pl3xmapCategory() {
         for (ClaimType type : GriefDefender.getRegistry().getAllOf(ClaimType.class)) {
