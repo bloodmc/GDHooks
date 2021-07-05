@@ -9,7 +9,7 @@
 
 GriefDefender hooks for the following plugins:  
 
-#### Support By GDHook
+#### Supported By GDHook
 
  **Map**
 
@@ -19,15 +19,15 @@ GriefDefender hooks for the following plugins:
 
 **Shop**
 
-- [BossShopPro]: [ [Spigot](https://www.spigotmc.org/resources/222/) | [Github](https://github.com/Blackixx/BossShopPro) ]
-- [ChestShop]: [ [Spigot](https://www.spigotmc.org/resources/51856/) | [Github](https://github.com/ChestShop-authors/ChestShop-3) ] 
-- [DynamicShop]: [ [Spigot](https://www.spigotmc.org/resources/65603/) | [Github](https://github.com/7sat/SSDynamicShop) ]
-- [InsaneShops(Paid)]: [ [Spigot](https://www.spigotmc.org/resources/67352/) ]
-- [QuickShop]: [ [Spigot](https://www.spigotmc.org/resources/62575/) | [Github](https://github.com/Ghost-chu/QuickShop-Reremake) ]
-- [ShopChest]: [ [Spigot](https://www.spigotmc.org/resources/11431/) | [Github](https://github.com/EpicEricEE/ShopChest) ]
-- Shop
-- [Slabbo]: [ [Spigot](https://www.spigotmc.org/resources/81368/) | [Github](https://github.com/sevn65/Slaboo) ]
-- [UltimateShops]: [ [Lite](https://www.spigotmc.org/resources/61048/) | [Premium](https://www.spigotmc.org/resources/64925/) ]
+* [BossShopPro]: [ [Spigot](https://www.spigotmc.org/resources/222/) | [Github](https://github.com/Blackixx/BossShopPro) ]
+* [ChestShop]: [ [Spigot](https://www.spigotmc.org/resources/51856/) | [Github](https://github.com/ChestShop-authors/ChestShop-3) ] 
+* [DynamicShop]: [ [Spigot](https://www.spigotmc.org/resources/65603/) | [Github](https://github.com/7sat/SSDynamicShop) ]
+* [InsaneShops(Paid)]: [ [Spigot](https://www.spigotmc.org/resources/67352/) ]
+* [QuickShop]: [ [Spigot](https://www.spigotmc.org/resources/62575/) | [Github](https://github.com/Ghost-chu/QuickShop-Reremake) ]
+* [ShopChest]: [ [Spigot](https://www.spigotmc.org/resources/11431/) | [Github](https://github.com/EpicEricEE/ShopChest) ]
+* Shop
+* [Slabbo]: [ [Spigot](https://www.spigotmc.org/resources/81368/) | [Github](https://github.com/sevn65/Slaboo) ]
+* [UltimateShops]: [ [Lite](https://www.spigotmc.org/resources/61048/) | [Premium](https://www.spigotmc.org/resources/64925/) ]
 
 **Misc**
 
@@ -40,19 +40,13 @@ GriefDefender hooks for the following plugins:
 * [RevoltCrates(Paid)]: [ [Spigot](https://www.spigotmc.org/resources/81681/) ]
 * [SimpleClans]: [ [Spigot](https://www.spigotmc.org/resources/71242/) | [Github](https://github.com/RoinujNosde/SimpleClans) ]
 
-#### Support By Plugin Side
-
-[BanFromClaim]: [ [Spigot](https://www.spigotmc.org/resources/70897/) | [Github](https://github.com/Baktus79/BanFromClaim)]
-
-[[Parties](https://alessiodp.com/parties)]: [ Spigot | Github ]
-
-[Printer]: [ [Spigot](https://www.spigotmc.org/resources/79811/) | [Github](https://github.com/bsalha1/Printer) ]
-
-[Plan]: [ [Github](https://github.com/plan-player-analytics/Plan) | [Spigot](https://www.spigotmc.org/resources/32536/) | [Ore](https://ore.spongepowered.org/AuroraLS3/Plan) ]
-
-[WildernessTp]: [ [Spigot](https://www.spigotmc.org/resources/wilderness-tp.22853/) | [Github](https://github.com/AcmeProject/WildernessTp)]
-
-[BetterRTP]: [[Spigot](https://www.spigotmc.org/resources/betterrtp-random-wild-teleport.36081/) | [Github](https://github.com/SuperRonanCraft/BetterRTP) ]
+#### Supported By Plugin Side
+* [BanFromClaim]: [ [Spigot](https://www.spigotmc.org/resources/70897/) | [Github](https://github.com/Baktus79/BanFromClaim)]
+* [[Parties](https://alessiodp.com/parties)]: [ Spigot | Github ]
+* [Printer]: [ [Spigot](https://www.spigotmc.org/resources/79811/) | [Github](https://github.com/bsalha1/Printer) ]
+* [Plan]: [ [Github](https://github.com/plan-player-analytics/Plan) | [Spigot](https://www.spigotmc.org/resources/32536/) | [Ore](https://ore.spongepowered.org/AuroraLS3/Plan) ]
+* [WildernessTp]: [ [Spigot](https://www.spigotmc.org/resources/wilderness-tp.22853/) | [Github](https://github.com/AcmeProject/WildernessTp)]
+* [BetterRTP]: [ [Spigot](https://www.spigotmc.org/resources/betterrtp-random-wild-teleport.36081/) | [Github](https://github.com/SuperRonanCraft/BetterRTP) ]
 
 ## Prerequisites
 
