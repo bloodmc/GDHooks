@@ -37,6 +37,9 @@ public class ProviderCategory extends ConfigCategory {
     @Setting(value = "ChestShop")
     public boolean chestShop = true;
 
+    @Setting(value = "DynamicShop")
+    public boolean dynamicShop = true;
+	
     @Setting(value = "InsaneShops")
     public boolean insaneShops = true;
 
@@ -59,9 +62,6 @@ public class ProviderCategory extends ConfigCategory {
 
     @Setting(value = "CustomItems")
     public boolean customItems = true;
-
-    @Setting(value = "DynamicShop")
-    public boolean dynamicShop = true;
 
     @Setting(value = "EliteMobs")
     public boolean eliteMobs = true;

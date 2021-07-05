@@ -64,8 +64,7 @@ public class DynmapCategory {
     public List<String> hiddenRegions = new ArrayList<>();
 
     @Setting("info-window-basic")
-    public String infoWindowBasic = "<div class=\"infowindow\">"
-            + "Name: <span style=\"font-weight:bold;\">%claimname%</span><br/>"
+    public String infoWindowBasic = "Name: <span style=\"font-weight:bold;\">%claimname%</span><br/>"
             + "Owner: <span style=\"font-weight:bold;\">%owner%</span><br/>"
             + "OwnerUUID: <span style=\"font-weight:bold;\">%owneruuid%</span><br/>"
             + "Type: <span style=\"font-weight:bold;\">%gdtype%</span><br/>"
@@ -73,15 +72,14 @@ public class DynmapCategory {
             + "Manager Trust: <span style=\"font-weight:bold;\">%managers%</span><br/>"
             + "Builder Trust: <span style=\"font-weight:bold;\">%builders%</span><br/>"
             + "Container Trust: <span style=\"font-weight:bold;\">%containers%</span><br/>"
-            + "Access Trust: <span style=\"font-weight:bold;\">%accessors%</span></div>";
+            + "Access Trust: <span style=\"font-weight:bold;\">%accessors%</span>";
 
     @Setting("info-window-admin")
-    public String infoWindowAdmin = "<div class=\"infowindow\">"
-            + "<span style=\"font-weight:bold;\">Administrator Claim</span><br/>"
+    public String infoWindowAdmin = "<span style=\"font-weight:bold;\">Administrator Claim</span><br/>"
             + "Manager Trust: <span style=\"font-weight:bold;\">%managers%</span><br/>"
             + "Builder Trust: <span style=\"font-weight:bold;\">%builders%</span><br/>"
             + "Container Trust: <span style=\"font-weight:bold;\">%containers%</span><br/>"
-            + "Access Trust: <span style=\"font-weight:bold;\">%accessors%</span></div>";
+            + "Access Trust: <span style=\"font-weight:bold;\">%accessors%</span>";
 
     public DynmapCategory() {
         for (ClaimType type : GriefDefender.getRegistry().getAllOf(ClaimType.class)) {
