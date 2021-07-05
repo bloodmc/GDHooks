@@ -22,43 +22,54 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.griefdefender.hooks.config;
+package com.griefdefender.hooks.config.category;
 
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
-import org.spongepowered.configurate.objectmapping.meta.Comment;
 import org.spongepowered.configurate.objectmapping.meta.Setting;
 
-import com.griefdefender.hooks.config.category.BluemapCategory;
-import com.griefdefender.hooks.config.category.ClanCategory;
-import com.griefdefender.hooks.config.category.ConfigCategory;
-import com.griefdefender.hooks.config.category.DynmapCategory;
-import com.griefdefender.hooks.config.category.MessageCategory;
-import com.griefdefender.hooks.config.category.ProviderCategory;
-import com.griefdefender.hooks.config.category.Pl3xmapCategory;
+import com.griefdefender.api.claim.ClaimType;
+import com.griefdefender.api.claim.ClaimTypes;
 
 @ConfigSerializable
-public class GDHooksConfigData extends ConfigCategory {
+public class Pl3xmapOwnerStyleCategory {
 
-    @Setting
-    public BluemapCategory bluemap = new BluemapCategory();
+    @Setting("line-color")
+    public String lineColor = "#FF0000";
 
-    @Setting
-    public ClanCategory clan = new ClanCategory();
+    @Setting("stroke-weight")
+    public int Stroke_Weight = 1;
 
-    @Setting
-    public DynmapCategory dynmap = new DynmapCategory();
+    @Setting("stroke-opacity")
+    public double Stroke_Opacity = 1.0D;
 
-    @Setting
-    public Pl3xmapCategory pl3xmap = new Pl3xmapCategory();
+    @Setting("fill-color")
+    public String fillColor = "#FF0000";
 
-    @Setting
-    public MessageCategory message = new MessageCategory();
+    @Setting("fill-opacity")
+    public double Fill_Opacity = 0.2D;
 
-    @Setting(value = "provider")
-    @Comment(value = "Manages plugin providers that GDHooks plugs into for extended functionality.")
-    public ProviderCategory providerCategory = new ProviderCategory();
+    @Setting("label")
+    public String label = "none";
 
-    public GDHooksConfigData() {
-        
+    public Pl3xmapOwnerStyleCategory() {
+    }
+
+    public Pl3xmapOwnerStyleCategory(ClaimType type) {
+        if (type.equals(ClaimTypes.ADMIN)) {
+            this.lineColor = "#FF0000";
+            this.fillColor = "#FF0000";
+        } else if (type.equals(ClaimTypes.BASIC)) {
+            this.lineColor = "#FFFF00";
+            this.fillColor = "#FFFF00";
+        } else if (type.equals(ClaimTypes.TOWN)) {
+            this.lineColor = "#00FF00";
+            this.fillColor = "#00FF00";
+        } else if (type.equals(ClaimTypes.SUBDIVISION)) {
+            this.lineColor = "#FF9C00";
+            this.fillColor = "#FF9C00";
+        } else {
+            this.lineColor = "#FF0000";
+            this.fillColor = "#FF0000";
+        }
     }
 }

@@ -25,7 +25,7 @@
 package com.griefdefender.hooks;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.LocaleUtils;
+import org.apache.commons.lang.LocaleUtils;
 import org.bukkit.Bukkit;
 import org.spongepowered.configurate.objectmapping.ObjectMapper;
 import org.spongepowered.configurate.objectmapping.ObjectMapper.Factory;
@@ -59,6 +59,7 @@ import com.griefdefender.hooks.provider.MMOItemsProvider;
 import com.griefdefender.hooks.provider.McMMOProvider;
 import com.griefdefender.hooks.provider.MyPetProvider;
 import com.griefdefender.hooks.provider.MythicMobsProvider;
+import com.griefdefender.hooks.provider.Pl3xmapProvider;
 import com.griefdefender.hooks.provider.RevoltCratesProvider;
 import com.griefdefender.hooks.provider.shop.BossShopProvider;
 import com.griefdefender.hooks.provider.shop.ChestShopProvider;
@@ -114,6 +115,7 @@ public class GDHooks {
     private MMOItemsProvider mmoItemsProvider;
     private MyPetProvider myPetProvider;
     private MythicMobsProvider mythicMobsProvider;
+    private Pl3xmapProvider pl3xmapProvider;
     private RevoltCratesProvider revoltCratesProvider;
 
     public static GDHooks getInstance() {
@@ -182,6 +184,11 @@ public class GDHooks {
                 && this.config.getData().dynmap.enabled && this.config.getData().providerCategory.dynmap) {
             this.dynmapProvider = new DynmapProvider();
             this.getLogger().info("Dynmap provider enabled!");
+        }
+        if (Bukkit.getPluginManager().getPlugin("Pl3xMap") != null && Bukkit.getPluginManager().getPlugin("Pl3xMap").isEnabled()
+                && this.config.getData().pl3xmap.enabled && this.config.getData().providerCategory.pl3xmap) {
+            this.pl3xmapProvider = new Pl3xmapProvider();
+            this.getLogger().info("Pl3xmap provider enabled!");
         }
         if (Bukkit.getPluginManager().getPlugin("CustomItems") != null && Bukkit.getPluginManager().getPlugin("CustomItems").isEnabled() && this.config.getData().providerCategory.customItems) {
             this.customItemsProvider = new CustomItemsProvider();
@@ -363,6 +370,10 @@ public class GDHooks {
 
     public DynmapProvider getDynmapProvider() {
         return this.dynmapProvider;
+    }
+
+    public Pl3xmapProvider getPl3xmapProvider() {
+        return this.pl3xmapProvider;
     }
 
     public GDHooksConfig getConfig() {

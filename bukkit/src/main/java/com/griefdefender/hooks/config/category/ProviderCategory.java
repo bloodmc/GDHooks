@@ -37,9 +37,6 @@ public class ProviderCategory extends ConfigCategory {
     @Setting(value = "ChestShop")
     public boolean chestShop = true;
 
-    @Setting(value = "Dynmap")
-    public boolean dynmap = true;
-
     @Setting(value = "InsaneShops")
     public boolean insaneShops = true;
 
@@ -59,8 +56,6 @@ public class ProviderCategory extends ConfigCategory {
     public boolean ultimateShops = true;
 
     // Misc
-    @Setting(value = "BlueMap")
-    public boolean bluemap = true;
 
     @Setting(value = "CustomItems")
     public boolean customItems = true;
@@ -88,4 +83,15 @@ public class ProviderCategory extends ConfigCategory {
 
     @Setting(value = "MythicMobs")
     public boolean mythicMobs = true;
+
+    // Map
+    @Setting(value = "BlueMap")
+    public boolean bluemap = true;
+
+    @Setting(value = "Dynmap")
+    public boolean dynmap = true;
+
+    @Setting(value = "Pl3xmap")
+    public boolean pl3xmap = true;
+
 }
