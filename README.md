@@ -40,14 +40,28 @@ GriefDefender currently support following plugins:
 
 #### Supported By Plugin Side
 
-* [BanFromClaim]: [ [Spigot](https://www.spigotmc.org/resources/70897/) | [Github](https://github.com/Baktus79/BanFromClaim)]
-* [[Parties](https://alessiodp.com/parties)]: [ [Spigot](https://bit.ly/parties-spigot) | [Bukkit](https://bit.ly/parties-bukkit) | [Github](https://github.com/AlessioDP/Parties) ]
-* [Printer]: [ [Spigot](https://www.spigotmc.org/resources/79811/) | [Github](https://github.com/bsalha1/Printer) ]
-* [Plan]: [ [Github](https://github.com/plan-player-analytics/Plan) | [Spigot](https://www.spigotmc.org/resources/32536/) | [Ore](https://ore.spongepowered.org/AuroraLS3/Plan) ]
-* [WildernessTp]: [ [Spigot](https://www.spigotmc.org/resources/wilderness-tp.22853/) | [Github](https://github.com/AcmeProject/WildernessTp) ]
-* [BetterRTP]: [ [Spigot](https://www.spigotmc.org/resources/betterrtp-random-wild-teleport.36081/) | [Github](https://github.com/SuperRonanCraft/BetterRTP) ]
-* [Furniture]: [ [Spigot](https://www.spigotmc.org/resources/furniturelibary-protectionlib.9368/) | [Github](https://github.com/Ste3et/FurnitureLib) ]
-  
+**Teleport**
+* [BetterRTP]: [ [Spigot](https://www.spigotmc.org/resources/36081/) | [Github](https://github.com/SuperRonanCraft/BetterRTP) ]
+* [HyperDrive]: [ [Github](https://github.com/XZot1K/HyperDrive) | [Spigot](https://www.spigotmc.org/resources/17184/ ]
+* [WildernessTp]: [ [Spigot](https://www.spigotmc.org/resources/22853/) | [Github](https://github.com/AcmeProject/WildernessTp) ]
+
+**Protection**
+
+* [Furniture]: [ [Spigot](https://www.spigotmc.org/resources/9368/) | [Github](https://github.com/Ste3et/FurnitureLib) ] (Furniture is protected in claim)
+* [Insights]: [ [Addon](https://github.com/galexrt/InsightsGriefDefenderAddon) | [Github](https://github.com/InsightsPlugin/Insights) | [Spigot](https://www.spigotmc.org/resources/56489/)] (Limit Blocks in your claims)
+* [Printer]: [ [Spigot](https://www.spigotmc.org/resources/79811/) | [Github](https://github.com/bsalha1/Printer) ] (Anti Printer grief beside claims)
+
+**DataSharing**
+* [FastAsyncWorldEdit]: [ [Github](https://github.com/IntellectualSites/FastAsyncWorldEdit) ] (Providing mask,filter,protection)
+* [Plan]: [ [Github](https://github.com/plan-player-analytics/Plan) | [Spigot](https://www.spigotmc.org/resources/32536/) | [Ore](https://ore.spongepowered.org/AuroraLS3/Plan) ] (Getting Players' data for web)
+
+
+**Misc**
+* [BanFromClaim]: [ [Spigot](https://www.spigotmc.org/resources/70897/) | [Github](https://github.com/Baktus79/BanFromClaim)] (Ban claims' relative players)
+* [CombatLogX]: [ [Github](https://github.com/SirBlobman/CombatLogX/blob/main/expansion/compatibility/GriefDefender/src/main/java/combatlogx/expansion/compatibility/region/grief/defender/GriefDefenderRegionHandler.java) | [Spigot](https://www.spigotmc.org/resources/31689/) (Respect GD's flag)
+* [Regionerator]: [ [Github](https://github.com/Jikoo/Regionerator) ] (Delete Claim when its region was eratored by Regionerator)
+* [[Parties](https://alessiodp.com/parties)]: [ [Spigot](https://bit.ly/parties-spigot) | [Bukkit](https://bit.ly/parties-bukkit) | [Github](https://github.com/AlessioDP/Parties) ] (Giving claims' permission to Parties Member)
+
   ##### WIP
   
   [Cartographer2](https://github.com/BananaPuncher714/Cartographer2/issues/17)
