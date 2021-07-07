@@ -7,7 +7,7 @@
 
 GriefDefender currently support following plugins:  
 
-#### Supported By GDHook
+#### Supported By GDHooks
 
  **Map**
 

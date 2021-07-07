@@ -39,7 +39,7 @@ import com.griefdefender.api.claim.ClaimTypes;
 public class Pl3xmapCategory {
 
     @Setting("enabled")
-    @Comment("Set to true to enable GriefDefender Bluemap integration. (Default: true)")
+    @Comment("Set to true to enable GriefDefender Pl3xmap integration. (Default: true)")
     public boolean enabled = true;
 
     @Setting("control-label")
