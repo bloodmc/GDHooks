@@ -184,7 +184,7 @@ public class Pl3xmapProvider {
                                     claim.getData().getDisplayNameComponent().isPresent()
                                             ? PlainComponentSerializer.plain().serialize(claim.getDisplayNameComponent().get())
                                             : "none")
-                            .replace("{lastseen}", claim.getData().getDateLastActive())
+                            .replace("{lastseen}", claim.getData().getDateLastActive().toString())
                             .replace("{gd_type}", claim.getType().toString())
                             .replace("{managers}", getNames(managers))
                             .replace("{builders}", getNames(builders))
