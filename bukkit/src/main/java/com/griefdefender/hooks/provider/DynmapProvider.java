@@ -354,19 +354,19 @@ public class DynmapProvider {
             GriefDefender.getEventManager().getBus().subscribe(CreateClaimEvent.class, new EventSubscriber<CreateClaimEvent>() {
                 @Override
                 public void on(@NonNull CreateClaimEvent event) throws Throwable {
-                    new GriefDefenderUpdate(20L);
+                    new ClaimEventListener.GriefDefenderUpdate(20L);
                 }
             });
             GriefDefender.getEventManager().getBus().subscribe(RemoveClaimEvent.class, new EventSubscriber<RemoveClaimEvent>() {
                 @Override
                 public void on(@NonNull RemoveClaimEvent event) throws Throwable {
-                    new GriefDefenderUpdate(20L);
+                    new ClaimEventListener.GriefDefenderUpdate(20L);
                 }
             });
             GriefDefender.getEventManager().getBus().subscribe(ChangeClaimEvent.class, new EventSubscriber<ChangeClaimEvent>() {
                 @Override
                 public void on(@NonNull ChangeClaimEvent event) throws Throwable {
-                    new GriefDefenderUpdate(20L);
+                    new ClaimEventListener.GriefDefenderUpdate(20L);
                 }
             });
         }
