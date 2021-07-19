@@ -32,6 +32,7 @@ import com.griefdefender.api.Clan;
 import com.griefdefender.api.ClanPlayer;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.User;
+import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.data.PlayerData;
 import com.griefdefender.hooks.GDHooks;
 
@@ -89,6 +90,11 @@ public class GDClanPlayer implements ClanPlayer {
     @Override
     public String getRank() {
         return this.pluginClanPlayer.getRankId().toLowerCase();
+    }
+
+    @Override
+    public @Nullable Claim getCurrentClaim() {
+        return this.getPlayerData().getCurrentClaim();
     }
 
 }
