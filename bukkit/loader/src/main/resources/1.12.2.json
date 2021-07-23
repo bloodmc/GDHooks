@@ -84,34 +84,35 @@
             "name": "org.spongepowered:configurate-core:4.0.0",
             "sha1": "a88cb9513ab448f808ca007651baae382842bd3c",
             "path": "org/spongepowered/configurate-core/4.0.0/configurate-core-4.0.0.jar",
-            "relocate": "org.spongepowered.configurate:configurate",
+            "relocate": "org.spongepowered.configurate:configurate|io.leangen.geantyref:geantyref",
             "url": "https://repo1.maven.org/maven2/org/spongepowered/configurate-core/4.0.0/configurate-core-4.0.0.jar"
         },
         {
             "name": "org.spongepowered:configurate-gson:4.0.0",
             "sha1": "be3075d1c293f98bd0a39fc5bd9d60a4d48cbfb8",
             "path": "org/spongepowered/configurate-gson/4.0.0/configurate-gson-4.0.0.jar",
-            "relocate": "org.spongepowered.configurate:configurate",
+            "relocate": "org.spongepowered.configurate:configurate|io.leangen.geantyref:geantyref",
             "url": "https://repo1.maven.org/maven2/org/spongepowered/configurate-gson/4.0.0/configurate-gson-4.0.0.jar"
         },
         {
             "name": "org.spongepowered:configurate-hocon:4.0.0",
             "sha1": "3356bf171bc11aa09ef3bf6e8d3874352085bf07",
             "path": "org/spongepowered/configurate-hocon/4.0.0/configurate-hocon-4.0.0.jar",
-            "relocate": "org.spongepowered.configurate:configurate",
+            "relocate": "org.spongepowered.configurate:configurate|io.leangen.geantyref:geantyref",
             "url": "https://repo1.maven.org/maven2/org/spongepowered/configurate-hocon/4.0.0/configurate-hocon-4.0.0.jar"
         },
         {
             "name": "org.spongepowered:configurate-yaml:4.0.0",
             "sha1": "d6909ae1846097f2644e1e7858b2e627153d89c0",
             "path": "org/spongepowered/configurate-yaml/4.0.0/configurate-yaml-4.0.0.jar",
-            "relocate": "org.spongepowered.configurate:configurate",
+            "relocate": "org.spongepowered.configurate:configurate|io.leangen.geantyref:geantyref",
             "url": "https://repo1.maven.org/maven2/org/spongepowered/configurate-yaml/4.0.0/configurate-yaml-4.0.0.jar"
         },
         {
             "name": "io.leangen.geantyref:geantyref:1.3.11",
             "sha1": "bc9c03b53917314d21fe6276aceb08aa84bf80dd",
             "path": "io/leangen/geantyref/geantyref/1.3.11/geantyref-1.3.11.jar",
+            "relocate": "io.leangen.geantyref:geantyref",
             "url": "https://repo1.maven.org/maven2/io/leangen/geantyref/geantyref/1.3.11/geantyref-1.3.11.jar"
         },
         {

@@ -168,6 +168,7 @@ shadowJar {
     relocate("org.checkerframework", "com.griefdefender.lib.checkerframework")
     relocate("org.jetbrains", "com.griefdefender.lib.jetbrains")
     relocate("org.objectweb.asm", "com.griefdefender.lib.asm")
+    relocate("io.leangen.geantyref", "com.griefdefender.lib.geantyref")
 
     exclude "dummyThing"
 }
