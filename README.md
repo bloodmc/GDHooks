@@ -5,8 +5,6 @@
 [**Support Me**](https://www.patreon.com/bloodmc)  
 [**GriefDefender**](https://www.spigotmc.org/resources/griefdefender.68900/)  
 
-GriefDefender currently support following plugins:  
-
 #### Supported By GDHooks
 
  **Map**
@@ -23,7 +21,7 @@ GriefDefender currently support following plugins:
 * [InsaneShops(Paid)]: [ [Spigot](https://www.spigotmc.org/resources/67352/) ]
 * [QuickShop]: [ [Spigot](https://www.spigotmc.org/resources/62575/) | [Github](https://github.com/Ghost-chu/QuickShop-Reremake) ]
 * [ShopChest]: [ [Spigot](https://www.spigotmc.org/resources/11431/) | [Github](https://github.com/EpicEricEE/ShopChest) ]
-* Shop
+* [Shop]: [ [Spigot](https://www.spigotmc.org/resources/shop-a-simple-intuitive-shop-plugin.9628/) ]
 * [Slabbo]: [ [Spigot](https://www.spigotmc.org/resources/81368/) | [Github](https://github.com/sevn65/Slaboo) ]
 * [UltimateShops]: [ [Lite](https://www.spigotmc.org/resources/61048/) | [Premium](https://www.spigotmc.org/resources/64925/) ]
 
@@ -31,6 +29,7 @@ GriefDefender currently support following plugins:
 
 * [CustomItems(Paid)]: [ [Spigot](https://www.spigotmc.org/resources/36128/) ]
 * [EliteMobs]: [ [Spigot](https://www.spigotmc.org/resources/40090/) | [Github](https://github.com/MagmaGuy/EliteMobs) ]
+* [FurnitureLib]: [ [Spigot](https://www.spigotmc.org/resources/furniturelibary-protectionlib.9368/) | [Github](https://github.com/Ste3et/FurnitureLib) ]
 * [MMOItems(Paid)]: [ [Spigot](https://www.spigotmc.org/resources/39267/) ]
 * [McMMO]: [ [Spigot](https://www.spigotmc.org/resources/64348/updates) | [Github](https://github.com/mcMMO-Dev/mcMMO) ]
 * [MyPet]: [ [Spigot](https://www.spigotmc.org/resources/mypet.12725/) | [Github](https://github.com/xXKeyleXx/MyPet) ]
@@ -57,8 +56,8 @@ GriefDefender currently support following plugins:
 
 
 **Misc**
-* [BanFromClaim]: [ [Spigot](https://www.spigotmc.org/resources/70897/) | [Github](https://github.com/Baktus79/BanFromClaim)] (Ban claims' relative players)
-* [CombatLogX]: [ [Github](https://github.com/SirBlobman/CombatLogX/blob/main/expansion/compatibility/GriefDefender/src/main/java/combatlogx/expansion/compatibility/region/grief/defender/GriefDefenderRegionHandler.java) | [Spigot](https://www.spigotmc.org/resources/31689/) (Respect GD's flag)
+* [BanFromClaim]: [ [Spigot](https://www.spigotmc.org/resources/70897/) | [Github](https://github.com/Baktus79/BanFromClaim) ] (Ban claims' relative players)
+* [CombatLogX]: [ [Github](https://github.com/SirBlobman/CombatLogX/blob/main/expansion/compatibility/GriefDefender/src/main/java/combatlogx/expansion/compatibility/region/grief/defender/GriefDefenderRegionHandler.java) | [Spigot](https://www.spigotmc.org/resources/31689/) ](Respect GD's flag)
 * [Regionerator]: [ [Github](https://github.com/Jikoo/Regionerator) ] (Delete Claim when its region was eratored by Regionerator)
 * [[Parties](https://alessiodp.com/parties)]: [ [Spigot](https://bit.ly/parties-spigot) | [Bukkit](https://bit.ly/parties-bukkit) | [Github](https://github.com/AlessioDP/Parties) ] (Giving claims' permission to Parties Member)
 

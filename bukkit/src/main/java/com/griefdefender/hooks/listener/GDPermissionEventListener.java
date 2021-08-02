@@ -81,6 +81,13 @@ public class GDPermissionEventListener {
                             return;
                         }
                     }
+                    if (GDHooks.getInstance().getFurnitureLibProvider() != null) {
+                        final String itemId = GDHooks.getInstance().getFurnitureLibProvider().getItemId(itemstack);
+                        if (itemId != null) {
+                            event.setNewIdentifier(itemId);
+                            return;
+                        }
+                    }
                 }
                 if (object instanceof Entity) {
                     final Entity targetEntity = (Entity) object;

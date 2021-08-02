@@ -55,6 +55,7 @@ import com.griefdefender.hooks.provider.BluemapProvider;
 import com.griefdefender.hooks.provider.CustomItemsProvider;
 import com.griefdefender.hooks.provider.DynmapProvider;
 import com.griefdefender.hooks.provider.EliteMobsProvider;
+import com.griefdefender.hooks.provider.FurnitureLibProvider;
 import com.griefdefender.hooks.provider.MMOItemsProvider;
 import com.griefdefender.hooks.provider.McMMOProvider;
 import com.griefdefender.hooks.provider.MyPetProvider;
@@ -110,6 +111,7 @@ public class GDHooks {
     private CustomItemsProvider customItemsProvider;
     private DynmapProvider dynmapProvider;
     private EliteMobsProvider eliteMobsProvider;
+    private FurnitureLibProvider furnitureLibProvider;
     private GDShopProvider shopProvider;
     private McMMOProvider mcmmoProvider;
     private MMOItemsProvider mmoItemsProvider;
@@ -197,6 +199,10 @@ public class GDHooks {
         if (Bukkit.getPluginManager().getPlugin("EliteMobs") != null && Bukkit.getPluginManager().getPlugin("EliteMobs").isEnabled() && this.config.getData().providerCategory.eliteMobs) {
             this.eliteMobsProvider = new EliteMobsProvider();
             this.getLogger().info("EliteMobs provider enabled!");
+        }
+        if (Bukkit.getPluginManager().getPlugin("FurnitureLib") != null && Bukkit.getPluginManager().getPlugin("FurnitureLib").isEnabled() && this.config.getData().providerCategory.furnitureLib) {
+            this.furnitureLibProvider = new FurnitureLibProvider();
+            this.getLogger().info("FurnitureLib provider enabled!");
         }
         if (Bukkit.getPluginManager().getPlugin("MMOItems") != null && Bukkit.getPluginManager().getPlugin("MMOItems").isEnabled() && this.config.getData().providerCategory.mmoItems) {
             this.mmoItemsProvider = new MMOItemsProvider();
@@ -338,6 +344,10 @@ public class GDHooks {
 
     public EliteMobsProvider getEliteMobsProvider() {
         return this.eliteMobsProvider;
+    }
+
+    public FurnitureLibProvider getFurnitureLibProvider() {
+        return this.furnitureLibProvider;
     }
 
     public MMOItemsProvider getMMOItemsProvider() {

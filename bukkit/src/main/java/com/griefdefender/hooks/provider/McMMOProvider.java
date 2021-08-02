@@ -24,10 +24,12 @@
  */
 package com.griefdefender.hooks.provider;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.events.hardcore.McMMOPlayerDeathPenaltyEvent;
+import com.gmail.nossr50.events.party.McMMOPartyAllianceChangeEvent;
+import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
 import com.gmail.nossr50.events.skills.McMMOPlayerSkillEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityDeactivateEvent;
@@ -42,10 +44,16 @@ import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
 import com.gmail.nossr50.util.player.UserManager;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.Tristate;
+import com.griefdefender.api.User;
 import com.griefdefender.api.claim.Claim;
+import com.griefdefender.api.claim.TrustResult;
+import com.griefdefender.api.claim.TrustResultTypes;
+import com.griefdefender.api.claim.TrustTypes;
 import com.griefdefender.api.data.PlayerData;
 import com.griefdefender.api.event.BorderClaimEvent;
+import com.griefdefender.api.event.CreateClaimEvent;
 import com.griefdefender.api.event.Event;
+import com.griefdefender.api.event.ProcessTrustUserEvent;
 import com.griefdefender.api.permission.Context;
 import com.griefdefender.api.permission.flag.Flag;
 import com.griefdefender.api.permission.option.Option;
@@ -75,7 +83,6 @@ import java.util.UUID;
 
 public class McMMOProvider implements Listener {
 
-    private final mcMMO plugin;
     private final Option<Boolean> MCMMO_DEATH_PENALTY;
     private final Option<Double> MCMMO_XP_GAIN_MODIFIER;
     //private final Option<Double> MCMMO_SKILL_RESULT_MODIFIER;
@@ -87,7 +94,6 @@ public class McMMOProvider implements Listener {
     private final Map<UUID, McMMOPlayerAbilityData> playerAbilityMap = new HashMap<>();
 
     public McMMOProvider() {
-        this.plugin = mcMMO.p;
         // register custom mcmmo options
         MCMMO_DEATH_PENALTY = Option.builder(Boolean.class)
                 .id("mcmmo:death-penalty")
@@ -129,6 +135,8 @@ public class McMMOProvider implements Listener {
         GriefDefender.getRegistry().getRegistryModuleFor(Flag.class).get().registerCustomType(SKILL_USE);
         Bukkit.getPluginManager().registerEvents(this, GDHooksBootstrap.getInstance().getLoader());
         new BorderClaimEventListener();
+        new CreateClaimEventListener();
+        new ProcessTrustUserEventListener();
     }
 
     public Map<UUID, McMMOPlayerAbilityData> getPlayerAbilityMap() {
@@ -372,6 +380,34 @@ public class McMMOProvider implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onPartyChangeEvent(McMMOPartyChangeEvent event) {
+        final Player player = event.getPlayer();
+        final PlayerData playerData = GriefDefender.getCore().getPlayerData(player.getWorld().getUID(), player.getUniqueId());
+        for (Claim claim : playerData.getClaims()) {
+            if (event.getOldParty() != null) {
+                claim.removeGroupTrust(event.getOldParty().toLowerCase().replace(" ", "_"), TrustTypes.NONE);
+            }
+            if (event.getNewParty() != null) {
+                claim.addGroupTrust(event.getNewParty().toLowerCase().replace(" ", "_"), TrustTypes.BUILDER);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onAllianceChangeEvent(McMMOPartyAllianceChangeEvent event) {
+        final Player player = event.getPlayer();
+        final PlayerData playerData = GriefDefender.getCore().getPlayerData(player.getWorld().getUID(), player.getUniqueId());
+        for (Claim claim : playerData.getClaims()) {
+            if (event.getOldAlly() != null) {
+                claim.removeGroupTrust(event.getOldAlly().toLowerCase().replace(" ", "_"), TrustTypes.NONE);
+            }
+            if (event.getNewAlly() != null) {
+                claim.addGroupTrust(event.getNewAlly().toLowerCase().replace(" ", "_"), TrustTypes.BUILDER);
+            }
+        }
+    }
+
     private class BorderClaimEventListener {
 
         public BorderClaimEventListener() {
@@ -414,6 +450,77 @@ public class McMMOProvider implements Listener {
                         if (result == Tristate.FALSE) {
                             new AbilityDisableTask(mcmmoPlayer, playerAbilityData.ability).runTaskLater(GDHooksBootstrap.getInstance().getLoader(), 1);
                         }
+                    }
+                }
+            });
+        }
+    }
+
+    private class CreateClaimEventListener {
+
+        public CreateClaimEventListener() {
+            final EventBus<Event> eventBus = GriefDefender.getEventManager().getBus();
+
+            eventBus.subscribe(CreateClaimEvent.Post.class, new EventSubscriber<CreateClaimEvent.Post>() {
+
+                @Override
+                public void on(CreateClaimEvent.Post event) throws Throwable {
+                    final User user = event.getCause().first(User.class).orElse(null);
+                    if (user == null) {
+                        return;
+                    }
+                    final Player player = Bukkit.getPlayer(user.getUniqueId());
+                    if (player == null) {
+                        return;
+                    }
+                    final McMMOPlayer mcmmoPlayer = UserManager.getPlayer(player);
+                    final Party party = mcmmoPlayer.getParty();
+                    if (party == null) {
+                        return;
+                    }
+
+                    for (Claim claim : event.getClaims()) {
+                        claim.addGroupTrust(party.getName().toLowerCase().replace(" ", "_"), TrustTypes.BUILDER);
+                    }
+                }
+                
+            });
+        }
+    }
+
+    private class ProcessTrustUserEventListener {
+
+        public ProcessTrustUserEventListener() {
+            final EventBus<Event> eventBus = GriefDefender.getEventManager().getBus();
+
+            eventBus.subscribe(ProcessTrustUserEvent.class, new EventSubscriber<ProcessTrustUserEvent>() {
+
+                @Override
+                public void on(@NonNull ProcessTrustUserEvent event) throws Throwable {
+                    if (event.getFinalTrustResult().successful() || event.getTrustType() == TrustTypes.MANAGER) {
+                        return;
+                    }
+
+                    final User user = event.getUser();
+                    if (user == null) {
+                        return;
+                    }
+                    final Player player = Bukkit.getPlayer(user.getUniqueId());
+                    if (player == null) {
+                        return;
+                    }
+                    final McMMOPlayer mcmmoPlayer = UserManager.getPlayer(player);
+                    if (mcmmoPlayer == null) {
+                        return;
+                    }
+                    final Party party = mcmmoPlayer.getParty();
+                    if (party == null) {
+                        return;
+                    }
+
+                    if (event.getClaim().isGroupTrusted(party.getName().toLowerCase().replace(" ", "_"), TrustTypes.BUILDER)) {
+                        final TrustResult trustResult = TrustResult.builder().user(event.getUser()).claims(event.getClaims()).trust(TrustTypes.BUILDER).type(TrustResultTypes.BUILDER).build();
+                        event.setNewTrustResult(trustResult);
                     }
                 }
             });
