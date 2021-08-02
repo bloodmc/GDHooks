@@ -389,7 +389,7 @@ public class McMMOProvider implements Listener {
                 claim.removeGroupTrust(event.getOldParty().toLowerCase().replace(" ", "_"), TrustTypes.NONE);
             }
             if (event.getNewParty() != null) {
-                claim.addGroupTrust(event.getNewParty().toLowerCase().replace(" ", "_"), TrustTypes.BUILDER);
+                claim.addGroupTrust(event.getNewParty().toLowerCase().replace(" ", "_"), TrustTypes.ACCESSOR);
             }
         }
     }
@@ -403,7 +403,7 @@ public class McMMOProvider implements Listener {
                 claim.removeGroupTrust(event.getOldAlly().toLowerCase().replace(" ", "_"), TrustTypes.NONE);
             }
             if (event.getNewAlly() != null) {
-                claim.addGroupTrust(event.getNewAlly().toLowerCase().replace(" ", "_"), TrustTypes.BUILDER);
+                claim.addGroupTrust(event.getNewAlly().toLowerCase().replace(" ", "_"), TrustTypes.ACCESSOR);
             }
         }
     }
@@ -480,7 +480,7 @@ public class McMMOProvider implements Listener {
                     }
 
                     for (Claim claim : event.getClaims()) {
-                        claim.addGroupTrust(party.getName().toLowerCase().replace(" ", "_"), TrustTypes.BUILDER);
+                        claim.addGroupTrust(party.getName().toLowerCase().replace(" ", "_"), TrustTypes.ACCESSOR);
                     }
                 }
                 
@@ -497,7 +497,7 @@ public class McMMOProvider implements Listener {
 
                 @Override
                 public void on(@NonNull ProcessTrustUserEvent event) throws Throwable {
-                    if (event.getFinalTrustResult().successful() || event.getTrustType() == TrustTypes.MANAGER) {
+                    if (event.getFinalTrustResult().successful()) {
                         return;
                     }
 
@@ -518,8 +518,8 @@ public class McMMOProvider implements Listener {
                         return;
                     }
 
-                    if (event.getClaim().isGroupTrusted(party.getName().toLowerCase().replace(" ", "_"), TrustTypes.BUILDER)) {
-                        final TrustResult trustResult = TrustResult.builder().user(event.getUser()).claims(event.getClaims()).trust(TrustTypes.BUILDER).type(TrustResultTypes.BUILDER).build();
+                    if (event.getClaim().isGroupTrusted(party.getName().toLowerCase().replace(" ", "_"), event.getTrustType())) {
+                        final TrustResult trustResult = TrustResult.builder().user(event.getUser()).claims(event.getClaims()).trust(event.getTrustType()).type(TrustResultTypes.TRUSTED).build();
                         event.setNewTrustResult(trustResult);
                     }
                 }
