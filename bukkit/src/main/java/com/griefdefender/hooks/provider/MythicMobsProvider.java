@@ -39,8 +39,10 @@ import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.Tristate;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.permission.Context;
+import com.griefdefender.api.permission.ContextKeys;
 import com.griefdefender.api.permission.flag.Flags;
 import com.griefdefender.hooks.GDHooksBootstrap;
+import com.griefdefender.hooks.context.ContextGroups;
 
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
@@ -90,10 +92,16 @@ public class MythicMobsProvider implements Listener {
             return;
         }
 
+        final String source = event.getMythicSpawner() != null ? event.getMythicSpawner().getName().toLowerCase() : null;
+        final Set<Context> contexts = new HashSet<>();
+        contexts.add(new Context("mythicmobs_level", String.valueOf(event.getMobLevel())));
+        contexts.add(ContextGroups.TARGET_MYTHICMOBS);
+        contexts.add(ContextGroups.TARGET_MONSTER);
+        contexts.add(new Context(ContextKeys.TARGET, "#mythicmobs:monster"));
+        final String id = "mythicmobs:" + event.getMobType().getInternalName().replace(" ", "_").toLowerCase();
         final Location location = entity.getLocation();
         final Claim claim = GriefDefender.getCore().getClaimAt(location);
-        // Contexts handled above
-        final Tristate result = GriefDefender.getPermissionManager().getActiveFlagPermissionValue(event, location, claim, null, Flags.ENTITY_SPAWN, null, entity, new HashSet<>(), null, true);
+        final Tristate result = GriefDefender.getPermissionManager().getActiveFlagPermissionValue(event, location, claim, null, Flags.ENTITY_SPAWN, source, id, contexts, null, true);
         if (result == Tristate.FALSE) {
             event.setCancelled();
         }

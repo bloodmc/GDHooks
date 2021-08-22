@@ -57,7 +57,7 @@ import java.util.Set;
 import org.bukkit.entity.Player;
 
 @CommandAlias("gdhooks")
-@CommandPermission(GDHooksPermissions.COMMAND_TRUST_CLAN)
+@CommandPermission(GDHooksPermissions.COMMAND_TRUSTALL_CLAN)
 public class CommandTrustClanAll extends BaseCommand {
 
     @CommandCompletion("@gdclans @gdtrusttypes @gddummy")

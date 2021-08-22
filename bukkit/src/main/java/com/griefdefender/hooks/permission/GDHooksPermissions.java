@@ -30,9 +30,9 @@ public class GDHooksPermissions {
     public static final String COMMAND_VERSION = "gdhooks.user.command.version";
 
     public static final String COMMAND_TRUST_CLAN = "gdhooks.user.claim.command.trust.clan";
-    public static final String COMMAND_TRUSTALL_CLAN = "gdhooks.user.claim.command.trustall.group";
-    public static final String COMMAND_TRUSTALL_ADMIN_CLAN = "gdhooks.admin.claim.command.trustalladmin.group";
-    public static final String COMMAND_UNTRUST_CLAN = "gdhooks.user.claim.command.untrust.group";
-    public static final String COMMAND_UNTRUSTALL_CLAN = "gdhooks.user.claim.command.untrustall.group";
-    public static final String COMMAND_UNTRUSTALL_ADMIN_CLAN = "gdhooks.admin.claim.command.untrustalladmin.group";
+    public static final String COMMAND_TRUSTALL_CLAN = "gdhooks.user.claim.command.trustall.clan";
+    public static final String COMMAND_UNTRUST_CLAN = "gdhooks.user.claim.command.untrust.clan";
+    public static final String COMMAND_UNTRUSTALL_CLAN = "gdhooks.user.claim.command.untrustall.clan";
+
+    public static final String PROVIDER_MCMMO_AUTO_PARTY_TRUST = "gdhooks.user.mcmmo.auto-party-trust";
 }

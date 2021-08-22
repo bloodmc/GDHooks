@@ -3,5 +3,5 @@ main: com.griefdefender.hooks.loader.BukkitLoaderPlugin
 depend: [GriefDefender]
 softdepend: [BlueMap, BossShopPro, ChestShop, CustomItems, Dynmap, DynamicShop, InsaneShops, mcMMO, MyPet, MMOItems, MythicMobs, QuickShop, RevoltCrates, Shop, ShopChest, SimpleClans, Slabbo, UltimateShops]
 load: POSTWORLD
-version: '0.1'
+version: '0.3'
 api-version: 1.13

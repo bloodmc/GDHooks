@@ -119,7 +119,7 @@ public class GDPermissionEventListener {
                         } else {
                             contexts.add(ContextGroups.TARGET_MYTHICMOBS);
                             contexts.add(ContextGroups.TARGET_ANY);
-                            contexts.add(ContextGroups.SOURCE_MONSTER);
+                            contexts.add(ContextGroups.TARGET_MONSTER);
                             contexts.add(new Context(ContextKeys.TARGET, "#mythicmobs:monster"));
                         }
                         final String id = "mythicmobs:" + GDHooks.getInstance().getMythicMobsProvider().getMobType(targetEntity).toLowerCase();

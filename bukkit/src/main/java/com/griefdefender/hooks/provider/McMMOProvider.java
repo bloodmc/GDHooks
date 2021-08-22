@@ -59,6 +59,7 @@ import com.griefdefender.api.permission.flag.Flag;
 import com.griefdefender.api.permission.option.Option;
 import com.griefdefender.hooks.GDHooks;
 import com.griefdefender.hooks.GDHooksBootstrap;
+import com.griefdefender.hooks.permission.GDHooksPermissions;
 import com.griefdefender.hooks.provider.mcmmo.McMMOPlayerAbilityData;
 
 import io.leangen.geantyref.TypeToken;
@@ -383,6 +384,9 @@ public class McMMOProvider implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPartyChangeEvent(McMMOPartyChangeEvent event) {
         final Player player = event.getPlayer();
+        if (!player.hasPermission(GDHooksPermissions.PROVIDER_MCMMO_AUTO_PARTY_TRUST)) {
+            return;
+        }
         final PlayerData playerData = GriefDefender.getCore().getPlayerData(player.getWorld().getUID(), player.getUniqueId());
         for (Claim claim : playerData.getClaims()) {
             if (event.getOldParty() != null) {
@@ -397,6 +401,9 @@ public class McMMOProvider implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onAllianceChangeEvent(McMMOPartyAllianceChangeEvent event) {
         final Player player = event.getPlayer();
+        if (!player.hasPermission(GDHooksPermissions.PROVIDER_MCMMO_AUTO_PARTY_TRUST)) {
+            return;
+        }
         final PlayerData playerData = GriefDefender.getCore().getPlayerData(player.getWorld().getUID(), player.getUniqueId());
         for (Claim claim : playerData.getClaims()) {
             if (event.getOldAlly() != null) {
