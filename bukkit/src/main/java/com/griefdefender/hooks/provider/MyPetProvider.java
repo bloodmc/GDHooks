@@ -24,6 +24,8 @@
  */
 package com.griefdefender.hooks.provider;
 
+import java.util.HashSet;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -104,7 +106,7 @@ public class MyPetProvider {
             }
 
             final Claim claim = GriefDefender.getCore().getClaimAt(location);
-            final Boolean myPetFly = GriefDefender.getPermissionManager().getActiveOptionValue(TypeToken.get(Boolean.class), MYPET_FLY, GriefDefender.getCore().getDefaultSubject(), claim);
+            final Boolean myPetFly = GriefDefender.getPermissionManager().getActiveOptionValue(TypeToken.get(Boolean.class), MYPET_FLY, GriefDefender.getCore().getDefaultSubject(), claim, new HashSet<>());
             if (myPetFly != null) {
                 return myPetFly;
             }
@@ -131,7 +133,7 @@ public class MyPetProvider {
 
             final PlayerData playerData = GriefDefender.getCore().getPlayerData(world.getUID(), attacker.getUniqueId());
             final Claim claim = GriefDefender.getCore().getClaimAt(location);
-            final Boolean myPetDamage = GriefDefender.getPermissionManager().getActiveOptionValue(TypeToken.get(Boolean.class), MYPET_DAMAGE, playerData.getUser(), claim);
+            final Boolean myPetDamage = GriefDefender.getPermissionManager().getActiveOptionValue(TypeToken.get(Boolean.class), MYPET_DAMAGE, playerData.getUser(), claim, new HashSet<>());
             if (myPetDamage != null) {
                 return myPetDamage;
             }

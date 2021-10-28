@@ -178,7 +178,7 @@ public class McMMOProvider implements Listener {
         final Location location = player.getLocation();
         final PlayerData playerData = GriefDefender.getCore().getPlayerData(world.getUID(), player.getUniqueId());
         final Claim claim = GriefDefender.getCore().getClaimAt(location);
-        final Boolean deathPenalty = GriefDefender.getPermissionManager().getActiveOptionValue(TypeToken.get(Boolean.class), MCMMO_DEATH_PENALTY, playerData.getUser(), claim);
+        final Boolean deathPenalty = GriefDefender.getPermissionManager().getActiveOptionValue(TypeToken.get(Boolean.class), MCMMO_DEATH_PENALTY, playerData.getUser(), claim, new HashSet<>());
         if (deathPenalty != null && !deathPenalty) {
             event.setCancelled(true);
         }
