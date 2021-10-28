@@ -53,6 +53,7 @@ import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerSet;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,7 +100,8 @@ public class DynmapProvider {
                 claim.getData().getDisplayNameComponent().isPresent()
                         ? PlainComponentSerializer.plain().serialize(claim.getDisplayNameComponent().get())
                         : "none");
-        info = info.replace("%lastseen%", claim.getData().getDateLastActive().toString());
+        final Date lastActive = Date.from(claim.getData().getDateLastActive());
+        info = info.replace("%lastseen%", lastActive.toString());
         info = info.replace("%gdtype%", claim.getType().toString());
 
         final List<UUID> builderList = new ArrayList<>(claim.getUserTrusts(TrustTypes.BUILDER));
