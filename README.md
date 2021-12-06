@@ -36,6 +36,7 @@
 * [MythicMobs]: [ [Free](https://www.spigotmc.org/resources/5702/) | [Premium](https://www.spigotmc.org/resources/58415/) ]
 * [RevoltCrates(Paid)]: [ [Spigot](https://www.spigotmc.org/resources/81681/) ]
 * [SimpleClans]: [ [Spigot](https://www.spigotmc.org/resources/71242/) | [Github](https://github.com/RoinujNosde/SimpleClans) ]
+* [Towny]: [ [Spigot](https://www.spigotmc.org/resources/72694/) | [Github](https://github.com/TownyAdvanced/Towny) ]
 
 #### Supported By Plugin Side
 

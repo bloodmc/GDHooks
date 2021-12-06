@@ -87,6 +87,9 @@ public class ProviderCategory extends ConfigCategory {
     @Setting(value = "MythicMobs")
     public boolean mythicMobs = true;
 
+    @Setting(value = "Towny")
+    public boolean towny = true;
+
     // Map
     @Setting(value = "BlueMap")
     public boolean bluemap = true;

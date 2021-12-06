@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.griefdefender.hooks.command;
+package com.griefdefender.hooks.command.clan;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -34,43 +34,37 @@ import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.griefdefender.api.Clan;
 import com.griefdefender.api.CommandResult;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
-import com.griefdefender.api.claim.ClaimManager;
+import com.griefdefender.api.claim.ClaimResult;
 import com.griefdefender.api.claim.TrustType;
 import com.griefdefender.api.claim.TrustTypes;
 import com.griefdefender.hooks.GDHooks;
 import com.griefdefender.hooks.config.MessageConfig;
-import com.griefdefender.hooks.event.GDClanTrustClaimEvent;
 import com.griefdefender.hooks.permission.GDHooksPermissions;
 import com.griefdefender.hooks.util.HooksUtil;
 
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 
 @CommandAlias("gdhooks")
-@CommandPermission(GDHooksPermissions.COMMAND_TRUST_CLAN)
-public class CommandTrustClanAllAdmin extends BaseCommand {
+@CommandPermission(GDHooksPermissions.COMMAND_UNTRUST_CLAN)
+public class CommandUntrustClan extends BaseCommand {
 
     @CommandCompletion("@gdclans @gdtrusttypes @gddummy")
-    @CommandAlias("trustallclanadmin")
-    @Description("%trust-clan-all")
+    @CommandAlias("untrustclan")
+    @Description("%untrust-clan")
     @Syntax("<clan> [<accessor|builder|container|manager>]")
-    @Subcommand("trustalladmin clan")
-    public void execute(Player player, String clanTag, @Optional String type, @Optional String identifier) {
+    @Subcommand("untrust clan")
+    public void execute(CommandSender sender, String clanTag, @Optional String type, @Optional String identifier) {
         TrustType trustType = null;
-        final Audience audience = GriefDefender.getAudienceProvider().getSender(player);
+        final Audience audience = GriefDefender.getAudienceProvider().getSender(sender);
         if (type == null) {
-            trustType = TrustTypes.BUILDER;
+            trustType = TrustTypes.NONE;
         } else {
             trustType = HooksUtil.getTrustType(type);
             if (trustType == null) {
@@ -86,7 +80,7 @@ public class CommandTrustClanAllAdmin extends BaseCommand {
             return;
         }
 
-        final CommandResult result = GriefDefender.getCore().canUseCommand(player, TrustTypes.MANAGER, identifier);
+        final CommandResult result = GriefDefender.getCore().canUseCommand(sender, TrustTypes.MANAGER, identifier);
         if (!result.successful()) {
             if (result.getClaim() != null) {
                 final Component message = MessageConfig.MESSAGE_DATA.getMessage(MessageConfig.PERMISSION_TRUST,
@@ -99,37 +93,18 @@ public class CommandTrustClanAllAdmin extends BaseCommand {
             return;
         }
 
-        Set<Claim> claimList = new HashSet<>();
-        final ClaimManager claimManager = GriefDefender.getCore().getClaimManager(player.getWorld().getUID());
-        for (Claim claim : claimManager.getWorldClaims()) {
-            if (claim.isAdminClaim()) {
-                claimList.add(claim);
-            }
-        }
-
-        if (claimList == null || claimList.size() == 0) {
-            audience.sendMessage(MessageConfig.MESSAGE_DATA.getMessage(MessageConfig.TRUST_NO_CLAIMS));
-            return;
-        }
-
-        GriefDefender.getEventManager().getCauseStackManager().pushCause(player);
-        GDClanTrustClaimEvent.Add
-            event = new GDClanTrustClaimEvent.Add(new ArrayList<>(claimList), ImmutableSet.of(clan), trustType);
-        GriefDefender.getEventManager().post(event);
+        final Claim claim = result.getClaim();
+        GriefDefender.getEventManager().getCauseStackManager().pushCause(sender);
+        final ClaimResult claimResult = claim.removeClanTrust(clanTag, trustType);
         GriefDefender.getEventManager().getCauseStackManager().popCause();
-        if (event.cancelled()) {
-            audience.sendMessage(event.getMessage().orElse(MessageConfig.MESSAGE_DATA.getMessage(MessageConfig.TRUST_PLUGIN_CANCEL,
+        if (!claimResult.successful()) {
+            audience.sendMessage(claimResult.getMessage().orElse(MessageConfig.MESSAGE_DATA.getMessage(MessageConfig.TRUST_PLUGIN_CANCEL,
                     ImmutableMap.of("target", clan.getTag()))));
             return;
         }
 
-        for (Claim claim : claimList) {
-            claim.addClanTrust(clan, trustType);
-        }
-
-        final Component message = MessageConfig.MESSAGE_DATA.getMessage(MessageConfig.TRUST_INDIVIDUAL_ALL_CLAIMS,
-                ImmutableMap.of(
-                "player", clan.getTag()));
+        final Component message = MessageConfig.MESSAGE_DATA.getMessage(MessageConfig.UNTRUST_INDIVIDUAL_SINGLE_CLAIM, ImmutableMap.of(
+                "target", clan.getTag()));
         audience.sendMessage(message);
     }
 }

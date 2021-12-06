@@ -84,22 +84,14 @@ public class GDHooksBootstrap implements LoaderBootstrap {
         final JSONParser parser = new JSONParser();
         String bukkitJsonVersion = null;
         this.logger.info("Loading libraries...");
-        if (Bukkit.getVersion().contains("1.8.8")) {
-            bukkitJsonVersion = "1.8.8";
-        } else if (Bukkit.getVersion().contains("1.12.2")) {
+        if (Bukkit.getVersion().contains("1.12.2")) {
             bukkitJsonVersion = "1.12.2";
         } else if (Bukkit.getVersion().contains("1.13.2")) {
             bukkitJsonVersion = "1.13.2";
-        } else if (Bukkit.getVersion().contains("1.14.2")) {
-            bukkitJsonVersion = "1.14.2";
-        } else if (Bukkit.getVersion().contains("1.14.3")) {
-            bukkitJsonVersion = "1.14.3";
         } else if (Bukkit.getVersion().contains("1.14.4")) {
             bukkitJsonVersion = "1.14.4";
         } else if (Bukkit.getVersion().contains("1.15.2")) {
             bukkitJsonVersion = "1.15.2";
-        } else if (Bukkit.getVersion().contains("1.15")) {
-            bukkitJsonVersion = "1.15";
         } else if (Bukkit.getVersion().contains("1.16.1")) {
             bukkitJsonVersion = "1.16.1";
         } else if (Bukkit.getVersion().contains("1.16.2") || Bukkit.getVersion().contains("1.16.3")) {
@@ -108,8 +100,10 @@ public class GDHooksBootstrap implements LoaderBootstrap {
             bukkitJsonVersion = "1.16.4";
         } else if (Bukkit.getVersion().contains("1.17")) {
             bukkitJsonVersion = "1.17.0";
+        } else if (Bukkit.getVersion().contains("1.18")) {
+            bukkitJsonVersion = "1.18.0";
         } else {
-            this.logger.severe("Detected unsupported version '" + Bukkit.getVersion() + "'. GDHooks only supports 1.8.8, 1.12.2, 1.13.2, 1.14.x, 1.15.X, 1.16.X, 1.17.X GDHooks will NOT load.");
+            this.logger.severe("Detected unsupported version '" + Bukkit.getVersion() + "'. GDHooks only supports 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.X, 1.17.X, 1.18.X GDHooks will NOT load.");
             return;
         }
         try {
@@ -233,7 +227,7 @@ public class GDHooksBootstrap implements LoaderBootstrap {
     }
 
     private static int getJavaVersion() {
-        String version = System.getProperty("java.version");
+        String version = System.getProperty("java.version").replaceAll("[^\\d.]", "");
         if(version.startsWith("1.")) {
             version = version.substring(2, 3);
         } else {

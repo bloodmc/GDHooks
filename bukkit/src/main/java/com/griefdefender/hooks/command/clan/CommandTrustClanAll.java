@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.griefdefender.hooks.command;
+package com.griefdefender.hooks.command.clan;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -57,19 +57,19 @@ import java.util.Set;
 import org.bukkit.entity.Player;
 
 @CommandAlias("gdhooks")
-@CommandPermission(GDHooksPermissions.COMMAND_UNTRUSTALL_CLAN)
-public class CommandUntrustClanAll extends BaseCommand {
+@CommandPermission(GDHooksPermissions.COMMAND_TRUSTALL_CLAN)
+public class CommandTrustClanAll extends BaseCommand {
 
     @CommandCompletion("@gdclans @gdtrusttypes @gddummy")
-    @CommandAlias("untrustallclan")
-    @Description("%untrust-clan-all")
+    @CommandAlias("trustallclan")
+    @Description("%trust-clan-all")
     @Syntax("<clan> [<accessor|builder|container|manager>]")
-    @Subcommand("untrustall clan")
+    @Subcommand("trustall clan")
     public void execute(Player player, String clanTag, @Optional String type, @Optional String identifier) {
         TrustType trustType = null;
         final Audience audience = GriefDefender.getAudienceProvider().getSender(player);
         if (type == null) {
-            trustType = TrustTypes.NONE;
+            trustType = TrustTypes.BUILDER;
         } else {
             trustType = HooksUtil.getTrustType(type);
             if (trustType == null) {
@@ -110,8 +110,8 @@ public class CommandUntrustClanAll extends BaseCommand {
         }
 
         GriefDefender.getEventManager().getCauseStackManager().pushCause(player);
-        GDClanTrustClaimEvent.Remove
-            event = new GDClanTrustClaimEvent.Remove(new ArrayList<>(claimList), ImmutableSet.of(clan), trustType);
+        GDClanTrustClaimEvent.Add
+            event = new GDClanTrustClaimEvent.Add(new ArrayList<>(claimList), ImmutableSet.of(clan), trustType);
         GriefDefender.getEventManager().post(event);
         GriefDefender.getEventManager().getCauseStackManager().popCause();
         if (event.cancelled()) {
@@ -121,10 +121,10 @@ public class CommandUntrustClanAll extends BaseCommand {
         }
 
         for (Claim claim : claimList) {
-            claim.removeClanTrust(clan, trustType);
+            claim.addClanTrust(clan, trustType);
         }
 
-        final Component message = MessageConfig.MESSAGE_DATA.getMessage(MessageConfig.UNTRUST_INDIVIDUAL_ALL_CLAIMS,
+        final Component message = MessageConfig.MESSAGE_DATA.getMessage(MessageConfig.TRUST_INDIVIDUAL_ALL_CLAIMS,
                 ImmutableMap.of(
                 "player", clan.getTag()));
         audience.sendMessage(message);

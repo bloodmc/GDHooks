@@ -39,13 +39,13 @@ import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.TrustType;
 import com.griefdefender.api.provider.ClanProvider;
 import com.griefdefender.hooks.command.CommandReload;
-import com.griefdefender.hooks.command.CommandTrustClan;
-import com.griefdefender.hooks.command.CommandTrustClanAll;
-import com.griefdefender.hooks.command.CommandTrustClanAllAdmin;
-import com.griefdefender.hooks.command.CommandUntrustClan;
-import com.griefdefender.hooks.command.CommandUntrustClanAll;
-import com.griefdefender.hooks.command.CommandUntrustClanAllAdmin;
 import com.griefdefender.hooks.command.CommandVersion;
+import com.griefdefender.hooks.command.clan.CommandTrustClan;
+import com.griefdefender.hooks.command.clan.CommandTrustClanAll;
+import com.griefdefender.hooks.command.clan.CommandTrustClanAllAdmin;
+import com.griefdefender.hooks.command.clan.CommandUntrustClan;
+import com.griefdefender.hooks.command.clan.CommandUntrustClanAll;
+import com.griefdefender.hooks.command.clan.CommandUntrustClanAllAdmin;
 import com.griefdefender.hooks.config.GDHooksConfig;
 import com.griefdefender.hooks.config.MessageConfig;
 import com.griefdefender.hooks.config.MessageConfigData;
@@ -62,6 +62,7 @@ import com.griefdefender.hooks.provider.MyPetProvider;
 import com.griefdefender.hooks.provider.MythicMobsProvider;
 import com.griefdefender.hooks.provider.Pl3xmapProvider;
 import com.griefdefender.hooks.provider.RevoltCratesProvider;
+import com.griefdefender.hooks.provider.TownyProvider;
 import com.griefdefender.hooks.provider.shop.BossShopProvider;
 import com.griefdefender.hooks.provider.shop.ChestShopProvider;
 import com.griefdefender.hooks.provider.shop.DynamicShopProvider;
@@ -119,6 +120,7 @@ public class GDHooks {
     private MythicMobsProvider mythicMobsProvider;
     private Pl3xmapProvider pl3xmapProvider;
     private RevoltCratesProvider revoltCratesProvider;
+    private TownyProvider townyProvider;
 
     public static GDHooks getInstance() {
         if (instance == null) {
@@ -128,6 +130,25 @@ public class GDHooks {
     }
 
     public void onEnable() {
+        final String version = Bukkit.getPluginManager().getPlugin("GriefDefender").getDescription().getVersion().replaceAll("[^\\d.]", "");
+        if (version.startsWith("1.")) {
+            this.getLogger().info("GDHooks " + IMPLEMENTATION_VERSION + " requires Griefdefender v2.0.5+ to work.");
+            return;
+        }
+
+        int minorVersion = 0;
+        try {
+            minorVersion = Integer.parseInt(version.substring(version.length() - 1)); 
+        } catch (Throwable t) {
+            this.getLogger().info("GDHooks " + IMPLEMENTATION_VERSION + " requires Griefdefender v2.0.5+ to work.");
+            return;
+        }
+
+        if (minorVersion < 5) {
+            this.getLogger().info("GDHooks " + IMPLEMENTATION_VERSION + " requires Griefdefender v2.0.5+ to work.");
+            return;
+        }
+
         this.getLogger().info("GDHooks boot start.");
         this.loadConfig();
         /*Bukkit.getScheduler().scheduleSyncDelayedTask(GDHooks.getInstance(), new Runnable(){
@@ -135,6 +156,7 @@ public class GDHooks {
                 GDHooks.getInstance().onPostWorld();
             }
         });*/
+        this.registerBaseCommands();
         if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
             this.getLogger().info("Detected Vault. Checking for compatible shop plugin hooks...");
             // Check for shop plugins
@@ -226,10 +248,14 @@ public class GDHooks {
         }
         if (Bukkit.getPluginManager().getPlugin("SimpleClans") != null && Bukkit.getPluginManager().getPlugin("SimpleClans").isEnabled() && this.config.getData().providerCategory.simpleClans) {
             this.clanProvider = new SimpleClanProvider();
+            this.registerClanCommands();
             this.getLogger().info("SimpleClans provider enabled!");
         }
+        if (Bukkit.getPluginManager().getPlugin("Towny") != null && Bukkit.getPluginManager().getPlugin("Towny").isEnabled() && this.config.getData().providerCategory.towny) {
+            this.townyProvider = new TownyProvider();
+            this.getLogger().info("Towny provider enabled!");
+        }
         new GDPermissionEventListener();
-        this.registerBaseCommands();
         this.getLogger().info("GDHooks loaded successfully.");
     }
 
@@ -274,32 +300,31 @@ public class GDHooks {
         this.commandManager = manager;
         manager.getCommandReplacements().addReplacements(
             "reload", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_RELOAD),
+            "version", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_VERSION));
+        manager.registerCommand(new CommandReload());
+        manager.registerCommand(new CommandVersion());
+        this.registerCommandCompletions();
+    }
+
+    public void registerClanCommands() {
+        this.commandManager.getCommandReplacements().addReplacements(
             "trust-clan", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_TRUST_CLAN),
             "trust-clan-all", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_TRUST_CLAN_ALL),
             "trust-clan-all-admin", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_TRUST_CLAN_ALL_ADMIN),
             "untrust-clan", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_UNTRUST_CLAN),
             "untrust-clan-all", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_UNTRUST_CLAN_ALL),
-            "untrust-clan-all-admin", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_UNTRUST_CLAN_ALL_ADMIN),
-            "version", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_VERSION));
-        manager.registerCommand(new CommandReload());
-        manager.registerCommand(new CommandTrustClan());
-        manager.registerCommand(new CommandTrustClanAll());
-        manager.registerCommand(new CommandTrustClanAllAdmin());
-        manager.registerCommand(new CommandUntrustClan());
-        manager.registerCommand(new CommandUntrustClanAll());
-        manager.registerCommand(new CommandUntrustClanAllAdmin());
-        manager.registerCommand(new CommandVersion());
-        this.registerCommandCompletions();
+            "untrust-clan-all-admin", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_UNTRUST_CLAN_ALL_ADMIN));
+        this.commandManager.registerCommand(new CommandReload());
+        this.commandManager.registerCommand(new CommandTrustClan());
+        this.commandManager.registerCommand(new CommandTrustClanAll());
+        this.commandManager.registerCommand(new CommandTrustClanAllAdmin());
+        this.commandManager.registerCommand(new CommandUntrustClan());
+        this.commandManager.registerCommand(new CommandUntrustClanAll());
+        this.commandManager.registerCommand(new CommandUntrustClanAllAdmin());
+        this.registerClanCompletions();
     }
 
     public void registerCommandCompletions() {
-        this.commandManager.getCommandCompletions().registerCompletion("gdclans", c -> {
-            Set<String> tags = new HashSet<>();
-            for (Clan clan : this.clanProvider.getClans()) {
-                tags.add(clan.getTag());
-            }
-            return ImmutableSet.copyOf(tags);
-        });
         this.commandManager.getCommandCompletions().registerCompletion("gdtrusttypes", c -> {
             Set<String> tabList = new HashSet<>();
             for (TrustType type : GriefDefender.getRegistry().getRegistryModuleFor(TrustType.class).get().getAll()) {
@@ -309,6 +334,16 @@ public class GDHooks {
         });
         this.commandManager.getCommandCompletions().registerCompletion("gddummy", c -> {
             return ImmutableList.of();
+        });
+    }
+
+    public void registerClanCompletions() {
+        this.commandManager.getCommandCompletions().registerCompletion("gdclans", c -> {
+            Set<String> tags = new HashSet<>();
+            for (Clan clan : this.clanProvider.getClans()) {
+                tags.add(clan.getTag());
+            }
+            return ImmutableSet.copyOf(tags);
         });
     }
 
