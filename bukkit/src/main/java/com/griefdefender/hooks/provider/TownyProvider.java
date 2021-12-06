@@ -44,7 +44,9 @@ import com.griefdefender.api.event.Event;
 import com.griefdefender.api.event.QueryPermissionEvent;
 import com.griefdefender.hooks.GDHooksBootstrap;
 import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.event.PreNewTownEvent;
 import com.palmergames.bukkit.towny.event.TownPreClaimEvent;
+import com.palmergames.bukkit.towny.object.Coord;
 import com.palmergames.bukkit.towny.object.Town;
 
 import net.kyori.event.EventBus;
@@ -64,11 +66,26 @@ public class TownyProvider implements Listener {
     public void onTownCreate(TownPreClaimEvent event) {
         final int cx = event.getTownBlock().getX();
         final int cz = event.getTownBlock().getZ();
-        final int sx = cx << 4;
-        final int sz = cz << 4;
+        final World world = event.getPlayer().getWorld();
+        if (!this.canCreateTown(world, cx, cz)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onTownCreate(PreNewTownEvent event) {
+        final World world = event.getPlayer().getWorld();
+        final Coord coord = Coord.parseCoord(event.getPlayer());
+        if (!this.canCreateTown(world, coord.getX(), coord.getZ())) {
+            event.setCancelled(true);
+        }
+    }
+
+    private boolean canCreateTown(World world, int townBlockX, int townBlockZ) {
+        final int sx = townBlockX << 4;
+        final int sz = townBlockZ << 4;
         final int bx = sx + 15;
         final int bz = sz + 15;
-        final World world = event.getTown().getBukkitWorld();
         final Vector3i lesserBoundary = new Vector3i(sx, -64, sz);
         final Vector3i greaterBoundary = new Vector3i(bx, 319, bz);
         final ClaimResult result = GriefDefender.getRegistry().createBuilder(Claim.Builder.class)
@@ -79,8 +96,9 @@ public class TownyProvider implements Listener {
                 .world(world.getUID())
                 .build();
         if (!result.successful()) {
-            event.setCancelled(true);
+            return false;
         }
+        return true;
     }
 
     private class CreateClaimEventListener {
