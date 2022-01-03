@@ -22,35 +22,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.griefdefender.hooks.provider.simpleclans;
+package com.griefdefender.hooks.provider.clan.towny;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import com.flowpowered.math.vector.Vector3i;
 import com.griefdefender.api.Clan;
 import com.griefdefender.api.ClanPlayer;
+import com.griefdefender.api.clan.ClanHome;
+import com.griefdefender.api.clan.Rank;
 import com.griefdefender.hooks.GDHooks;
+import com.palmergames.bukkit.towny.TownyAPI;
 
 import net.kyori.adventure.text.Component;
 
 public class GDClan implements Clan {
 
-    private final net.sacredlabyrinth.phaed.simpleclans.Clan pluginClan;
+    private Map<String, Rank> ranks = new HashMap<>();
+    private final com.palmergames.bukkit.towny.object.Town pluginClan;
 
-    public GDClan(net.sacredlabyrinth.phaed.simpleclans.Clan clan) {
+    public GDClan(com.palmergames.bukkit.towny.object.Town clan) {
         this.pluginClan = clan;
     }
 
     @Override
     public String getId() {
-        return "simpleclans:" + this.pluginClan.getName().toLowerCase();
+        return "towny:" + TownyProvider.getTownFriendlyName(this.pluginClan.getName());
     }
 
     @Override
     public String getName() {
-        return this.pluginClan.getName().toLowerCase();
+        return this.pluginClan.getName();
     }
 
     @Override
@@ -60,7 +68,7 @@ public class GDClan implements Clan {
 
     @Override
     public Component getTagComponent() {
-        return Component.text(this.pluginClan.getColorTag());
+        return Component.text(this.pluginClan.getFormattedName());
     }
 
     @Override
@@ -70,16 +78,38 @@ public class GDClan implements Clan {
 
     @Override
     public String getDescription() {
-        return this.pluginClan.getDescription();
+        return this.pluginClan.getName();
+    }
+
+    public com.palmergames.bukkit.towny.object.Town getInternalClan() {
+        return this.pluginClan;
     }
 
     @Override
-    public UUID getHomeWorldUniqueId() {
+    public @Nullable Rank getRank(String rank) {
+        return this.ranks.get(rank);
+    }
+
+    @Override
+    public boolean isAlly(String tag) {
+        final com.palmergames.bukkit.towny.object.Town allyTown = TownyAPI.getInstance().getTown(tag);
+        if (allyTown != null) {
+            return this.pluginClan.isAlliedWith(allyTown);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isRival(String tag) {
+        return !this.isAlly(tag);
+    }
+    /*@Override
+    public UUID getBaseWorldUniqueId() {
         return this.pluginClan.getHomeLocation().getWorld().getUID();
     }
 
     @Override
-    public Vector3i getHomePos() {
+    public Vector3i getBasePos() {
         return new Vector3i(this.pluginClan.getHomeLocation().getBlockX(), this.pluginClan.getHomeLocation().getBlockY(), this.pluginClan.getHomeLocation().getBlockZ());
     }
 
@@ -110,7 +140,7 @@ public class GDClan implements Clan {
     @Override
     public List<ClanPlayer> getMembers(boolean onlineOnly) {
         final List<ClanPlayer> clanPlayers = new ArrayList<>();
-        for (net.sacredlabyrinth.phaed.simpleclans.ClanPlayer pluginClanPlayer : this.pluginClan.getMembers()) {
+        for (com.palmergames.bukkit.towny.object.TownPlayer pluginClanPlayer : this.pluginClan.getMembers()) {
             final ClanPlayer clanPlayer = GDHooks.getInstance().getClanProvider().getClanPlayer(pluginClanPlayer.getUniqueId());
             if (clanPlayer != null) {
                 clanPlayers.add(clanPlayer);
@@ -123,7 +153,7 @@ public class GDClan implements Clan {
     @Override
     public List<ClanPlayer> getLeaders(boolean onlineOnly) {
         final List<ClanPlayer> clanPlayers = new ArrayList<>();
-        for (net.sacredlabyrinth.phaed.simpleclans.ClanPlayer pluginClanPlayer : this.pluginClan.getLeaders()) {
+        for (com.palmergames.bukkit.towny.object.TownPlayer pluginClanPlayer : this.pluginClan.getLeaders()) {
             final ClanPlayer clanPlayer = GDHooks.getInstance().getClanProvider().getClanPlayer(pluginClanPlayer.getUniqueId());
             if (clanPlayer != null) {
                 clanPlayers.add(clanPlayer);
@@ -133,7 +163,65 @@ public class GDClan implements Clan {
         return clanPlayers;
     }
 
-    public net.sacredlabyrinth.phaed.simpleclans.Clan getInternalClan() {
-        return this.pluginClan;
+    @Override
+    public List<com.griefdefender.api.clan.Rank> getRanks() {
+        List<com.griefdefender.api.clan.Rank> ranks = new ArrayList<>();
+        for (net.sacredlabyrinth.phaed.simpleclans.Rank rank : this.pluginClan.getRanks()) {
+            ranks.add(new GDRank(rank));
+        }
+        return ranks;
+    }
+
+    @Override
+    public List<Object> getHomeLocations() {
+        return this.pluginClan.get
+    }*/
+
+    @Override
+    public @Nullable UUID getBaseWorldUniqueId() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public @Nullable Vector3i getBasePos() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<ClanHome> getHomes() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Clan> getAllies() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Clan> getRivals() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<ClanPlayer> getMembers(boolean onlineOnly) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<ClanPlayer> getLeaders(boolean onlineOnly) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Rank> getRanks() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

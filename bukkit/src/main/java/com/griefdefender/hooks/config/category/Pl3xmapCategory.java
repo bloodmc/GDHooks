@@ -73,6 +73,7 @@ public class Pl3xmapCategory {
             + "Manager Trust: <span style=\"font-weight:bold;\">%managers%</span><br/>"
             + "Builder Trust: <span style=\"font-weight:bold;\">%builders%</span><br/>"
             + "Container Trust: <span style=\"font-weight:bold;\">%containers%</span><br/>"
+            + "Resident Trust: <span style=\"font-weight:bold;\">%residents%</span>"
             + "Access Trust: <span style=\"font-weight:bold;\">%accessors%</span>";
 
     @Setting("claim-tooltip-admin")
@@ -80,6 +81,7 @@ public class Pl3xmapCategory {
             + "Manager Trust: <span style=\"font-weight:bold;\">%managers%</span><br/>"
             + "Builder Trust: <span style=\"font-weight:bold;\">%builders%</span><br/>"
             + "Container Trust: <span style=\"font-weight:bold;\">%containers%</span><br/>"
+            + "Resident Trust: <span style=\"font-weight:bold;\">%residents%</span> "
             + "Access Trust: <span style=\"font-weight:bold;\">%accessors%</span> ";
 
     public Pl3xmapCategory() {

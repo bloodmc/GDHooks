@@ -69,11 +69,17 @@ public class ProviderCategory extends ConfigCategory {
     @Setting(value = "FurnitureLib")
     public boolean furnitureLib = true;
 
+    @Setting(value = "Guilds")
+    public boolean guilds = true;
+
     @Setting(value = "RevoltCrates")
     public boolean revoltCrates = true;
 
     @Setting(value = "SimpleClans")
     public boolean simpleClans = true;
+
+    @Setting(value = "UltimateClans")
+    public boolean ultimateClans = true;
 
     @Setting(value = "McMMO")
     public boolean mcMMO = true;

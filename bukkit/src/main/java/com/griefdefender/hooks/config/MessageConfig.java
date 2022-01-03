@@ -46,13 +46,18 @@ public class MessageConfig {
     private MessageConfigData data;
     public static MessageConfigData MESSAGE_DATA;
 
+    public static final String CLAN_TRUST_RANK = "clan-trust-rank";
+    public static final String CLAN_UNTRUST_RANK= "clan-untrust-rank";
     public static final String DESCRIPTION_RELOAD = "reload";
-    public static final String DESCRIPTION_TRUST_CLAN = "trust-clan";
-    public static final String DESCRIPTION_TRUST_CLAN_ALL = "trust-clan-all";
-    public static final String DESCRIPTION_TRUST_CLAN_ALL_ADMIN = "trust-clan-all-admin";
-    public static final String DESCRIPTION_UNTRUST_CLAN = "untrust-clan";
-    public static final String DESCRIPTION_UNTRUST_CLAN_ALL = "untrust-clan-all";
-    public static final String DESCRIPTION_UNTRUST_CLAN_ALL_ADMIN = "untrust-clan-all-admin";
+    public static final String DESCRIPTION_CLAN_CLAIM = "clan-claim";
+    public static final String DESCRIPTION_CLAN_TRUST = "clan-trust";
+    public static final String DESCRIPTION_CLAN_TRUST_ALL = "clan-trust-all";
+    public static final String DESCRIPTION_CLAN_TRUST_ALL_ADMIN = "clan-trust-all-admin";
+    public static final String DESCRIPTION_CLAN_TRUST_RANK = "clan-trust-rank";
+    public static final String DESCRIPTION_CLAN_UNTRUST = "clan-untrust";
+    public static final String DESCRIPTION_CLAN_UNTRUST_ALL = "clan-untrust-all";
+    public static final String DESCRIPTION_CLAN_UNTRUST_ALL_ADMIN = "clan-untrust-all-admin";
+    public static final String DESCRIPTION_CLAN_UNTRUST_RANK = "clan-untrust-rank";
     public static final String DESCRIPTION_VERSION = "version";
     public static final String CLAIM_DISABLED_WORLD = "claim-disabled-world";
     public static final String COMMAND_INVALID_CLAN = "command-invalid-clan";

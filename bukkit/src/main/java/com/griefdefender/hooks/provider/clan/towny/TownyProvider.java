@@ -22,8 +22,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.griefdefender.hooks.provider;
+package com.griefdefender.hooks.provider.clan.towny;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -32,31 +38,71 @@ import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import com.flowpowered.math.vector.Vector3i;
+import com.griefdefender.api.Clan;
+import com.griefdefender.api.ClanPlayer;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.Tristate;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.ClaimResult;
 import com.griefdefender.api.claim.ClaimTypes;
+import com.griefdefender.api.clan.Rank;
 import com.griefdefender.api.event.CreateClaimEvent;
 import com.griefdefender.api.event.Event;
 import com.griefdefender.api.event.QueryPermissionEvent;
+import com.griefdefender.hooks.GDHooks;
 import com.griefdefender.hooks.GDHooksBootstrap;
+import com.griefdefender.hooks.config.ClanConfig;
+import com.griefdefender.hooks.provider.clan.BaseClanProvider;
 import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.event.PreNewTownEvent;
 import com.palmergames.bukkit.towny.event.TownPreClaimEvent;
 import com.palmergames.bukkit.towny.object.Coord;
+import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.permissions.TownyPerms;
 
 import net.kyori.event.EventBus;
 import net.kyori.event.EventSubscriber;
 
-public class TownyProvider implements Listener {
+public class TownyProvider extends BaseClanProvider implements Listener {
 
+    public final TownyAPI plugin;
+    private Map<String, Rank> clanRankMap = new HashMap<>();
+    private final List<Rank> ranks = new ArrayList<>();
     public static final UUID TEMP_USER_UUID = UUID.fromString("99999999-9999-9999-9999-999999999999");
 
     public TownyProvider() {
+        super("towny");
+        this.plugin = TownyAPI.getInstance();
+        // Populate Clans
+        for (String role : TownyPerms.getTownRanks()) {
+            final GDRank rank = new GDRank(role);
+            this.clanRankMap.put(role.toLowerCase(), rank);
+            this.ranks.add(rank);
+        }
+        for (Town town : TownyUniverse.getInstance().getTowns()) {
+            final GDClan gdClan = new GDClan(town);
+            final String townName = getTownFriendlyName(town.getName());
+            this.clanMap.put(townName, gdClan);
+            final Path clanConfigPath = CLAN_DATA_PATH.resolve(townName + ".conf");
+            final ClanConfig clanConfig = new ClanConfig(clanConfigPath);
+            GDHooks.getInstance().getClanConfigMap().put(townName, clanConfig);
+            for (Resident clanPlayer : town.getResidents()) {
+                final GDClanPlayer gdClanPlayer = new GDClanPlayer(clanPlayer);
+                this.clanPlayerMap.put(clanPlayer.getUUID(), gdClanPlayer);
+            }
+        }
+
+        this.registerEvents();
+    }
+
+    public void registerEvents() {
+        super.registerEvents();
+        GriefDefender.getRegistry().registerClanProvider(this);
         Bukkit.getPluginManager().registerEvents(this, GDHooksBootstrap.getInstance().getLoader());
         new CreateClaimEventListener();
         new QueryPermissionEventListener();
@@ -99,6 +145,31 @@ public class TownyProvider implements Listener {
             return false;
         }
         return true;
+    }
+
+    public static String getTownFriendlyName(String name) {
+        return name.replaceAll(" ", "\\_").replaceAll("[^A-Za-z0-9\\_]", "").toLowerCase();
+    }
+
+    @Override
+    public List<ClanPlayer> getClanPlayers(String tag) {
+        final String townName = getTownFriendlyName(tag);
+        final Clan clan = this.getClan(townName);
+        if (clan == null) {
+            return Collections.emptyList();
+        }
+        return clan.getMembers();
+    }
+
+    @Override
+    public List<Rank> getClanRanks(String tag) {
+        return this.ranks;
+    }
+
+    @Override
+    public @Nullable Clan getClan(String tag) {
+        final String townName = getTownFriendlyName(tag);
+        return this.clanMap.get(townName);
     }
 
     private class CreateClaimEventListener {

@@ -22,92 +22,70 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.griefdefender.hooks.provider.simpleclans;
+package com.griefdefender.hooks.provider.clan.simpleclans;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.nio.file.Path;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
-import com.griefdefender.api.Clan;
-import com.griefdefender.api.ClanPlayer;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.event.CreateClaimEvent;
-import com.griefdefender.api.provider.ClanProvider;
+import com.griefdefender.hooks.GDHooks;
 import com.griefdefender.hooks.GDHooksBootstrap;
+import com.griefdefender.hooks.config.ClanConfig;
 import com.griefdefender.hooks.listener.SimpleClansEventHandler;
+import com.griefdefender.hooks.provider.clan.BaseClanProvider;
 
 import net.kyori.event.EventSubscriber;
 import net.sacredlabyrinth.phaed.simpleclans.SimpleClans;
 
-public class SimpleClanProvider implements ClanProvider {
+public class SimpleClanProvider extends BaseClanProvider {
 
     private final SimpleClans plugin;
-    private Map<String, Clan> clanMap = new HashMap<>();
-    private Map<UUID, ClanPlayer> clanPlayerMap = new HashMap<>();
 
     public SimpleClanProvider() {
+        super("simpleclans");
         this.plugin = (SimpleClans) Bukkit.getPluginManager().getPlugin("SimpleClans");
         // Populate Clans
         for (net.sacredlabyrinth.phaed.simpleclans.Clan clan : this.plugin.getClanManager().getClans()) {
             final GDClan gdClan = new GDClan(clan);
-            this.clanMap.put(clan.getTag(), gdClan);
+            this.clanMap.put(clan.getTag().toLowerCase(), gdClan);
+            final Path clanConfigPath = CLAN_DATA_PATH.resolve(clan.getTag().toLowerCase() + ".conf");
+            final ClanConfig clanConfig = new ClanConfig(clanConfigPath);
+            GDHooks.getInstance().getClanConfigMap().put(clan.getTag().toLowerCase(), clanConfig);
         }
         for (net.sacredlabyrinth.phaed.simpleclans.ClanPlayer clanPlayer : this.plugin.getClanManager().getAllClanPlayers()) {
             final GDClanPlayer gdClanPlayer = new GDClanPlayer(clanPlayer);
             this.clanPlayerMap.put(clanPlayer.getUniqueId(), gdClanPlayer);
         }
 
+        this.registerEvents();
+        this.plugin.getProtectionManager().registerProvider(new SimpleClanProtectionProvider());
+    }
+
+    public void registerEvents() {
+        super.registerEvents();
         new CreateClaimEventListener();
         GriefDefender.getRegistry().registerClanProvider(this);
         Bukkit.getPluginManager().registerEvents(new SimpleClansEventHandler(), GDHooksBootstrap.getInstance().getLoader());
     }
 
-    public boolean clanExists(String clanName) {
-        for (net.sacredlabyrinth.phaed.simpleclans.Clan clan : this.plugin.getClanManager().getClans()) {
-            if (clan.getName().equalsIgnoreCase(clanName)) {
-                return true;
-            }
+    public void addClan(net.sacredlabyrinth.phaed.simpleclans.Clan clan) {
+        this.clanMap.put(clan.getTag(), new GDClan(clan));
+        final Path clanConfigPath = CLAN_DATA_PATH.resolve(clan.getTag() + ".conf");
+        if (!clanConfigPath.toFile().exists()) {
+            final ClanConfig clanConfig = new ClanConfig(clanConfigPath);
+            GDHooks.getInstance().getClanConfigMap().put(clan.getTag(), clanConfig);
         }
-
-        return false;
     }
 
-    @Override
-    public @Nullable Clan getClan(String tag) {
-        return this.clanMap.get(tag);
-    }
-
-    @Override
-    public List<Clan> getClans() {
-        final List<Clan> clans = new ArrayList<>(this.clanMap.values());
-        return Collections.unmodifiableList(clans);
-    }
-
-    @Override
-    public @Nullable ClanPlayer getClanPlayer(UUID playerUniqueId) {
-        return this.clanPlayerMap.get(playerUniqueId);
-    }
-
-    @Override
-    public List<ClanPlayer> getClanPlayers() {
-        final List<ClanPlayer> clanPlayers = new ArrayList<>(this.clanPlayerMap.values());
-        return Collections.unmodifiableList(clanPlayers);
-    }
-
-    public Map<String, Clan> getClanMap() {
-        return this.clanMap;
-    }
-
-    public Map<UUID, ClanPlayer> getClanPlayerMap() {
-        return this.clanPlayerMap;
+    public void removeClan(net.sacredlabyrinth.phaed.simpleclans.Clan clan) {
+        this.clanMap.remove(clan.getTag());
+        GDHooks.getInstance().getClanConfigMap().remove(clan.getTag());
+        final Path clanConfigPath = CLAN_DATA_PATH.resolve(clan.getTag() + ".conf");
+        clanConfigPath.toFile().delete();
     }
 
     public static class CreateClaimEventListener {

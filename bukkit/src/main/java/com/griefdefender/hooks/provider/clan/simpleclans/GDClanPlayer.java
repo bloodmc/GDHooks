@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.griefdefender.hooks.provider.simpleclans;
+package com.griefdefender.hooks.provider.clan.simpleclans;
 
 import java.util.UUID;
 
@@ -33,6 +33,7 @@ import com.griefdefender.api.ClanPlayer;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.User;
 import com.griefdefender.api.claim.Claim;
+import com.griefdefender.api.clan.Rank;
 import com.griefdefender.api.data.PlayerData;
 import com.griefdefender.hooks.GDHooks;
 
@@ -77,19 +78,22 @@ public class GDClanPlayer implements ClanPlayer {
     }
 
     @Override
-    public void setClan(Clan clan) {
-        final GDClan gdClan = (GDClan) clan;
-        this.pluginClanPlayer.setClan(gdClan.getInternalClan());
-    }
-
-    @Override
     public @Nullable Object getOnlinePlayer() {
         return user.getOnlinePlayer();
     }
 
     @Override
-    public String getRank() {
-        return this.pluginClanPlayer.getRankId().toLowerCase();
+    public Rank getRank() {
+        return this.getClan().getRank(this.pluginClanPlayer.getRankId());
+    }
+
+    @Override
+    public void setRank(Rank rank) {
+        final net.sacredlabyrinth.phaed.simpleclans.Rank pluginRank = this.pluginClanPlayer.getClan().getRank(rank.getName());
+        if (pluginRank == null) {
+            return;
+        }
+        this.pluginClanPlayer.setRank(rank.getName());
     }
 
     @Override
@@ -97,4 +101,8 @@ public class GDClanPlayer implements ClanPlayer {
         return this.getPlayerData().getCurrentClaim();
     }
 
+    @Override
+    public boolean isLeader() {
+        return this.pluginClanPlayer.isLeader();
+    }
 }

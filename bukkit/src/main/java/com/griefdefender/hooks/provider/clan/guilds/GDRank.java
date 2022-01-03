@@ -22,23 +22,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.griefdefender.hooks.permission;
+package com.griefdefender.hooks.provider.clan.guilds;
 
-public class GDHooksPermissions {
+import java.util.HashSet;
+import java.util.Set;
 
-    public static final String COMMAND_RELOAD = "gdhooks.admin.command.reload";
-    public static final String COMMAND_VERSION = "gdhooks.user.command.version";
+import com.griefdefender.api.clan.Rank;
 
-    public static final String COMMAND_CLAN_CLAIM = "gdhooks.user.clan.command.claim";
-    public static final String COMMAND_TRUST_CLAN = "gdhooks.user.clan.command.trust";
-    public static final String COMMAND_TRUST_RANK = "gdhooks.user.clan.command.trustrank";
-    public static final String COMMAND_TRUSTALL_CLAN = "gdhooks.user.clan.command.trustall";
-    public static final String COMMAND_UNTRUST_CLAN = "gdhooks.user.clan.command.untrust";
-    public static final String COMMAND_UNTRUST_RANK = "gdhooks.user.clan.command.untrustrank";
-    public static final String COMMAND_UNTRUSTALL_CLAN = "gdhooks.user.clan.command.untrustall";
+import me.glaremasters.guilds.guild.GuildRole;
+import me.glaremasters.guilds.guild.GuildRolePerm;
 
-    public static final String COMMAND_TRUSTALL_CLAN_ADMIN = "gdhooks.admin.clan.command.trustalladmin";
-    public static final String COMMAND_UNTRUSTALL_CLAN_ADMIN = "gdhooks.admin.clan.command.untrustalladmin";
+public class GDRank implements Rank {
 
-    public static final String PROVIDER_MCMMO_AUTO_PARTY_TRUST = "gdhooks.user.mcmmo.auto-party-trust";
+    private final GuildRole pluginRank;
+    private final Set<String> permissions = new HashSet<>();
+
+    public GDRank(GuildRole rank) {
+        this.pluginRank = rank;
+        final Set<GuildRolePerm> perms = this.pluginRank.getPerms();
+        for (GuildRolePerm rolePerm : perms) {
+            permissions.add(rolePerm.name().toLowerCase());
+        }
+    }
+
+    @Override
+    public String getName() {
+        return this.pluginRank.getName();
+    }
+
+    @Override
+    public String getDisplayName() {
+        return this.pluginRank.getName();
+    }
+
+    @Override
+    public Set<String> getPermissions() {
+        return this.permissions;
+    }
+
 }

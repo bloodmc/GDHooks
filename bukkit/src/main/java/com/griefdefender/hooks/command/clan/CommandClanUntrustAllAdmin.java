@@ -39,9 +39,9 @@ import com.griefdefender.api.Clan;
 import com.griefdefender.api.CommandResult;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
+import com.griefdefender.api.claim.ClaimManager;
 import com.griefdefender.api.claim.TrustType;
 import com.griefdefender.api.claim.TrustTypes;
-import com.griefdefender.api.data.PlayerData;
 import com.griefdefender.hooks.GDHooks;
 import com.griefdefender.hooks.config.MessageConfig;
 import com.griefdefender.hooks.event.GDClanTrustClaimEvent;
@@ -52,24 +52,25 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.entity.Player;
 
 @CommandAlias("gdhooks")
-@CommandPermission(GDHooksPermissions.COMMAND_UNTRUSTALL_CLAN)
-public class CommandUntrustClanAll extends BaseCommand {
+@CommandPermission(GDHooksPermissions.COMMAND_UNTRUSTALL_CLAN_ADMIN)
+public class CommandClanUntrustAllAdmin extends BaseCommand {
 
     @CommandCompletion("@gdclans @gdtrusttypes @gddummy")
-    @CommandAlias("untrustallclan")
-    @Description("%untrust-clan-all")
-    @Syntax("<clan> [<accessor|builder|container|manager>]")
-    @Subcommand("untrustall clan")
+    @CommandAlias("clanuntrustalladmin")
+    @Description("%clan-untrust-all-admin")
+    @Syntax("<clan> [<accessor|builder|container|manager|resident>]")
+    @Subcommand("clan untrustalladmin")
     public void execute(Player player, String clanTag, @Optional String type, @Optional String identifier) {
         TrustType trustType = null;
         final Audience audience = GriefDefender.getAudienceProvider().getSender(player);
         if (type == null) {
-            trustType = TrustTypes.NONE;
+            trustType = TrustTypes.BUILDER;
         } else {
             trustType = HooksUtil.getTrustType(type);
             if (trustType == null) {
@@ -98,13 +99,15 @@ public class CommandUntrustClanAll extends BaseCommand {
             return;
         }
 
-        PlayerData playerData = GriefDefender.getCore().getPlayerData(player.getWorld().getUID(), player.getUniqueId());
-        Set<Claim> claimList = null;
-        if (playerData != null) {
-            claimList = playerData.getClaims();
+        Set<Claim> claimList = new HashSet<>();
+        final ClaimManager claimManager = GriefDefender.getCore().getClaimManager(player.getWorld().getUID());
+        for (Claim claim : claimManager.getWorldClaims()) {
+            if (claim.isAdminClaim()) {
+                claimList.add(claim);
+            }
         }
 
-        if (playerData == null || claimList == null || claimList.size() == 0) {
+        if (claimList == null || claimList.size() == 0) {
             audience.sendMessage(MessageConfig.MESSAGE_DATA.getMessage(MessageConfig.TRUST_NO_CLAIMS));
             return;
         }

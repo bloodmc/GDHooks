@@ -22,23 +22,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.griefdefender.hooks.permission;
+package com.griefdefender.hooks.provider.clan.simpleclans;
 
-public class GDHooksPermissions {
+import java.util.Set;
 
-    public static final String COMMAND_RELOAD = "gdhooks.admin.command.reload";
-    public static final String COMMAND_VERSION = "gdhooks.user.command.version";
+import com.griefdefender.api.clan.Rank;
 
-    public static final String COMMAND_CLAN_CLAIM = "gdhooks.user.clan.command.claim";
-    public static final String COMMAND_TRUST_CLAN = "gdhooks.user.clan.command.trust";
-    public static final String COMMAND_TRUST_RANK = "gdhooks.user.clan.command.trustrank";
-    public static final String COMMAND_TRUSTALL_CLAN = "gdhooks.user.clan.command.trustall";
-    public static final String COMMAND_UNTRUST_CLAN = "gdhooks.user.clan.command.untrust";
-    public static final String COMMAND_UNTRUST_RANK = "gdhooks.user.clan.command.untrustrank";
-    public static final String COMMAND_UNTRUSTALL_CLAN = "gdhooks.user.clan.command.untrustall";
+public class GDRank implements Rank {
 
-    public static final String COMMAND_TRUSTALL_CLAN_ADMIN = "gdhooks.admin.clan.command.trustalladmin";
-    public static final String COMMAND_UNTRUSTALL_CLAN_ADMIN = "gdhooks.admin.clan.command.untrustalladmin";
+    private final net.sacredlabyrinth.phaed.simpleclans.Rank pluginRank;
 
-    public static final String PROVIDER_MCMMO_AUTO_PARTY_TRUST = "gdhooks.user.mcmmo.auto-party-trust";
+    public GDRank(net.sacredlabyrinth.phaed.simpleclans.Rank rank) {
+        this.pluginRank = rank;
+    }
+
+    @Override
+    public String getName() {
+        return this.pluginRank.getName();
+    }
+
+    @Override
+    public String getDisplayName() {
+        return this.pluginRank.getDisplayName();
+    }
+
+    @Override
+    public Set<String> getPermissions() {
+        return this.pluginRank.getPermissions();
+    }
+
 }

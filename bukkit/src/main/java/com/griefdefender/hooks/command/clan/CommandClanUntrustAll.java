@@ -57,19 +57,19 @@ import java.util.Set;
 import org.bukkit.entity.Player;
 
 @CommandAlias("gdhooks")
-@CommandPermission(GDHooksPermissions.COMMAND_TRUSTALL_CLAN)
-public class CommandTrustClanAll extends BaseCommand {
+@CommandPermission(GDHooksPermissions.COMMAND_UNTRUSTALL_CLAN)
+public class CommandClanUntrustAll extends BaseCommand {
 
     @CommandCompletion("@gdclans @gdtrusttypes @gddummy")
-    @CommandAlias("trustallclan")
-    @Description("%trust-clan-all")
-    @Syntax("<clan> [<accessor|builder|container|manager>]")
-    @Subcommand("trustall clan")
+    @CommandAlias("clanuntrustall")
+    @Description("%clan-untrust-all")
+    @Syntax("<clan> [<accessor|builder|container|manager|resident>]")
+    @Subcommand("clan untrustall")
     public void execute(Player player, String clanTag, @Optional String type, @Optional String identifier) {
         TrustType trustType = null;
         final Audience audience = GriefDefender.getAudienceProvider().getSender(player);
         if (type == null) {
-            trustType = TrustTypes.BUILDER;
+            trustType = TrustTypes.NONE;
         } else {
             trustType = HooksUtil.getTrustType(type);
             if (trustType == null) {
@@ -110,8 +110,8 @@ public class CommandTrustClanAll extends BaseCommand {
         }
 
         GriefDefender.getEventManager().getCauseStackManager().pushCause(player);
-        GDClanTrustClaimEvent.Add
-            event = new GDClanTrustClaimEvent.Add(new ArrayList<>(claimList), ImmutableSet.of(clan), trustType);
+        GDClanTrustClaimEvent.Remove
+            event = new GDClanTrustClaimEvent.Remove(new ArrayList<>(claimList), ImmutableSet.of(clan), trustType);
         GriefDefender.getEventManager().post(event);
         GriefDefender.getEventManager().getCauseStackManager().popCause();
         if (event.cancelled()) {
@@ -121,10 +121,10 @@ public class CommandTrustClanAll extends BaseCommand {
         }
 
         for (Claim claim : claimList) {
-            claim.addClanTrust(clan, trustType);
+            claim.removeClanTrust(clan, trustType);
         }
 
-        final Component message = MessageConfig.MESSAGE_DATA.getMessage(MessageConfig.TRUST_INDIVIDUAL_ALL_CLAIMS,
+        final Component message = MessageConfig.MESSAGE_DATA.getMessage(MessageConfig.UNTRUST_INDIVIDUAL_ALL_CLAIMS,
                 ImmutableMap.of(
                 "player", clan.getTag()));
         audience.sendMessage(message);

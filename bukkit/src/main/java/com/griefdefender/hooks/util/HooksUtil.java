@@ -52,6 +52,8 @@ public class HooksUtil {
         switch (type.toLowerCase()) {
             case "accessor" :
                 return TrustTypes.ACCESSOR;
+            case "resident" :
+                return TrustTypes.RESIDENT;
             case "builder" :
                 return TrustTypes.BUILDER;
             case "container" :

@@ -22,23 +22,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.griefdefender.hooks.permission;
+package com.griefdefender.hooks.provider.clan;
 
-public class GDHooksPermissions {
+import java.util.UUID;
 
-    public static final String COMMAND_RELOAD = "gdhooks.admin.command.reload";
-    public static final String COMMAND_VERSION = "gdhooks.user.command.version";
+import org.bukkit.Location;
 
-    public static final String COMMAND_CLAN_CLAIM = "gdhooks.user.clan.command.claim";
-    public static final String COMMAND_TRUST_CLAN = "gdhooks.user.clan.command.trust";
-    public static final String COMMAND_TRUST_RANK = "gdhooks.user.clan.command.trustrank";
-    public static final String COMMAND_TRUSTALL_CLAN = "gdhooks.user.clan.command.trustall";
-    public static final String COMMAND_UNTRUST_CLAN = "gdhooks.user.clan.command.untrust";
-    public static final String COMMAND_UNTRUST_RANK = "gdhooks.user.clan.command.untrustrank";
-    public static final String COMMAND_UNTRUSTALL_CLAN = "gdhooks.user.clan.command.untrustall";
+import com.flowpowered.math.vector.Vector3i;
+import com.griefdefender.api.clan.ClanHome;
 
-    public static final String COMMAND_TRUSTALL_CLAN_ADMIN = "gdhooks.admin.clan.command.trustalladmin";
-    public static final String COMMAND_UNTRUSTALL_CLAN_ADMIN = "gdhooks.admin.clan.command.untrustalladmin";
+public class GDClanHome implements ClanHome {
 
-    public static final String PROVIDER_MCMMO_AUTO_PARTY_TRUST = "gdhooks.user.mcmmo.auto-party-trust";
+    private final String name;
+    private final Location location;
+    private final Vector3i pos;
+
+    public GDClanHome(String name, Location location) {
+        this.name = name;
+        this.location = location;
+        this.pos = new Vector3i(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public UUID getHomeWorldUniqueId() {
+        return this.location.getWorld().getUID();
+    }
+
+    @Override
+    public Vector3i getHomePos() {
+        return this.pos;
+    }
+
+    @Override
+    public Object getLocation() {
+        return this.location;
+    }
+
 }

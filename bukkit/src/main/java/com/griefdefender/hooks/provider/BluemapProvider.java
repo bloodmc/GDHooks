@@ -253,6 +253,7 @@ public class BluemapProvider {
         final List<UUID> builderList = new ArrayList<>(claim.getUserTrusts(TrustTypes.BUILDER));
         final List<UUID> containerList = new ArrayList<>(claim.getUserTrusts(TrustTypes.CONTAINER));
         final List<UUID> accessorList = new ArrayList<>(claim.getUserTrusts(TrustTypes.ACCESSOR));
+        final List<UUID> residentList = new ArrayList<>(claim.getUserTrusts(TrustTypes.RESIDENT));
         final List<UUID> managerList = new ArrayList<>(claim.getUserTrusts(TrustTypes.MANAGER));
 
         String trusted = "";
@@ -299,6 +300,21 @@ public class BluemapProvider {
             }
         }
         info = info.replace("%accessors%", trusted);
+
+        trusted = "";
+        for (int i = 0; i < residentList.size(); i++) {
+            if (i > 0) {
+                trusted += ", ";
+            }
+            final UUID uuid = residentList.get(i);
+            final String userName = GriefDefender.getRegistry().lookupUsername(uuid);
+            if (userName.equalsIgnoreCase("unknown")) {
+                trusted += uuid.toString();
+            } else {
+                trusted += userName;
+            }
+        }
+        info = info.replace("%residents%", trusted);
 
         trusted = "";
         for (int i = 0; i < managerList.size(); i++) {

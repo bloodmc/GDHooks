@@ -56,8 +56,8 @@ public class GDPermissionEventListener {
                     final ClanPlayer clanPlayer = GDHooks.getInstance().getClanProvider().getClanPlayer(user.getUniqueId());
                     if (clanPlayer != null && clanPlayer.getClan() != null) {
                         contexts.add(new Context("clan_tag", clanPlayer.getClan().getTag().toLowerCase()));
-                        if (clanPlayer.getRank() != null && !clanPlayer.getRank().isEmpty()) {
-                            contexts.add(new Context("clan_rank", clanPlayer.getRank()));
+                        if (clanPlayer.getRank() != null) {
+                            contexts.add(new Context("clan_rank", clanPlayer.getRank().getName().toLowerCase()));
                         }
                     }
                 }

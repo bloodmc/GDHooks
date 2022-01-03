@@ -27,6 +27,7 @@ package com.griefdefender.hooks;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.LocaleUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.spongepowered.configurate.objectmapping.ObjectMapper;
 import org.spongepowered.configurate.objectmapping.ObjectMapper.Factory;
 import org.spongepowered.configurate.objectmapping.meta.NodeResolver;
@@ -36,16 +37,22 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.griefdefender.api.Clan;
 import com.griefdefender.api.GriefDefender;
+import com.griefdefender.api.User;
 import com.griefdefender.api.claim.TrustType;
+import com.griefdefender.api.clan.Rank;
 import com.griefdefender.api.provider.ClanProvider;
 import com.griefdefender.hooks.command.CommandReload;
 import com.griefdefender.hooks.command.CommandVersion;
-import com.griefdefender.hooks.command.clan.CommandTrustClan;
-import com.griefdefender.hooks.command.clan.CommandTrustClanAll;
-import com.griefdefender.hooks.command.clan.CommandTrustClanAllAdmin;
-import com.griefdefender.hooks.command.clan.CommandUntrustClan;
-import com.griefdefender.hooks.command.clan.CommandUntrustClanAll;
-import com.griefdefender.hooks.command.clan.CommandUntrustClanAllAdmin;
+import com.griefdefender.hooks.command.clan.CommandClanTrustRank;
+import com.griefdefender.hooks.command.clan.CommandClanClaim;
+import com.griefdefender.hooks.command.clan.CommandClanTrust;
+import com.griefdefender.hooks.command.clan.CommandClanTrustAll;
+import com.griefdefender.hooks.command.clan.CommandClanTrustAllAdmin;
+import com.griefdefender.hooks.command.clan.CommandClanUntrustRank;
+import com.griefdefender.hooks.command.clan.CommandClanUntrust;
+import com.griefdefender.hooks.command.clan.CommandClanUntrustAll;
+import com.griefdefender.hooks.command.clan.CommandClanUntrustAllAdmin;
+import com.griefdefender.hooks.config.ClanConfig;
 import com.griefdefender.hooks.config.GDHooksConfig;
 import com.griefdefender.hooks.config.MessageConfig;
 import com.griefdefender.hooks.config.MessageConfigData;
@@ -62,7 +69,10 @@ import com.griefdefender.hooks.provider.MyPetProvider;
 import com.griefdefender.hooks.provider.MythicMobsProvider;
 import com.griefdefender.hooks.provider.Pl3xmapProvider;
 import com.griefdefender.hooks.provider.RevoltCratesProvider;
-import com.griefdefender.hooks.provider.TownyProvider;
+import com.griefdefender.hooks.provider.clan.guilds.GuildsClanProvider;
+import com.griefdefender.hooks.provider.clan.simpleclans.SimpleClanProvider;
+import com.griefdefender.hooks.provider.clan.towny.TownyProvider;
+import com.griefdefender.hooks.provider.clan.uclans.UClansProvider;
 import com.griefdefender.hooks.provider.shop.BossShopProvider;
 import com.griefdefender.hooks.provider.shop.ChestShopProvider;
 import com.griefdefender.hooks.provider.shop.DynamicShopProvider;
@@ -73,7 +83,6 @@ import com.griefdefender.hooks.provider.shop.ShopChestProvider;
 import com.griefdefender.hooks.provider.shop.ShopProvider;
 import com.griefdefender.hooks.provider.shop.SlabboProvider;
 import com.griefdefender.hooks.provider.shop.UltimateShopsProvider;
-import com.griefdefender.hooks.provider.simpleclans.SimpleClanProvider;
 
 import co.aikar.commands.PaperCommandManager;
 import net.kyori.adventure.text.Component;
@@ -83,8 +92,11 @@ import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public class GDHooks {
@@ -103,6 +115,7 @@ public class GDHooks {
             .append(Component.text("] "))
             .build();
     private Path configPath = Paths.get(".", "plugins", "GDHooks");
+    private Map<String, ClanConfig> clanConfigMap = new HashMap<>();
     private GDHooksConfig config;
     private PaperCommandManager commandManager;
     public MessageConfig messageStorage;
@@ -130,7 +143,7 @@ public class GDHooks {
     }
 
     public void onEnable() {
-        final String version = Bukkit.getPluginManager().getPlugin("GriefDefender").getDescription().getVersion().replaceAll("[^\\d.]", "");
+        /*final String version = Bukkit.getPluginManager().getPlugin("GriefDefender").getDescription().getVersion().replaceAll("[^\\d.]", "");
         if (version.startsWith("1.")) {
             this.getLogger().info("GDHooks " + IMPLEMENTATION_VERSION + " requires Griefdefender v2.0.5+ to work.");
             return;
@@ -147,7 +160,7 @@ public class GDHooks {
         if (minorVersion < 5) {
             this.getLogger().info("GDHooks " + IMPLEMENTATION_VERSION + " requires Griefdefender v2.0.5+ to work.");
             return;
-        }
+        }*/
 
         this.getLogger().info("GDHooks boot start.");
         this.loadConfig();
@@ -246,14 +259,23 @@ public class GDHooks {
             this.revoltCratesProvider = new RevoltCratesProvider();
             this.getLogger().info("RevoltCrates provider enabled!");
         }
-        if (Bukkit.getPluginManager().getPlugin("SimpleClans") != null && Bukkit.getPluginManager().getPlugin("SimpleClans").isEnabled() && this.config.getData().providerCategory.simpleClans) {
-            this.clanProvider = new SimpleClanProvider();
-            this.registerClanCommands();
-            this.getLogger().info("SimpleClans provider enabled!");
-        }
         if (Bukkit.getPluginManager().getPlugin("Towny") != null && Bukkit.getPluginManager().getPlugin("Towny").isEnabled() && this.config.getData().providerCategory.towny) {
             this.townyProvider = new TownyProvider();
             this.getLogger().info("Towny provider enabled!");
+        }
+        // Clan plugins
+        if (Bukkit.getPluginManager().getPlugin("Guilds") != null && Bukkit.getPluginManager().getPlugin("Guilds").isEnabled() && this.config.getData().providerCategory.guilds) {
+            this.clanProvider = new GuildsClanProvider();
+            this.registerClanCommands();
+            this.getLogger().info("Guilds provider enabled!");
+        } else if (Bukkit.getPluginManager().getPlugin("SimpleClans") != null && Bukkit.getPluginManager().getPlugin("SimpleClans").isEnabled() && this.config.getData().providerCategory.simpleClans) {
+            this.clanProvider = new SimpleClanProvider();
+            this.registerClanCommands();
+            this.getLogger().info("SimpleClans provider enabled!");
+        } else if (Bukkit.getPluginManager().getPlugin("UltimateClans") != null && Bukkit.getPluginManager().getPlugin("UltimateClans").isEnabled() && this.config.getData().providerCategory.ultimateClans) {
+            this.clanProvider = new UClansProvider();
+            this.registerClanCommands();
+            this.getLogger().info("UltimateClans provider enabled!");
         }
         new GDPermissionEventListener();
         this.getLogger().info("GDHooks loaded successfully.");
@@ -308,19 +330,24 @@ public class GDHooks {
 
     public void registerClanCommands() {
         this.commandManager.getCommandReplacements().addReplacements(
-            "trust-clan", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_TRUST_CLAN),
-            "trust-clan-all", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_TRUST_CLAN_ALL),
-            "trust-clan-all-admin", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_TRUST_CLAN_ALL_ADMIN),
-            "untrust-clan", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_UNTRUST_CLAN),
-            "untrust-clan-all", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_UNTRUST_CLAN_ALL),
-            "untrust-clan-all-admin", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_UNTRUST_CLAN_ALL_ADMIN));
-        this.commandManager.registerCommand(new CommandReload());
-        this.commandManager.registerCommand(new CommandTrustClan());
-        this.commandManager.registerCommand(new CommandTrustClanAll());
-        this.commandManager.registerCommand(new CommandTrustClanAllAdmin());
-        this.commandManager.registerCommand(new CommandUntrustClan());
-        this.commandManager.registerCommand(new CommandUntrustClanAll());
-        this.commandManager.registerCommand(new CommandUntrustClanAllAdmin());
+            "clan-claim", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_CLAN_CLAIM),
+            "clan-trust", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_CLAN_TRUST),
+            "clan-trust-all", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_CLAN_TRUST_ALL),
+            "clan-trust-all-admin", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_CLAN_TRUST_ALL_ADMIN),
+            "clan-trust-rank", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_CLAN_TRUST_RANK),
+            "clan-untrust", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_CLAN_UNTRUST),
+            "clan-untrust-all", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_CLAN_UNTRUST_ALL),
+            "clan-untrust-all-admin", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_CLAN_UNTRUST_ALL_ADMIN),
+            "clan-untrust-rank", this.getCommandDescriptionTranslation(MessageConfig.DESCRIPTION_CLAN_UNTRUST_RANK));
+        this.commandManager.registerCommand(new CommandClanClaim());
+        this.commandManager.registerCommand(new CommandClanTrustRank());
+        this.commandManager.registerCommand(new CommandClanTrust());
+        this.commandManager.registerCommand(new CommandClanTrustAll());
+        this.commandManager.registerCommand(new CommandClanTrustAllAdmin());
+        this.commandManager.registerCommand(new CommandClanUntrust());
+        this.commandManager.registerCommand(new CommandClanUntrustAll());
+        this.commandManager.registerCommand(new CommandClanUntrustAllAdmin());
+        this.commandManager.registerCommand(new CommandClanUntrustRank());
         this.registerClanCompletions();
     }
 
@@ -332,6 +359,14 @@ public class GDHooks {
             }
             return ImmutableSet.copyOf(tabList);
         });
+        this.commandManager.getCommandCompletions().registerCompletion("gdclaimids", c -> {
+            Set<String> tabList = new HashSet<>();
+            if (c.getPlayer() != null) {
+                return this.generateClaimIdTabList(c.getPlayer());
+            }
+
+            return tabList;
+        });
         this.commandManager.getCommandCompletions().registerCompletion("gddummy", c -> {
             return ImmutableList.of();
         });
@@ -340,21 +375,59 @@ public class GDHooks {
     public void registerClanCompletions() {
         this.commandManager.getCommandCompletions().registerCompletion("gdclans", c -> {
             Set<String> tags = new HashSet<>();
-            for (Clan clan : this.clanProvider.getClans()) {
+            for (Clan clan : this.clanProvider.getAllClans()) {
                 tags.add(clan.getTag());
             }
             return ImmutableSet.copyOf(tags);
+        });
+        this.commandManager.getCommandCompletions().registerCompletion("gdclanranks", c -> {
+            Set<String> ranks = new HashSet<>();
+            for (Clan clan : this.clanProvider.getAllClans()) {
+                for (Rank rank : clan.getRanks()) {
+                    ranks.add(rank.getName().toLowerCase());
+                }
+            }
+            return ImmutableSet.copyOf(ranks);
         });
     }
 
     public void updateClanCompletions() {
         this.commandManager.getCommandCompletions().registerCompletion("gdclans", c -> {
             Set<String> tags = new HashSet<>();
-            for (Clan clan : this.clanProvider.getClans()) {
+            for (Clan clan : this.clanProvider.getAllClans()) {
                 tags.add(clan.getTag());
             }
             return ImmutableSet.copyOf(tags);
         });
+    }
+
+    private Set<String> generateClaimIdTabList(Player player) {
+        final Set<String> tabList = new HashSet<>();
+        final User user = GriefDefender.getCore().getUser(player.getUniqueId());
+        if (user.getPlayerData().canManageAdminClaims()) {
+            final Map<String, UUID> adminMap = GriefDefender.getCore().getFriendlyIdentifierMapView().get(GriefDefender.getCore().getAdminUser().getUniqueId());
+            if (adminMap != null) {
+                for (String key : adminMap.keySet()) {
+                    tabList.add("admin:" + key);
+                }
+            }
+        }
+        if (user.getPlayerData().canManageWildernessClaims()) {
+            final Map<String, UUID> worldMap = GriefDefender.getCore().getFriendlyIdentifierMapView().get(GriefDefender.getCore().getWildernessUser().getUniqueId());
+            if (worldMap != null) {
+                for (String key : worldMap.keySet()) {
+                    tabList.add("wilderness:" + key);
+                }
+            }
+        }
+        final Map<String, UUID> playerMap = GriefDefender.getCore().getFriendlyIdentifierMapView().get(player.getUniqueId());
+        if (playerMap != null) {
+            for (String key : playerMap.keySet()) {
+                tabList.add(key);
+            }
+        }
+
+        return tabList;
     }
 
     private String getCommandDescriptionTranslation(String message) {
@@ -423,6 +496,14 @@ public class GDHooks {
 
     public GDHooksConfig getConfig() {
         return this.config;
+    }
+
+    public Path getConfigPath() {
+        return this.configPath;
+    }
+
+    public Map<String, ClanConfig> getClanConfigMap() {
+        return this.clanConfigMap;
     }
 
     public PaperCommandManager getCommandManager() {

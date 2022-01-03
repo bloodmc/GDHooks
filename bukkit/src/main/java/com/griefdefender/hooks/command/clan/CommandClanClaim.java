@@ -33,54 +33,48 @@ import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 
+import org.bukkit.entity.Player;
+
 import com.google.common.collect.ImmutableMap;
 import com.griefdefender.api.Clan;
+import com.griefdefender.api.ClanPlayer;
 import com.griefdefender.api.CommandResult;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
-import com.griefdefender.api.claim.ClaimResult;
-import com.griefdefender.api.claim.TrustType;
 import com.griefdefender.api.claim.TrustTypes;
 import com.griefdefender.hooks.GDHooks;
+import com.griefdefender.hooks.GDHooksAttributes;
 import com.griefdefender.hooks.config.MessageConfig;
 import com.griefdefender.hooks.permission.GDHooksPermissions;
-import com.griefdefender.hooks.util.HooksUtil;
 
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 
-import org.bukkit.command.CommandSender;
-
 @CommandAlias("gdhooks")
-@CommandPermission(GDHooksPermissions.COMMAND_TRUST_CLAN)
-public class CommandTrustClan extends BaseCommand {
+@CommandPermission(GDHooksPermissions.COMMAND_CLAN_CLAIM)
+public class CommandClanClaim extends BaseCommand {
 
-    @CommandCompletion("@gdclans @gdtrusttypes @gddummy")
-    @CommandAlias("trustclan")
-    @Description("%trust-clan")
-    @Syntax("<clan> [<accessor|builder|container|manager>]")
-    @Subcommand("trust clan")
-    public void execute(CommandSender sender, String clanTag, @Optional String type, @Optional String identifier) {
-        TrustType trustType = null;
-        final Audience audience = GriefDefender.getAudienceProvider().getSender(sender);
-        if (type == null) {
-            trustType = TrustTypes.BUILDER;
-        } else {
-            trustType = HooksUtil.getTrustType(type);
-            if (trustType == null) {
-                audience.sendMessage(MessageConfig.MESSAGE_DATA.getMessage(MessageConfig.TRUST_INVALID));
-                return;
-            }
+    @CommandCompletion("@gdidentifiers")
+    @CommandAlias("clanclaim")
+    @Description("%clan-claim")
+    @Syntax("[identifier]")
+    @Subcommand("clan claim")
+    public void execute(Player player, @Optional String identifier) {
+        final ClanPlayer clanPlayer = GDHooks.getInstance().getClanProvider().getClanPlayer(player.getUniqueId());
+        if (clanPlayer == null) {
+            return;
         }
-
-        final Clan clan = GDHooks.getInstance().getClanProvider().getClan(clanTag);
+        final Clan clan = clanPlayer.getClan();
         if (clan == null) {
-            audience.sendMessage(MessageConfig.MESSAGE_DATA.getMessage(MessageConfig.COMMAND_INVALID_CLAN, ImmutableMap.of(
-                    "clan", clanTag)));
             return;
         }
 
-        final CommandResult result = GriefDefender.getCore().canUseCommand(sender, TrustTypes.MANAGER, identifier);
+        if (!clanPlayer.isLeader()) {
+            return;
+        }
+
+        final Audience audience = GriefDefender.getAudienceProvider().getSender(player);
+        final CommandResult result = GriefDefender.getCore().canUseCommand(player, TrustTypes.MANAGER, identifier);
         if (!result.successful()) {
             if (result.getClaim() != null) {
                 final Component message = MessageConfig.MESSAGE_DATA.getMessage(MessageConfig.PERMISSION_TRUST,
@@ -94,27 +88,12 @@ public class CommandTrustClan extends BaseCommand {
         }
 
         final Claim claim = result.getClaim();
-        if (claim.isClanTrusted(clan, trustType)) {
-            final Component message = MessageConfig.MESSAGE_DATA.getMessage(MessageConfig.TRUST_ALREADY_HAS,
-                ImmutableMap.of(
-                    "target", clan.getTag(),
-                    "type", trustType.getName()));
-            audience.sendMessage(message);
-            return;
+        if (claim.hasAttribute(GDHooksAttributes.ATTRIBUTE_CLAN)) {
+            claim.removeAttribute(GDHooksAttributes.ATTRIBUTE_CLAN);
+            audience.sendMessage(Component.text("Removed clan attribute."));
+        } else {
+            claim.addAttribute(GDHooksAttributes.ATTRIBUTE_CLAN);
+            audience.sendMessage(Component.text("Added clan attribute."));
         }
-
-        GriefDefender.getEventManager().getCauseStackManager().pushCause(sender);
-        final ClaimResult claimResult = claim.addClanTrust(clanTag, trustType);
-        GriefDefender.getEventManager().getCauseStackManager().popCause();
-        if (!claimResult.successful()) {
-            audience.sendMessage(claimResult.getMessage().orElse(MessageConfig.MESSAGE_DATA.getMessage(MessageConfig.TRUST_PLUGIN_CANCEL,
-                    ImmutableMap.of("target", clan.getTag()))));
-            return;
-        }
-
-        final Component message = MessageConfig.MESSAGE_DATA.getMessage(MessageConfig.TRUST_GRANT, ImmutableMap.of(
-                "target", clan.getTag(),
-                "type", trustType.getName()));
-        audience.sendMessage(message);
     }
 }

@@ -1,4 +1,4 @@
-package com.griefdefender.hooks.provider.simpleclans;
+package com.griefdefender.hooks.provider.clan.simpleclans;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -10,7 +10,7 @@ import com.griefdefender.api.claim.Claim;
 
 public class CreateClaimBukkitEvent extends Event implements Cancellable {
 
-    private static final HandlerList handlers = new HandlerList();
+    public static final HandlerList handlers = new HandlerList();
     private boolean cancelled = false;
     private Claim claim;
     private Player player;
@@ -18,11 +18,6 @@ public class CreateClaimBukkitEvent extends Event implements Cancellable {
     public CreateClaimBukkitEvent(Claim claim, Player creator) {
         this.claim = claim;
         this.player = creator;
-    }
-
-    @Override
-    public @NotNull HandlerList getHandlers() {
-        return handlers;
     }
 
     @Override
@@ -41,5 +36,14 @@ public class CreateClaimBukkitEvent extends Event implements Cancellable {
 
     public Claim getClaim() {
         return this.claim;
+    }
+
+    @Override
+    public @NotNull HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 }

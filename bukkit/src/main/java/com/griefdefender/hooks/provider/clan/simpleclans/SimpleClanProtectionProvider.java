@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.griefdefender.hooks.provider.simpleclans;
+package com.griefdefender.hooks.provider.clan.simpleclans;
 
 import java.util.Collections;
 import java.util.HashSet;

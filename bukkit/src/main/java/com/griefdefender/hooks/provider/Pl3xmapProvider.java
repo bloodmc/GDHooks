@@ -133,6 +133,7 @@ public class Pl3xmapProvider {
             final List<UUID> builders = new ArrayList<>(claim.getUserTrusts(TrustTypes.BUILDER));
             final List<UUID> containers = new ArrayList<>(claim.getUserTrusts(TrustTypes.CONTAINER));
             final List<UUID> accessors = new ArrayList<>(claim.getUserTrusts(TrustTypes.ACCESSOR));
+            final List<UUID> residents = new ArrayList<>(claim.getUserTrusts(TrustTypes.RESIDENT));
             final List<UUID> managers = new ArrayList<>(claim.getUserTrusts(TrustTypes.MANAGER));
 
             Pl3xmapOwnerStyleCategory ownerStyle = null;
@@ -189,6 +190,7 @@ public class Pl3xmapProvider {
                             .replace("%managers%", getNames(managers))
                             .replace("%builders%", getNames(builders))
                             .replace("%containers%", getNames(containers))
+                            .replace("%residents%", getNames(residents))
                             .replace("%accessors%", getNames(accessors))
                             .replace("%area%", Integer.toString(claim.getArea()))
                             .replace("%width%", Integer.toString(claim.getWidth()))

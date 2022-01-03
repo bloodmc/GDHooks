@@ -22,23 +22,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.griefdefender.hooks.permission;
+package com.griefdefender.hooks.provider.clan.towny;
 
-public class GDHooksPermissions {
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
-    public static final String COMMAND_RELOAD = "gdhooks.admin.command.reload";
-    public static final String COMMAND_VERSION = "gdhooks.user.command.version";
+import com.griefdefender.api.clan.Rank;
+import com.palmergames.bukkit.towny.permissions.TownyPerms;
 
-    public static final String COMMAND_CLAN_CLAIM = "gdhooks.user.clan.command.claim";
-    public static final String COMMAND_TRUST_CLAN = "gdhooks.user.clan.command.trust";
-    public static final String COMMAND_TRUST_RANK = "gdhooks.user.clan.command.trustrank";
-    public static final String COMMAND_TRUSTALL_CLAN = "gdhooks.user.clan.command.trustall";
-    public static final String COMMAND_UNTRUST_CLAN = "gdhooks.user.clan.command.untrust";
-    public static final String COMMAND_UNTRUST_RANK = "gdhooks.user.clan.command.untrustrank";
-    public static final String COMMAND_UNTRUSTALL_CLAN = "gdhooks.user.clan.command.untrustall";
+public class GDRank implements Rank {
 
-    public static final String COMMAND_TRUSTALL_CLAN_ADMIN = "gdhooks.admin.clan.command.trustalladmin";
-    public static final String COMMAND_UNTRUSTALL_CLAN_ADMIN = "gdhooks.admin.clan.command.untrustalladmin";
+    private final String pluginRank;
 
-    public static final String PROVIDER_MCMMO_AUTO_PARTY_TRUST = "gdhooks.user.mcmmo.auto-party-trust";
+    public GDRank(String rank) {
+        this.pluginRank = rank.toLowerCase();
+    }
+
+    @Override
+    public String getName() {
+        return this.pluginRank;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return this.pluginRank;
+    }
+
+    @Override
+    public Set<String> getPermissions() {
+        return Collections.unmodifiableSet(new HashSet<>(TownyPerms.getTownRank(this.pluginRank)));
+    }
+
 }

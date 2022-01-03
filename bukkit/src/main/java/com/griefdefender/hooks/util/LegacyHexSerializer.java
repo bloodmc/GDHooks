@@ -34,7 +34,7 @@ import net.kyori.adventure.title.Title.Times;
 
 public class LegacyHexSerializer {
 
-    private static LegacyComponentSerializer HEX_SERIALIZER = LegacyComponentSerializer.builder().hexColors().character(LegacyComponentSerializer.AMPERSAND_CHAR).build();
+    private static LegacyComponentSerializer HEX_SERIALIZER = LegacyComponentSerializer.builder().extractUrls().hexColors().character(LegacyComponentSerializer.AMPERSAND_CHAR).build();
 
     public static String serialize(Component component) {
         return HEX_SERIALIZER.serialize(component);
