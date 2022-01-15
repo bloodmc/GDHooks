@@ -42,7 +42,7 @@ import com.griefdefender.hooks.GDHooks;
 import com.griefdefender.hooks.provider.clan.simpleclans.GDClanPlayer;
 import com.griefdefender.hooks.provider.clan.simpleclans.SimpleClanProvider;
 
-import net.kyori.adventure.text.Component;
+import com.griefdefender.lib.kyori.adventure.text.Component;
 import net.sacredlabyrinth.phaed.simpleclans.Clan;
 import net.sacredlabyrinth.phaed.simpleclans.events.CreateClanEvent;
 import net.sacredlabyrinth.phaed.simpleclans.events.DisbandClanEvent;

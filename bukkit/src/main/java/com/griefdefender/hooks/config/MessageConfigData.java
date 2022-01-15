@@ -34,7 +34,7 @@ import com.google.common.collect.ImmutableMap;
 import com.griefdefender.hooks.config.category.ConfigCategory;
 import com.griefdefender.hooks.util.LegacyHexSerializer;
 
-import net.kyori.adventure.text.Component;
+import com.griefdefender.lib.kyori.adventure.text.Component;
 
 @ConfigSerializable
 public class MessageConfigData extends ConfigCategory {

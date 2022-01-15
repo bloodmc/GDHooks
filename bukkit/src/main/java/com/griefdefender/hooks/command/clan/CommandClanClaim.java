@@ -47,8 +47,8 @@ import com.griefdefender.hooks.GDHooksAttributes;
 import com.griefdefender.hooks.config.MessageConfig;
 import com.griefdefender.hooks.permission.GDHooksPermissions;
 
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
+import com.griefdefender.lib.kyori.adventure.audience.Audience;
+import com.griefdefender.lib.kyori.adventure.text.Component;
 
 @CommandAlias("gdhooks")
 @CommandPermission(GDHooksPermissions.COMMAND_CLAN_CLAIM)

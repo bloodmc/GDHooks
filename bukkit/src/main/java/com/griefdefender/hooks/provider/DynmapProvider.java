@@ -25,7 +25,6 @@
  */
 package com.griefdefender.hooks.provider;
 
-import com.flowpowered.math.vector.Vector3i;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.ClaimManager;
@@ -39,8 +38,9 @@ import com.griefdefender.hooks.GDHooksBootstrap;
 import com.griefdefender.hooks.config.category.DynmapCategory;
 import com.griefdefender.hooks.config.category.DynmapOwnerStyleCategory;
 
-import net.kyori.event.EventSubscriber;
-import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
+import com.griefdefender.lib.flowpowered.math.vector.Vector3i;
+import com.griefdefender.lib.kyori.event.EventSubscriber;
+import com.griefdefender.lib.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;

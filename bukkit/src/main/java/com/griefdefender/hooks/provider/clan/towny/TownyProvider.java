@@ -40,7 +40,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import com.flowpowered.math.vector.Vector3i;
 import com.griefdefender.api.Clan;
 import com.griefdefender.api.ClanPlayer;
 import com.griefdefender.api.GriefDefender;
@@ -65,8 +64,9 @@ import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.permissions.TownyPerms;
 
-import net.kyori.event.EventBus;
-import net.kyori.event.EventSubscriber;
+import com.griefdefender.lib.flowpowered.math.vector.Vector3i;
+import com.griefdefender.lib.kyori.event.EventBus;
+import com.griefdefender.lib.kyori.event.EventSubscriber;
 
 public class TownyProvider extends BaseClanProvider implements Listener {
 

@@ -44,7 +44,7 @@ import de.Keyle.MyPet.api.util.hooks.PluginHookName;
 import de.Keyle.MyPet.api.util.hooks.types.FlyHook;
 import de.Keyle.MyPet.api.util.hooks.types.PlayerVersusEntityHook;
 import de.Keyle.MyPet.api.util.hooks.types.PlayerVersusPlayerHook;
-import io.leangen.geantyref.TypeToken;
+import com.griefdefender.lib.geantyref.TypeToken;
 
 public class MyPetProvider {
 

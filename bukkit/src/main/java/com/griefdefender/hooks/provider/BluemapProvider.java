@@ -55,7 +55,7 @@ import de.bluecolored.bluemap.api.marker.Marker;
 import de.bluecolored.bluemap.api.marker.MarkerAPI;
 import de.bluecolored.bluemap.api.marker.MarkerSet;
 import de.bluecolored.bluemap.api.marker.Shape;
-import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
+import com.griefdefender.lib.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 
 public class BluemapProvider {
 

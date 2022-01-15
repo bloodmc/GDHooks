@@ -28,8 +28,8 @@ import java.util.UUID;
 
 import org.bukkit.Location;
 
-import com.flowpowered.math.vector.Vector3i;
 import com.griefdefender.api.clan.ClanHome;
+import com.griefdefender.lib.flowpowered.math.vector.Vector3i;
 
 public class GDClanHome implements ClanHome {
 

@@ -44,7 +44,7 @@ import com.griefdefender.hooks.provider.clan.uclans.UClansProvider;
 import me.ulrich.clans.data.ClanEnum.ClanEvents;
 import me.ulrich.clans.events.ClanGlobalEvent;
 import me.ulrich.clans.packets.interfaces.UClans;
-import net.kyori.adventure.text.Component;
+import com.griefdefender.lib.kyori.adventure.text.Component;
 
 public class UClansEventHandler implements Listener {
 

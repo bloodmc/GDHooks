@@ -34,8 +34,8 @@ import com.griefdefender.api.GriefDefender;
 import com.griefdefender.hooks.GDHooks;
 import com.griefdefender.hooks.permission.GDHooksPermissions;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import com.griefdefender.lib.kyori.adventure.text.Component;
+import com.griefdefender.lib.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 

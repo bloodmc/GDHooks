@@ -45,7 +45,7 @@ import me.glaremasters.guilds.api.events.GuildKickEvent;
 import me.glaremasters.guilds.api.events.GuildLeaveEvent;
 import me.glaremasters.guilds.api.events.GuildRemoveEvent;
 import me.glaremasters.guilds.api.events.GuildSetHomeEvent;
-import net.kyori.adventure.text.Component;
+import com.griefdefender.lib.kyori.adventure.text.Component;
 
 public class GuildsEventHandler implements Listener {
 

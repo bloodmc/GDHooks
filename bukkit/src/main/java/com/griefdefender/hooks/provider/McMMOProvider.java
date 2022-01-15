@@ -62,9 +62,9 @@ import com.griefdefender.hooks.GDHooksBootstrap;
 import com.griefdefender.hooks.permission.GDHooksPermissions;
 import com.griefdefender.hooks.provider.mcmmo.McMMOPlayerAbilityData;
 
-import io.leangen.geantyref.TypeToken;
-import net.kyori.event.EventBus;
-import net.kyori.event.EventSubscriber;
+import com.griefdefender.lib.geantyref.TypeToken;
+import com.griefdefender.lib.kyori.event.EventBus;
+import com.griefdefender.lib.kyori.event.EventSubscriber;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

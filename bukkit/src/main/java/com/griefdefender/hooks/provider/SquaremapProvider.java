@@ -44,7 +44,7 @@ import com.griefdefender.hooks.GDHooksBootstrap;
 import com.griefdefender.hooks.config.category.SquaremapCategory;
 import com.griefdefender.hooks.config.category.SquaremapOwnerStyleCategory;
 
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import com.griefdefender.lib.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import xyz.jpenilla.squaremap.api.BukkitAdapter;
 import xyz.jpenilla.squaremap.api.Key;
 import xyz.jpenilla.squaremap.api.MapWorld;

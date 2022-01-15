@@ -33,8 +33,8 @@ import com.griefdefender.api.event.Event;
 import com.griefdefender.api.event.ProcessInteractBlockEvent;
 import com.griefdefender.hooks.GDHooks;
 
-import net.kyori.event.EventBus;
-import net.kyori.event.EventSubscriber;
+import com.griefdefender.lib.kyori.event.EventBus;
+import com.griefdefender.lib.kyori.event.EventSubscriber;
 
 
 public class GDShopEventListener {

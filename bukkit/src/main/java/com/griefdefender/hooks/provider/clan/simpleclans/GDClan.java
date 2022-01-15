@@ -33,14 +33,14 @@ import java.util.UUID;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import com.flowpowered.math.vector.Vector3i;
 import com.griefdefender.api.Clan;
 import com.griefdefender.api.ClanPlayer;
 import com.griefdefender.api.clan.ClanHome;
 import com.griefdefender.api.clan.Rank;
 import com.griefdefender.hooks.GDHooks;
+import com.griefdefender.lib.flowpowered.math.vector.Vector3i;
 
-import net.kyori.adventure.text.Component;
+import com.griefdefender.lib.kyori.adventure.text.Component;
 
 public class GDClan implements Clan {
 

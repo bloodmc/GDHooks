@@ -86,9 +86,9 @@ import com.griefdefender.hooks.provider.shop.SlabboProvider;
 import com.griefdefender.hooks.provider.shop.UltimateShopsProvider;
 
 import co.aikar.commands.PaperCommandManager;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
+import com.griefdefender.lib.kyori.adventure.text.Component;
+import com.griefdefender.lib.kyori.adventure.text.format.NamedTextColor;
+import com.griefdefender.lib.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 
 import java.io.InputStream;
 import java.nio.file.Path;

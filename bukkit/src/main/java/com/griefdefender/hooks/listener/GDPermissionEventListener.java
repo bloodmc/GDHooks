@@ -43,7 +43,7 @@ import com.griefdefender.api.permission.ContextKeys;
 import com.griefdefender.hooks.GDHooks;
 import com.griefdefender.hooks.context.ContextGroups;
 
-import net.kyori.event.EventSubscriber;
+import com.griefdefender.lib.kyori.event.EventSubscriber;
 
 public class GDPermissionEventListener {
 

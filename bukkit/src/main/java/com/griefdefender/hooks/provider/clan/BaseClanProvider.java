@@ -53,8 +53,8 @@ import com.griefdefender.hooks.GDHooks;
 import com.griefdefender.hooks.GDHooksAttributes;
 import com.griefdefender.hooks.config.ClanConfig;
 
-import net.kyori.event.EventBus;
-import net.kyori.event.EventSubscriber;
+import com.griefdefender.lib.kyori.event.EventBus;
+import com.griefdefender.lib.kyori.event.EventSubscriber;
 
 public abstract class BaseClanProvider implements ClanProvider {
 

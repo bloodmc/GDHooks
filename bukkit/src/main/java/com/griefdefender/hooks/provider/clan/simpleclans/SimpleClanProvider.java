@@ -38,7 +38,7 @@ import com.griefdefender.hooks.config.ClanConfig;
 import com.griefdefender.hooks.listener.SimpleClansEventHandler;
 import com.griefdefender.hooks.provider.clan.BaseClanProvider;
 
-import net.kyori.event.EventSubscriber;
+import com.griefdefender.lib.kyori.event.EventSubscriber;
 import net.sacredlabyrinth.phaed.simpleclans.SimpleClans;
 
 public class SimpleClanProvider extends BaseClanProvider {

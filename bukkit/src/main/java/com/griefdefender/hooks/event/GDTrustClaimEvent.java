@@ -24,6 +24,7 @@
  */
 package com.griefdefender.hooks.event;
 
+import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.TrustType;
 import com.griefdefender.api.event.TrustClaimEvent;
@@ -35,12 +36,12 @@ public class GDTrustClaimEvent extends GDClaimEvent implements TrustClaimEvent {
     private TrustType trustType;
 
     public GDTrustClaimEvent(Claim claim, TrustType trustType) {
-        super(claim);
+        super(GriefDefender.getEventManager().getCauseStackManager().getCurrentCause().root(), claim);
         this.trustType = trustType;
     }
 
     public GDTrustClaimEvent(List<Claim> claims, TrustType trustType) {
-        super(claims);
+        super(GriefDefender.getEventManager().getCauseStackManager().getCurrentCause().root(), claims);
         this.trustType = trustType;
     }
 

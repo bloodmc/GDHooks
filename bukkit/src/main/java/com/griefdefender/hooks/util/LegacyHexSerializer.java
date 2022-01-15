@@ -26,11 +26,11 @@ package com.griefdefender.hooks.util;
 
 import java.time.Duration;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.kyori.adventure.title.Title;
-import net.kyori.adventure.title.Title.Times;
+import com.griefdefender.lib.kyori.adventure.text.Component;
+import com.griefdefender.lib.kyori.adventure.text.TextComponent;
+import com.griefdefender.lib.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import com.griefdefender.lib.kyori.adventure.title.Title;
+import com.griefdefender.lib.kyori.adventure.title.Title.Times;
 
 public class LegacyHexSerializer {
 

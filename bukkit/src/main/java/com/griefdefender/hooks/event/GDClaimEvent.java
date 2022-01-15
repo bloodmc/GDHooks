@@ -26,26 +26,52 @@ package com.griefdefender.hooks.event;
 
 import com.google.common.collect.ImmutableList;
 import com.griefdefender.api.GriefDefender;
+import com.griefdefender.api.User;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.event.ClaimEvent;
 import com.griefdefender.api.event.EventCause;
-import net.kyori.adventure.text.Component;
+
+import com.griefdefender.lib.kyori.adventure.text.Component;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.bukkit.OfflinePlayer;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class GDClaimEvent implements ClaimEvent {
 
     private List<Claim> claims;
     private Component message;
     private boolean isCancelled = false;
+    private final Object source;
+    private final User user;
+    private final EventCause cause;
 
-    public GDClaimEvent(Claim claim) {
+    public GDClaimEvent(Object source, Claim claim) {
+        this.source = source;
         this.claims = ImmutableList.of(claim);
+        this.cause = EventCause.of(GriefDefender.getEventManager().getCauseStackManager().getCurrentCause().root());
+        if (source instanceof User) {
+            this.user = (User) source;
+        } else if (source instanceof OfflinePlayer) {
+            this.user = GriefDefender.getCore().getUser(((OfflinePlayer) source).getUniqueId());
+        } else {
+            this.user = null;
+        }
     }
 
-    public GDClaimEvent(List<Claim> claims) {
+    public GDClaimEvent(Object source, List<Claim> claims) {
+        this.source = source;
         this.claims = ImmutableList.copyOf(claims);
+        this.cause = EventCause.of(GriefDefender.getEventManager().getCauseStackManager().getCurrentCause().root());
+        if (source instanceof User) {
+            this.user = (User) source;
+        } else if (source instanceof OfflinePlayer) {
+            this.user = GriefDefender.getCore().getUser(((OfflinePlayer) source).getUniqueId());
+        } else {
+            this.user = null;
+        }
     }
 
     public boolean cancelled() {
@@ -77,7 +103,17 @@ public class GDClaimEvent implements ClaimEvent {
 
     @Override
     public EventCause getCause() {
-        return GriefDefender.getEventManager().getCauseStackManager().getCurrentCause();
+        return this.cause;
+    }
+
+    @Override
+    public Object getSource() {
+        return this.source;
+    }
+
+    @Override
+    public @Nullable User getSourceUser() {
+        return this.user;
     }
 
 }

@@ -46,8 +46,8 @@ import com.griefdefender.hooks.config.MessageConfig;
 import com.griefdefender.hooks.permission.GDHooksPermissions;
 import com.griefdefender.hooks.util.HooksUtil;
 
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
+import com.griefdefender.lib.kyori.adventure.audience.Audience;
+import com.griefdefender.lib.kyori.adventure.text.Component;
 
 import org.bukkit.command.CommandSender;
 
