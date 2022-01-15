@@ -36,10 +36,10 @@ import com.griefdefender.api.claim.ClaimType;
 import com.griefdefender.api.claim.ClaimTypes;
 
 @ConfigSerializable
-public class Pl3xmapCategory {
+public class SquaremapCategory {
 
     @Setting("enabled")
-    @Comment("Set to true to enable GriefDefender Pl3xmap integration. (Default: true)")
+    @Comment("Set to true to enable GriefDefender Squaremap integration. (Default: true)")
     public boolean enabled = true;
 
     @Setting("control-label")
@@ -59,10 +59,10 @@ public class Pl3xmapCategory {
     public int UPDATE_INTERVAL = 300;
 
     @Setting("claimtype-styles")
-    public Map<String, Pl3xmapOwnerStyleCategory> claimTypeStyles = new HashMap<>();
+    public Map<String, SquaremapOwnerStyleCategory> claimTypeStyles = new HashMap<>();
 
     @Setting("owner-styles")
-    public Map<String, Pl3xmapOwnerStyleCategory> ownerStyles = new HashMap<>();
+    public Map<String, SquaremapOwnerStyleCategory> ownerStyles = new HashMap<>();
 
     @Setting("claim-tooltip")
     public String CLAIM_TOOLTIP = "Name: <span style=\"font-weight:bold;\">%claimname%</span><br/>"
@@ -84,13 +84,13 @@ public class Pl3xmapCategory {
             + "Resident Trust: <span style=\"font-weight:bold;\">%residents%</span> "
             + "Access Trust: <span style=\"font-weight:bold;\">%accessors%</span> ";
 
-    public Pl3xmapCategory() {
+    public SquaremapCategory() {
         for (ClaimType type : GriefDefender.getRegistry().getAllOf(ClaimType.class)) {
             if (type == ClaimTypes.WILDERNESS) {
                 continue;
             }
             if (this.claimTypeStyles.get(type.getName().toLowerCase()) == null) {
-                this.claimTypeStyles.put(type.getName().toLowerCase(), new Pl3xmapOwnerStyleCategory(type));
+                this.claimTypeStyles.put(type.getName().toLowerCase(), new SquaremapOwnerStyleCategory(type));
             }
         }
     }

@@ -93,6 +93,9 @@ public class ProviderCategory extends ConfigCategory {
     @Setting(value = "MythicMobs")
     public boolean mythicMobs = true;
 
+    @Setting(value = "Nova")
+    public boolean nova = true;
+
     @Setting(value = "Towny")
     public boolean towny = true;
 
@@ -103,7 +106,7 @@ public class ProviderCategory extends ConfigCategory {
     @Setting(value = "Dynmap")
     public boolean dynmap = true;
 
-    @Setting(value = "Pl3xmap")
-    public boolean pl3xmap = true;
+    @Setting(value = "Squaremap")
+    public boolean squaremap = true;
 
 }

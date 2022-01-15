@@ -31,7 +31,7 @@ import com.griefdefender.api.claim.ClaimType;
 import com.griefdefender.api.claim.ClaimTypes;
 
 @ConfigSerializable
-public class Pl3xmapOwnerStyleCategory {
+public class SquaremapOwnerStyleCategory {
 
     @Setting("line-color")
     public String lineColor = "#FF0000";
@@ -51,10 +51,10 @@ public class Pl3xmapOwnerStyleCategory {
     @Setting("label")
     public String label = "none";
 
-    public Pl3xmapOwnerStyleCategory() {
+    public SquaremapOwnerStyleCategory() {
     }
 
-    public Pl3xmapOwnerStyleCategory(ClaimType type) {
+    public SquaremapOwnerStyleCategory(ClaimType type) {
         if (type.equals(ClaimTypes.ADMIN)) {
             this.lineColor = "#FF0000";
             this.fillColor = "#FF0000";

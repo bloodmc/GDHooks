@@ -1,7 +1,7 @@
 name: GDHooks
 main: com.griefdefender.hooks.loader.BukkitLoaderPlugin
 depend: [GriefDefender]
-softdepend: [BlueMap, BossShopPro, ChestShop, CustomItems, Dynmap, DynamicShop, Guilds, InsaneShops, mcMMO, MyPet, MMOItems, MythicMobs, QuickShop, RevoltCrates, Shop, ShopChest, SimpleClans, Slabbo, Towny, UltimateClans, UltimateShops]
+softdepend: [BlueMap, BossShopPro, ChestShop, CustomItems, dynmap, DynamicShop, Guilds, InsaneShops, mcMMO, MyPet, MMOItems, MythicMobs, Nova, QuickShop, RevoltCrates, Shop, ShopChest, SimpleClans, Slabbo, squaremap, Towny, UltimateClans, UltimateShops]
 load: POSTWORLD
 version: '0.6-DEV'
 api-version: 1.13

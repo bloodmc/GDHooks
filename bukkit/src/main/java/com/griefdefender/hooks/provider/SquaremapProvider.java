@@ -1,3 +1,27 @@
+/*
+ * This file is part of GDHooks, licensed under the MIT License (MIT).
+ *
+ * Copyright (c) bloodmc
+ * Copyright (c) contributors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package com.griefdefender.hooks.provider;
 
 import java.awt.Color;
@@ -17,39 +41,46 @@ import com.griefdefender.api.event.CreateClaimEvent;
 import com.griefdefender.api.event.RemoveClaimEvent;
 import com.griefdefender.hooks.GDHooks;
 import com.griefdefender.hooks.GDHooksBootstrap;
-import com.griefdefender.hooks.config.category.Pl3xmapCategory;
-import com.griefdefender.hooks.config.category.Pl3xmapOwnerStyleCategory;
+import com.griefdefender.hooks.config.category.SquaremapCategory;
+import com.griefdefender.hooks.config.category.SquaremapOwnerStyleCategory;
 
-import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
-import net.pl3x.map.api.Point;
-import net.pl3x.map.api.*;
-import net.pl3x.map.api.marker.Marker;
-import net.pl3x.map.api.marker.MarkerOptions;
-import net.pl3x.map.api.marker.Rectangle;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import xyz.jpenilla.squaremap.api.BukkitAdapter;
+import xyz.jpenilla.squaremap.api.Key;
+import xyz.jpenilla.squaremap.api.MapWorld;
+import xyz.jpenilla.squaremap.api.Point;
+import xyz.jpenilla.squaremap.api.SimpleLayerProvider;
+import xyz.jpenilla.squaremap.api.Squaremap;
+import xyz.jpenilla.squaremap.api.marker.Marker;
+import xyz.jpenilla.squaremap.api.marker.MarkerOptions;
+import xyz.jpenilla.squaremap.api.marker.Rectangle;
+
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class Pl3xmapProvider {
+public class SquaremapProvider {
 
     private final Logger logger;
-    private final Pl3xmapCategory cfg;
-    private Pl3xMap api;
-    private final Map<UUID, Pl3xmapTask> provider = new HashMap<>();
+    private final SquaremapCategory cfg;
+    private Squaremap api;
+    private final Map<String, SquaremapTask> provider = new HashMap<>();
     public boolean disabled = false;
     private boolean reload = false;
 
-    public Pl3xmapProvider() {
+    public SquaremapProvider() {
         this.logger = GDHooks.getInstance().getLogger();
-        this.cfg = GDHooks.getInstance().getConfig().getData().pl3xmap;
-        logger.info("Initializing GriefDefender Pl3xmap provider...");
+        this.cfg = GDHooks.getInstance().getConfig().getData().squaremap;
+        logger.info("Initializing GriefDefender Squaremap provider...");
         activate();
     }
 
     public void activate() {
         try {
-            this.api = Pl3xMapProvider.get();
+            this.api = xyz.jpenilla.squaremap.api.SquaremapProvider.get();
         } catch (IllegalStateException e) {
             e.printStackTrace();
-            logger.severe("Could not initialize GriefDefender Pl3xMap provider.");
+            logger.severe("Could not initialize GriefDefender Squaremap provider.");
             disabled = true;
             return;
         }
@@ -57,24 +88,29 @@ public class Pl3xmapProvider {
         if (this.reload) {
             GDHooks.getInstance().getConfig().reload();
             if (!provider.isEmpty()) {
-                provider.values().forEach(Pl3xmapTask::disable);
+                provider.values().forEach(SquaremapTask::disable);
                 provider.clear();
             }
         } else {
             this.reload = true;
         }
 
-        Pl3xMapProvider.get().mapWorlds().forEach(world -> {
-            if (GriefDefender.getCore().isEnabled(world.uuid())) {
+        xyz.jpenilla.squaremap.api.SquaremapProvider.get().mapWorlds().forEach(world -> {
+            final World bukkitWorld = Bukkit.getWorld(world.name());
+            if (bukkitWorld == null) {
+                return;
+            }
+            if (GriefDefender.getCore().isEnabled(bukkitWorld.getUID())) {
                 SimpleLayerProvider provider = SimpleLayerProvider
                         .builder(cfg.control_label)
                         .showControls(cfg.control_show)
                         .defaultHidden(cfg.control_hide)
                         .build();
-                world.layerRegistry().register(Key.of("griefdefender_" + world.uuid()), provider);
-                Pl3xmapTask task = new Pl3xmapTask(world, provider);
+                
+                world.layerRegistry().register(Key.of("griefdefender_" + world.name().toLowerCase()), provider);
+                SquaremapTask task = new SquaremapTask(world, provider);
                 task.runTaskTimerAsynchronously(GDHooksBootstrap.getInstance().getLoader(), 0, 20L * cfg.UPDATE_INTERVAL);
-                this.provider.put(world.uuid(), task);
+                this.provider.put(world.name().toLowerCase(), task);
             }
     });
         new ClaimEventListener();
@@ -82,17 +118,17 @@ public class Pl3xmapProvider {
 
     public void onDisable() {
         disabled = true;
-        provider.values().forEach(Pl3xmapTask::disable);
+        provider.values().forEach(SquaremapTask::disable);
         provider.clear();
     }
 
-    private class Pl3xmapTask extends BukkitRunnable {
+    private class SquaremapTask extends BukkitRunnable {
         private final MapWorld world;
         private final SimpleLayerProvider provider;
 
         private boolean stop;
 
-        public Pl3xmapTask(MapWorld world, SimpleLayerProvider provider) {
+        public SquaremapTask(MapWorld world, SimpleLayerProvider provider) {
             this.world = world;
             this.provider = provider;
         }
@@ -109,7 +145,7 @@ public class Pl3xmapProvider {
             List<Claim> claims = GriefDefender.getCore().getAllClaims();
             if (claims != null) {
                 claims.stream()
-                        .filter(claim -> claim.getWorldUniqueId().equals(this.world.uuid()))
+                        .filter(claim -> claim.getWorldName().equals(this.world.name().toLowerCase()))
                         .forEach(this::handleClaim);
             }
         }
@@ -136,7 +172,7 @@ public class Pl3xmapProvider {
             final List<UUID> residents = new ArrayList<>(claim.getUserTrusts(TrustTypes.RESIDENT));
             final List<UUID> managers = new ArrayList<>(claim.getUserTrusts(TrustTypes.MANAGER));
 
-            Pl3xmapOwnerStyleCategory ownerStyle = null;
+            SquaremapOwnerStyleCategory ownerStyle = null;
             if (!cfg.ownerStyles.isEmpty()) {
                 ownerStyle = cfg.ownerStyles.get(claim.getOwnerName().toLowerCase());
             }
@@ -183,7 +219,7 @@ public class Pl3xmapProvider {
                             .replace("%owneruuid%", claim.getOwnerUniqueId().toString())
                             .replace("%claimname%",
                                     claim.getData().getDisplayNameComponent().isPresent()
-                                            ? PlainComponentSerializer.plain().serialize(claim.getDisplayNameComponent().get())
+                                            ? PlainTextComponentSerializer.plainText().serialize(claim.getDisplayNameComponent().get())
                                             : "none")
                             .replace("%lastseen%", claim.getData().getDateLastActive().toString())
                             .replace("%gdtype%", claim.getType().toString())
@@ -251,11 +287,11 @@ public class Pl3xmapProvider {
 
           @Override
           public void run() {
-              if (!GDHooks.getInstance().getPl3xmapProvider().disabled) {
+              if (!GDHooks.getInstance().getSquaremapProvider().disabled) {
                   if (this.delete) {
-                      GDHooks.getInstance().getPl3xmapProvider().deleteClaims(this.claims);
+                      GDHooks.getInstance().getSquaremapProvider().deleteClaims(this.claims);
                   } else {
-                      GDHooks.getInstance().getPl3xmapProvider().updateClaims(this.claims);
+                      GDHooks.getInstance().getSquaremapProvider().updateClaims(this.claims);
                   }
               } else {
                   this.cancel();
@@ -270,12 +306,13 @@ public class Pl3xmapProvider {
       }
 
       claims.forEach(claim ->{
-          UUID claimWorld = claim.getWorldUniqueId();
-          final MapWorld pl3xMapWorld = api.getWorldIfEnabled(claimWorld).orElse(null);
-          if (pl3xMapWorld == null) {
+          final World world = Bukkit.getWorld(claim.getWorldUniqueId());
+          final UUID worldUniqueId = claim.getWorldUniqueId();
+          final MapWorld mapWorld = api.getWorldIfEnabled(BukkitAdapter.worldIdentifier(Bukkit.getWorld(worldUniqueId))).orElse(null);
+          if (mapWorld == null) {
               return;
           }
-          provider.get(claimWorld).deleteClaim(claim);
+          provider.get(world.getName().toLowerCase()).deleteClaim(claim);
       });
     }
 
@@ -285,12 +322,13 @@ public class Pl3xmapProvider {
       }
 
       claims.forEach(claim ->{
-          UUID claimWorld = claim.getWorldUniqueId();
-          final MapWorld pl3xMapWorld = api.getWorldIfEnabled(claimWorld).orElse(null);
-          if (pl3xMapWorld == null) {
+          final World world = Bukkit.getWorld(claim.getWorldUniqueId());
+          final UUID worldUniqueId = claim.getWorldUniqueId();
+          final MapWorld mapWorld = api.getWorldIfEnabled(BukkitAdapter.worldIdentifier(Bukkit.getWorld(worldUniqueId))).orElse(null);
+          if (mapWorld == null) {
               return;
           }
-          provider.get(claimWorld).handleClaim(claim);
+          provider.get(world.getName().toLowerCase()).handleClaim(claim);
       });
     }
 }

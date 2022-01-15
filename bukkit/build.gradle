@@ -90,6 +90,10 @@ repositories {
         url = 'https://oss.sonatype.org/content/repositories/snapshots'
     }
     maven {
+        name = 'squaremap'
+        url = 'https://repo.jpenilla.xyz/snapshots/'
+    }
+    maven {
         name = 'worldedit'
         url = 'https://maven.sk89q.com/artifactory/repo'
     }
@@ -116,12 +120,11 @@ dependencies {
     compileOnly "net.kyori:adventure-text-serializer-plain:4.9.3"
     compileOnly "net.kyori:adventure-text-serializer-legacy:4.9.3"
     compileOnly "net.kyori:event-api:5.0.0-SNAPSHOT"
-    //compileOnly "net.pl3x.map:pl3xmap-api:1.0.0-SNAPSHOT"
     compileOnly "com.googlecode.json-simple:json-simple:1.1"
     compileOnly "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
     compileOnly "co.aikar:acf-paper:0.5.0-SNAPSHOT"
     compileOnly "commons-io:commons-io:2.6"
-
+    compileOnly "xyz.jpenilla:squaremap-api:1.1.0-SNAPSHOT"
 }
 
 jar {

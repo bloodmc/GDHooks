@@ -11,7 +11,7 @@
 
 * [BlueMap]: [ [Github](https://github.com/BlueMap-Minecraft/BlueMap) | [Spigot](https://www.spigotmc.org/resources/83557/) | [Ore](https://ore.spongepowered.org/Blue/BlueMap) ]
 * [Dynmap]: [ [Github](https://github.com/webbukkit/dynmap) | [Spigot](https://www.spigotmc.org/resources/274/) ]
-* [Pl3xMap]: [ [Github](https://github.com/pl3xgaming/Pl3xMap) ]
+* [Squaremap]: [ [Github](https://github.com/jpenilla/squaremap) ]
 
 **Shop**
 
@@ -34,6 +34,7 @@
 * [McMMO]: [ [Spigot](https://www.spigotmc.org/resources/64348/updates) | [Github](https://github.com/mcMMO-Dev/mcMMO) ]
 * [MyPet]: [ [Spigot](https://www.spigotmc.org/resources/mypet.12725/) | [Github](https://github.com/xXKeyleXx/MyPet) ]
 * [MythicMobs]: [ [Free](https://www.spigotmc.org/resources/5702/) | [Premium](https://www.spigotmc.org/resources/58415/) ]
+* [Nova]: [ [Spigot](https://www.spigotmc.org/resources/93648/) | [Github](https://github.com/xenondevs/Nova) ]
 * [RevoltCrates(Paid)]: [ [Spigot](https://www.spigotmc.org/resources/81681/) ]
 * [SimpleClans]: [ [Spigot](https://www.spigotmc.org/resources/71242/) | [Github](https://github.com/RoinujNosde/SimpleClans) ]
 * [Towny]: [ [Spigot](https://www.spigotmc.org/resources/72694/) | [Github](https://github.com/TownyAdvanced/Towny) ]

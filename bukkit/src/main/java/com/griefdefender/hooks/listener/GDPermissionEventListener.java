@@ -26,6 +26,8 @@ package com.griefdefender.hooks.listener;
 
 import java.util.Set;
 
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -34,6 +36,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import com.griefdefender.api.ClanPlayer;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.User;
+import com.griefdefender.api.event.BorderClaimEvent;
 import com.griefdefender.api.event.PermissionIdentifyEvent;
 import com.griefdefender.api.permission.Context;
 import com.griefdefender.api.permission.ContextKeys;
@@ -61,6 +64,26 @@ public class GDPermissionEventListener {
                         }
                     }
                 }
+                if (object instanceof Block) {
+                    final Block block = (Block) object;
+                    if (GDHooks.getInstance().getNovaProvider() != null) {
+                        final String blockId = GDHooks.getInstance().getNovaProvider().getTileEntityId(block.getState());
+                        if (blockId != null) {
+                            event.setNewIdentifier(blockId);
+                            return;
+                        }
+                    }
+                }
+                if (object instanceof BlockState) {
+                    final BlockState state = (BlockState) object;
+                    if (GDHooks.getInstance().getNovaProvider() != null) {
+                        final String blockId = GDHooks.getInstance().getNovaProvider().getTileEntityId(state);
+                        if (blockId != null) {
+                            event.setNewIdentifier(blockId);
+                            return;
+                        }
+                    }
+                }
                 if (object instanceof ItemStack) {
                     final ItemStack itemstack = (ItemStack) object;
                     if (GDHooks.getInstance().getMMOItemsProvider() != null) {
@@ -83,6 +106,13 @@ public class GDPermissionEventListener {
                     }
                     if (GDHooks.getInstance().getFurnitureLibProvider() != null) {
                         final String itemId = GDHooks.getInstance().getFurnitureLibProvider().getItemId(itemstack);
+                        if (itemId != null) {
+                            event.setNewIdentifier(itemId);
+                            return;
+                        }
+                    }
+                    if (GDHooks.getInstance().getNovaProvider() != null) {
+                        final String itemId = GDHooks.getInstance().getNovaProvider().getItemId(itemstack);
                         if (itemId != null) {
                             event.setNewIdentifier(itemId);
                             return;

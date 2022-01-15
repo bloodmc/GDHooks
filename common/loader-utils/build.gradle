@@ -28,19 +28,3 @@ dependencies {
 tasks.assemble {
    dependsOn(tasks.shadowJar)
 }
-
-artifacts {
-    archives shadowJar
-}
-
-shadowJar {
-    archiveName = "gdhooks-bukkit-${version}.jar"
-
-    from {
-        project(':bukkit').tasks.shadowJar.archiveFile
-    }
-}
-
-artifacts {
-    archives shadowJar
-}

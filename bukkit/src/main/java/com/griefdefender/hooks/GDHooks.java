@@ -67,7 +67,8 @@ import com.griefdefender.hooks.provider.MMOItemsProvider;
 import com.griefdefender.hooks.provider.McMMOProvider;
 import com.griefdefender.hooks.provider.MyPetProvider;
 import com.griefdefender.hooks.provider.MythicMobsProvider;
-import com.griefdefender.hooks.provider.Pl3xmapProvider;
+import com.griefdefender.hooks.provider.NovaProvider;
+import com.griefdefender.hooks.provider.SquaremapProvider;
 import com.griefdefender.hooks.provider.RevoltCratesProvider;
 import com.griefdefender.hooks.provider.clan.guilds.GuildsClanProvider;
 import com.griefdefender.hooks.provider.clan.simpleclans.SimpleClanProvider;
@@ -131,7 +132,8 @@ public class GDHooks {
     private MMOItemsProvider mmoItemsProvider;
     private MyPetProvider myPetProvider;
     private MythicMobsProvider mythicMobsProvider;
-    private Pl3xmapProvider pl3xmapProvider;
+    private NovaProvider novaProvider;
+    private SquaremapProvider squaremapProvider;
     private RevoltCratesProvider revoltCratesProvider;
     private TownyProvider townyProvider;
 
@@ -222,10 +224,10 @@ public class GDHooks {
             this.dynmapProvider = new DynmapProvider();
             this.getLogger().info("Dynmap provider enabled!");
         }
-        if (Bukkit.getPluginManager().getPlugin("Pl3xMap") != null && Bukkit.getPluginManager().getPlugin("Pl3xMap").isEnabled()
-                && this.config.getData().pl3xmap.enabled && this.config.getData().providerCategory.pl3xmap) {
-            this.pl3xmapProvider = new Pl3xmapProvider();
-            this.getLogger().info("Pl3xmap provider enabled!");
+        if (Bukkit.getPluginManager().getPlugin("squaremap") != null && Bukkit.getPluginManager().getPlugin("squaremap").isEnabled()
+                && this.config.getData().squaremap.enabled && this.config.getData().providerCategory.squaremap) {
+            this.squaremapProvider = new SquaremapProvider();
+            this.getLogger().info("Squaremap provider enabled!");
         }
         if (Bukkit.getPluginManager().getPlugin("CustomItems") != null && Bukkit.getPluginManager().getPlugin("CustomItems").isEnabled() && this.config.getData().providerCategory.customItems) {
             this.customItemsProvider = new CustomItemsProvider();
@@ -254,6 +256,10 @@ public class GDHooks {
         if (Bukkit.getPluginManager().getPlugin("MythicMobs") != null && Bukkit.getPluginManager().getPlugin("MythicMobs").isEnabled() && this.config.getData().providerCategory.mythicMobs) {
             this.mythicMobsProvider = new MythicMobsProvider();
             this.getLogger().info("MythicMobs provider enabled!");
+        }
+        if (Bukkit.getPluginManager().getPlugin("Nova") != null && Bukkit.getPluginManager().getPlugin("Nova").isEnabled() && this.config.getData().providerCategory.nova) {
+            this.novaProvider = new NovaProvider();
+            this.getLogger().info("Nova provider enabled!");
         }
         if (Bukkit.getPluginManager().getPlugin("RevoltCrates") != null && Bukkit.getPluginManager().getPlugin("RevoltCrates").isEnabled() && this.config.getData().providerCategory.revoltCrates) {
             this.revoltCratesProvider = new RevoltCratesProvider();
@@ -474,6 +480,10 @@ public class GDHooks {
         return this.mythicMobsProvider;
     }
 
+    public NovaProvider getNovaProvider() {
+        return this.novaProvider;
+    }
+
     public RevoltCratesProvider getRevoltCratesProvider() {
         return this.revoltCratesProvider;
     }
@@ -490,8 +500,8 @@ public class GDHooks {
         return this.dynmapProvider;
     }
 
-    public Pl3xmapProvider getPl3xmapProvider() {
-        return this.pl3xmapProvider;
+    public SquaremapProvider getSquaremapProvider() {
+        return this.squaremapProvider;
     }
 
     public GDHooksConfig getConfig() {

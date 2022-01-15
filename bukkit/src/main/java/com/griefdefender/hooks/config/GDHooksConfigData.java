@@ -34,7 +34,7 @@ import com.griefdefender.hooks.config.category.ConfigCategory;
 import com.griefdefender.hooks.config.category.DynmapCategory;
 import com.griefdefender.hooks.config.category.MessageCategory;
 import com.griefdefender.hooks.config.category.ProviderCategory;
-import com.griefdefender.hooks.config.category.Pl3xmapCategory;
+import com.griefdefender.hooks.config.category.SquaremapCategory;
 
 @ConfigSerializable
 public class GDHooksConfigData extends ConfigCategory {
@@ -49,7 +49,7 @@ public class GDHooksConfigData extends ConfigCategory {
     public DynmapCategory dynmap = new DynmapCategory();
 
     @Setting
-    public Pl3xmapCategory pl3xmap = new Pl3xmapCategory();
+    public SquaremapCategory squaremap = new SquaremapCategory();
 
     @Setting
     public MessageCategory message = new MessageCategory();
