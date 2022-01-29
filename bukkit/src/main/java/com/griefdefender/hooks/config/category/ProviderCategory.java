@@ -55,6 +55,9 @@ public class ProviderCategory extends ConfigCategory {
     @Setting(value = "Slabbo")
     public boolean slabbo = true;
 
+    @Setting(value = "TradeShop")
+    public boolean tradeShop = true;
+
     @Setting(value = "UltimateShops")
     public boolean ultimateShops = true;
 

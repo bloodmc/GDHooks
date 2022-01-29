@@ -83,6 +83,7 @@ import com.griefdefender.hooks.provider.shop.QuickShopProvider;
 import com.griefdefender.hooks.provider.shop.ShopChestProvider;
 import com.griefdefender.hooks.provider.shop.ShopProvider;
 import com.griefdefender.hooks.provider.shop.SlabboProvider;
+import com.griefdefender.hooks.provider.shop.TradeShopProvider;
 import com.griefdefender.hooks.provider.shop.UltimateShopsProvider;
 
 import co.aikar.commands.PaperCommandManager;
@@ -206,6 +207,10 @@ public class GDHooks {
             if (Bukkit.getPluginManager().getPlugin("Slabbo") != null && Bukkit.getPluginManager().getPlugin("Slabbo").isEnabled() && this.config.getData().providerCategory.slabbo) {
                 this.shopProvider = new SlabboProvider();
                 this.getLogger().info("Slabbo provider enabled!");
+            }
+            if (Bukkit.getPluginManager().getPlugin("TradeShop") != null && Bukkit.getPluginManager().getPlugin("TradeShop").isEnabled() && this.config.getData().providerCategory.tradeShop) {
+                this.shopProvider = new TradeShopProvider();
+                this.getLogger().info("TradeShop provider enabled!");
             }
             if (Bukkit.getPluginManager().getPlugin("UltimateShops") != null && Bukkit.getPluginManager().getPlugin("UltimateShops").isEnabled() && this.config.getData().providerCategory.ultimateShops) {
                 this.shopProvider = new UltimateShopsProvider();
