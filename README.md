@@ -23,6 +23,7 @@
 * [ShopChest]: [ [Spigot](https://www.spigotmc.org/resources/11431/) | [Github](https://github.com/EpicEricEE/ShopChest) ]
 * [Shop]: [ [Spigot](https://www.spigotmc.org/resources/shop-a-simple-intuitive-shop-plugin.9628/) ]
 * [Slabbo]: [ [Spigot](https://www.spigotmc.org/resources/81368/) | [Github](https://github.com/sevn65/Slaboo) ]
+* [TradeShop]: [ [Spigot](https://www.spigotmc.org/resources/tradeshop.32762/) | [Github](https://github.com/Tradeshop/TradeShop) ]
 * [UltimateShops]: [ [Lite](https://www.spigotmc.org/resources/61048/) | [Premium](https://www.spigotmc.org/resources/64925/) ]
 
 **Misc**
