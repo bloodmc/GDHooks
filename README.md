@@ -7,7 +7,14 @@
 
 #### Supported By GDHooks
 
- **Map**
+**Clan**
+
+* [Guilds]: [ [Spigot](https://www.spigotmc.org/resources/66176/) | [Github](https://github.com/guilds-plugin/Guilds) ]
+* [SimpleClans]: [ [Spigot](https://www.spigotmc.org/resources/71242/) | [Github](https://github.com/RoinujNosde/SimpleClans) ]
+* [Towny]: [ [Spigot](https://www.spigotmc.org/resources/72694/) | [Github](https://github.com/TownyAdvanced/Towny) ]
+* [UltimateClans(Paid)]: [ [Spigot](https://www.spigotmc.org/resources/85615/) ]
+
+**Map**
 
 * [BlueMap]: [ [Github](https://github.com/BlueMap-Minecraft/BlueMap) | [Spigot](https://www.spigotmc.org/resources/83557/) | [Ore](https://ore.spongepowered.org/Blue/BlueMap) ]
 * [Dynmap]: [ [Github](https://github.com/webbukkit/dynmap) | [Spigot](https://www.spigotmc.org/resources/274/) ]
@@ -37,8 +44,6 @@
 * [MythicMobs]: [ [Free](https://www.spigotmc.org/resources/5702/) | [Premium](https://www.spigotmc.org/resources/58415/) ]
 * [Nova]: [ [Spigot](https://www.spigotmc.org/resources/93648/) | [Github](https://github.com/xenondevs/Nova) ]
 * [RevoltCrates(Paid)]: [ [Spigot](https://www.spigotmc.org/resources/81681/) ]
-* [SimpleClans]: [ [Spigot](https://www.spigotmc.org/resources/71242/) | [Github](https://github.com/RoinujNosde/SimpleClans) ]
-* [Towny]: [ [Spigot](https://www.spigotmc.org/resources/72694/) | [Github](https://github.com/TownyAdvanced/Towny) ]
 
 #### Supported By Plugin Side
 
@@ -64,9 +69,9 @@
 * [Regionerator]: [ [Github](https://github.com/Jikoo/Regionerator) ] (Delete Claim when its region was eratored by Regionerator)
 * [[Parties](https://alessiodp.com/parties)]: [ [Spigot](https://bit.ly/parties-spigot) | [Bukkit](https://bit.ly/parties-bukkit) | [Github](https://github.com/AlessioDP/Parties) ] (Giving claims' permission to Parties Member)
 
-  ##### WIP
+##### WIP
   
-  [Cartographer2](https://github.com/BananaPuncher714/Cartographer2/issues/17)
+[Cartographer2](https://github.com/BananaPuncher714/Cartographer2/issues/17)
 
 ## Prerequisites
 
