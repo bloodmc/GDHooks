@@ -136,7 +136,6 @@ public class GDHooks {
     private NovaProvider novaProvider;
     private SquaremapProvider squaremapProvider;
     private RevoltCratesProvider revoltCratesProvider;
-    private TownyProvider townyProvider;
 
     public static GDHooks getInstance() {
         if (instance == null) {
@@ -270,11 +269,12 @@ public class GDHooks {
             this.revoltCratesProvider = new RevoltCratesProvider();
             this.getLogger().info("RevoltCrates provider enabled!");
         }
+        // Clan plugins
         if (Bukkit.getPluginManager().getPlugin("Towny") != null && Bukkit.getPluginManager().getPlugin("Towny").isEnabled() && this.config.getData().providerCategory.towny) {
-            this.townyProvider = new TownyProvider();
+            this.clanProvider = new TownyProvider();
+            this.registerClanCommands();
             this.getLogger().info("Towny provider enabled!");
         }
-        // Clan plugins
         if (Bukkit.getPluginManager().getPlugin("Guilds") != null && Bukkit.getPluginManager().getPlugin("Guilds").isEnabled() && this.config.getData().providerCategory.guilds) {
             this.clanProvider = new GuildsClanProvider();
             this.registerClanCommands();
