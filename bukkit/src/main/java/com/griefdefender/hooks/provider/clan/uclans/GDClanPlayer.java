@@ -80,6 +80,9 @@ public class GDClanPlayer implements ClanPlayer {
     @Override
     public Clan getClan() {
         final me.ulrich.clans.data.ClanData clanData = this.plugin.getClanAPI().getClan(this.pluginClanPlayer.getClan_id());
+        if (clanData == null) {
+            return null;
+        }
         return GDHooks.getInstance().getClanProvider().getClan(clanData.getTag());
     }
 
