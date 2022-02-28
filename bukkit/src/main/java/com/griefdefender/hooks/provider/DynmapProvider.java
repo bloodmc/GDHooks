@@ -284,15 +284,16 @@ public class DynmapProvider {
 
     private void updateClaims() {
         Map<String, AreaMarker> newmap = new HashMap<String, AreaMarker>();
-        Bukkit.getServer().getWorlds().stream().map(w -> GriefDefender.getCore().getClaimManager(w.getUID()))
-                .map(ClaimManager::getWorldClaims).forEach(claims -> {
-                    for (Claim claim : claims) {
-                        updateClaimMarker(claim, newmap);
-                        for (Claim child : claim.getChildren(true)) {
-                            updateClaimMarker(child, newmap);
-                        }
-                    }
-                });
+        for (World world : Bukkit.getServer().getWorlds()) {
+            final ClaimManager claimManager = GriefDefender.getCore().getClaimManager(world.getUID());
+            final List<Claim> worldClaims = new ArrayList<>(claimManager.getWorldClaims());
+            for (Claim claim : worldClaims) {
+                updateClaimMarker(claim, newmap);
+                for (Claim child : claim.getChildren(true)) {
+                    updateClaimMarker(child, newmap);
+                }
+            }
+        }
 
         for (AreaMarker oldm : this.areaMarkers.values()) {
             oldm.deleteMarker();
@@ -354,7 +355,7 @@ public class DynmapProvider {
     private class GriefDefenderUpdate extends BukkitRunnable {
 
         public GriefDefenderUpdate(long delay) {
-            this.runTaskLater(GDHooksBootstrap.getInstance().getLoader(), delay);
+            this.runTaskLaterAsynchronously(GDHooksBootstrap.getInstance().getLoader(), delay);
         }
 
         @Override
@@ -392,7 +393,7 @@ public class DynmapProvider {
         private class GriefDefenderUpdate extends BukkitRunnable {
 
             public GriefDefenderUpdate(long delay) {
-                this.runTaskLater(GDHooksBootstrap.getInstance().getLoader(), delay);
+                this.runTaskLaterAsynchronously(GDHooksBootstrap.getInstance().getLoader(), delay);
             }
 
             @Override

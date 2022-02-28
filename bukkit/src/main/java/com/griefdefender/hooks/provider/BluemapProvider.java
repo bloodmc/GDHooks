@@ -345,7 +345,7 @@ public class BluemapProvider {
     private class GriefDefenderFullUpdate extends BukkitRunnable {
 
         public GriefDefenderFullUpdate(long delay) {
-            this.runTaskLater(GDHooksBootstrap.getInstance().getLoader(), delay);
+            this.runTaskLaterAsynchronously(GDHooksBootstrap.getInstance().getLoader(), delay);
         }
 
         @Override
@@ -373,7 +373,7 @@ public class BluemapProvider {
             public GriefDefenderUpdate(List<Claim> claims, long delay, boolean delete) {
                 this.delete = delete;
                 this.claims = claims;
-                this.runTaskLater(GDHooksBootstrap.getInstance().getLoader(), delay);
+                this.runTaskLaterAsynchronously(GDHooksBootstrap.getInstance().getLoader(), delay);
             }
 
             @Override
