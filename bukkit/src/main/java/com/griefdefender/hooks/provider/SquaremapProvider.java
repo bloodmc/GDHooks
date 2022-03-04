@@ -38,13 +38,16 @@ import com.griefdefender.api.claim.ClaimTypes;
 import com.griefdefender.api.claim.TrustTypes;
 import com.griefdefender.api.event.ChangeClaimEvent;
 import com.griefdefender.api.event.CreateClaimEvent;
+import com.griefdefender.api.event.LoadClaimEvent;
 import com.griefdefender.api.event.RemoveClaimEvent;
 import com.griefdefender.hooks.GDHooks;
 import com.griefdefender.hooks.GDHooksBootstrap;
 import com.griefdefender.hooks.config.category.SquaremapCategory;
 import com.griefdefender.hooks.config.category.SquaremapOwnerStyleCategory;
+import com.griefdefender.hooks.provider.DynmapProvider.ClaimEventListener;
 
 import com.griefdefender.lib.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import com.griefdefender.lib.kyori.event.EventSubscriber;
 import xyz.jpenilla.squaremap.api.BukkitAdapter;
 import xyz.jpenilla.squaremap.api.Key;
 import xyz.jpenilla.squaremap.api.MapWorld;
@@ -96,7 +99,7 @@ public class SquaremapProvider {
         }
 
         xyz.jpenilla.squaremap.api.SquaremapProvider.get().mapWorlds().forEach(world -> {
-            final World bukkitWorld = Bukkit.getWorld(world.name());
+            final World bukkitWorld = Bukkit.getWorld(world.identifier().value());
             if (bukkitWorld == null) {
                 return;
             }
@@ -107,10 +110,10 @@ public class SquaremapProvider {
                         .defaultHidden(cfg.control_hide)
                         .build();
                 
-                world.layerRegistry().register(Key.of("griefdefender_" + world.name().toLowerCase()), provider);
+                world.layerRegistry().register(Key.of("griefdefender_" + world.identifier().value().toLowerCase()), provider);
                 SquaremapTask task = new SquaremapTask(world, provider);
                 task.runTaskTimerAsynchronously(GDHooksBootstrap.getInstance().getLoader(), 0, 20L * cfg.UPDATE_INTERVAL);
-                this.provider.put(world.name().toLowerCase(), task);
+                this.provider.put(world.identifier().value().toLowerCase(), task);
             }
     });
         new ClaimEventListener();
@@ -145,13 +148,13 @@ public class SquaremapProvider {
             List<Claim> claims = GriefDefender.getCore().getAllClaims();
             if (claims != null) {
                 claims.stream()
-                        .filter(claim -> claim.getWorldName().equals(this.world.name().toLowerCase()))
+                        .filter(claim -> claim.getWorldName().equals(this.world.identifier().value().toLowerCase()))
                         .forEach(this::handleClaim);
             }
         }
 
         void deleteClaim(Claim claim) {
-            String markerid = "griefdefender_" + world.name() + "_region_" + claim.getUniqueId();
+            String markerid = "griefdefender_" + this.world.identifier().value() + "_region_" + claim.getUniqueId();
             if (provider.hasMarker(Key.of(markerid))) {
                 provider.removeMarker(Key.of(markerid));
             }
@@ -213,7 +216,7 @@ public class SquaremapProvider {
                     .fillColor(hex2Rgb(fc))
                     .fillOpacity(ownerStyle.Fill_Opacity)
                     .clickTooltip((claim.isAdminClaim() ? cfg.ADMIN_CLAIM_TOOLTIP : cfg.CLAIM_TOOLTIP)
-                            .replace("%world%", world.name())
+                            .replace("%world%", this.world.identifier().value())
                             .replace("%uuid%", claim.getUniqueId().toString())
                             .replace("%owner%", claim.getOwnerName())
                             .replace("%owneruuid%", claim.getOwnerUniqueId().toString())
@@ -235,7 +238,7 @@ public class SquaremapProvider {
 
             rect.markerOptions(options);
 
-            String markerid = "griefdefender_" + world.name() + "_region_" + claim.getUniqueId();
+            String markerid = "griefdefender_" + this.world.identifier().value() + "_region_" + claim.getUniqueId();
             this.provider.addMarker(Key.of(markerid), rect);
         }
 
@@ -269,7 +272,24 @@ public class SquaremapProvider {
 
   public static class ClaimEventListener {
       public ClaimEventListener() {
-          GriefDefender.getEventManager().getBus().subscribe(CreateClaimEvent.class, event -> new GriefDefenderUpdate(event.getClaims(), 20L, false));
+          GriefDefender.getEventManager().getBus().subscribe(CreateClaimEvent.class, new EventSubscriber<CreateClaimEvent>() {
+              @Override
+              public void on(CreateClaimEvent event) throws Throwable {
+                  if (event instanceof CreateClaimEvent.Pre) {
+                      return;
+                  }
+                  new ClaimEventListener.GriefDefenderUpdate(event.getClaims(), 20L, false);
+              }
+          });
+          GriefDefender.getEventManager().getBus().subscribe(LoadClaimEvent.class, new EventSubscriber<LoadClaimEvent>() {
+              @Override
+              public void on(LoadClaimEvent event) throws Throwable {
+                  if (event instanceof LoadClaimEvent.Pre) {
+                      return;
+                  }
+                  new ClaimEventListener.GriefDefenderUpdate(event.getClaims(), 20L, false);
+              }
+          });
           GriefDefender.getEventManager().getBus().subscribe(RemoveClaimEvent.class, event -> new GriefDefenderUpdate(event.getClaims(), 20L, true));
           GriefDefender.getEventManager().getBus().subscribe(ChangeClaimEvent.class, event -> new GriefDefenderUpdate(event.getClaims(), 20L, false));
      }

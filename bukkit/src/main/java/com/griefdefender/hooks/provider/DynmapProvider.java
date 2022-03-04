@@ -27,11 +27,11 @@ package com.griefdefender.hooks.provider;
 
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
-import com.griefdefender.api.claim.ClaimManager;
 import com.griefdefender.api.claim.ClaimTypes;
 import com.griefdefender.api.claim.TrustTypes;
 import com.griefdefender.api.event.ChangeClaimEvent;
 import com.griefdefender.api.event.CreateClaimEvent;
+import com.griefdefender.api.event.LoadClaimEvent;
 import com.griefdefender.api.event.RemoveClaimEvent;
 import com.griefdefender.hooks.GDHooks;
 import com.griefdefender.hooks.GDHooksBootstrap;
@@ -39,13 +39,12 @@ import com.griefdefender.hooks.config.category.DynmapCategory;
 import com.griefdefender.hooks.config.category.DynmapOwnerStyleCategory;
 
 import com.griefdefender.lib.flowpowered.math.vector.Vector3i;
-import com.griefdefender.lib.kyori.event.EventSubscriber;
 import com.griefdefender.lib.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
+import com.griefdefender.lib.kyori.event.EventSubscriber;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.dynmap.DynmapCommonAPI;
 import org.dynmap.DynmapCommonAPIListener;
 import org.dynmap.markers.AreaMarker;
@@ -55,6 +54,7 @@ import org.dynmap.markers.MarkerSet;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -239,7 +239,7 @@ public class DynmapProvider {
         }
     }
 
-    private void updateClaimMarker(Claim claim, Map<String, AreaMarker> markerMap) {
+    private void updateClaimMarker(Claim claim) {
         final World world = Bukkit.getWorld(claim.getWorldUniqueId());
         if (world == null) {
             return;
@@ -278,28 +278,58 @@ public class DynmapProvider {
             addClaimStyle(claim, marker, worldName, owner);
             String desc = getWindowInfo(claim, marker);
             marker.setDescription(desc);
-            markerMap.put(markerid, marker);
+            this.areaMarkers.put(markerid, marker);
         }
     }
 
-    private void updateClaims() {
-        Map<String, AreaMarker> newmap = new HashMap<String, AreaMarker>();
-        for (World world : Bukkit.getServer().getWorlds()) {
-            final ClaimManager claimManager = GriefDefender.getCore().getClaimManager(world.getUID());
-            final List<Claim> worldClaims = new ArrayList<>(claimManager.getWorldClaims());
-            for (Claim claim : worldClaims) {
-                updateClaimMarker(claim, newmap);
+    private void updateClaims(List<Claim> claims, boolean delete) {
+        if (delete) {
+            for (Claim claim : claims) {
+                final UUID id = claim.getUniqueId();
+                final String markerid = "GD_" + id;
+                final AreaMarker marker = this.areaMarkers.get(markerid);
+                if (marker != null) {
+                    marker.deleteMarker();
+                    this.areaMarkers.remove(markerid);
+                }
+            }
+            // Validate existing markers
+            final Iterator<AreaMarker> iterator = this.areaMarkers.values().iterator();
+            while (iterator.hasNext()) {
+                final AreaMarker marker = iterator.next();
+                UUID uuid = null;
+                try {
+                    uuid = UUID.fromString(marker.getMarkerID().replace("GD_", ""));
+                    // If claim does not exist, delete marker
+                    if (GriefDefender.getCore().getClaim(uuid) == null) {
+                        marker.deleteMarker();
+                        iterator.remove();
+                    }
+                } catch (Throwable t) {
+                    
+                }
+            }
+            return;
+        }
+
+        if (claims.isEmpty()) {
+            for (Claim claim : GriefDefender.getCore().getAllClaims()) {
+                if (claim.isWilderness()) {
+                    continue;
+                }
+                updateClaimMarker(claim);
                 for (Claim child : claim.getChildren(true)) {
-                    updateClaimMarker(child, newmap);
+                    updateClaimMarker(child);
+                }
+            }
+        } else {
+            for (Claim claim : claims) {
+                updateClaimMarker(claim);
+                for (Claim child : claim.getChildren(true)) {
+                    updateClaimMarker(child);
                 }
             }
         }
-
-        for (AreaMarker oldm : this.areaMarkers.values()) {
-            oldm.deleteMarker();
-        }
-
-        this.areaMarkers = newmap;
     }
 
     private void activate() {
@@ -338,7 +368,7 @@ public class DynmapProvider {
         this.set.setLayerPriority(this.cfg.layerPriority);
         this.set.setHideByDefault(this.cfg.layerHideByDefault);
 
-        new GriefDefenderUpdate(40L);
+        new GriefDefenderUpdate(new ArrayList<>(), 40L);
         new ClaimEventListener();
         this.logger.info("Dynmap provider is activated");
     }
@@ -354,14 +384,17 @@ public class DynmapProvider {
 
     private class GriefDefenderUpdate extends BukkitRunnable {
 
-        public GriefDefenderUpdate(long delay) {
+        private List<Claim> claims;
+
+        public GriefDefenderUpdate(List<Claim> claims, long delay) {
+            this.claims = claims;
             this.runTaskLaterAsynchronously(GDHooksBootstrap.getInstance().getLoader(), delay);
         }
 
         @Override
         public void run() {
             if (!disabled) {
-                updateClaims();
+                updateClaims(claims, false);
             } else {
                 this.cancel();
             }
@@ -372,35 +405,43 @@ public class DynmapProvider {
         public ClaimEventListener() {
             GriefDefender.getEventManager().getBus().subscribe(CreateClaimEvent.class, new EventSubscriber<CreateClaimEvent>() {
                 @Override
-                public void on(@NonNull CreateClaimEvent event) throws Throwable {
-                    new ClaimEventListener.GriefDefenderUpdate(20L);
+                public void on(CreateClaimEvent event) throws Throwable {
+                    if (event instanceof CreateClaimEvent.Pre) {
+                        return;
+                    }
+                    new ClaimEventListener.GriefDefenderUpdate(event.getClaims(), 20L, false);
                 }
             });
-            GriefDefender.getEventManager().getBus().subscribe(RemoveClaimEvent.class, new EventSubscriber<RemoveClaimEvent>() {
+            GriefDefender.getEventManager().getBus().subscribe(LoadClaimEvent.class, new EventSubscriber<LoadClaimEvent>() {
                 @Override
-                public void on(@NonNull RemoveClaimEvent event) throws Throwable {
-                    new ClaimEventListener.GriefDefenderUpdate(20L);
+                public void on(LoadClaimEvent event) throws Throwable {
+                    if (event instanceof LoadClaimEvent.Pre) {
+                        return;
+                    }
+                    new ClaimEventListener.GriefDefenderUpdate(event.getClaims(), 20L, false);
                 }
             });
-            GriefDefender.getEventManager().getBus().subscribe(ChangeClaimEvent.class, new EventSubscriber<ChangeClaimEvent>() {
-                @Override
-                public void on(@NonNull ChangeClaimEvent event) throws Throwable {
-                    new ClaimEventListener.GriefDefenderUpdate(20L);
-                }
-            });
+            GriefDefender.getEventManager().getBus().subscribe(RemoveClaimEvent.class, event -> new GriefDefenderUpdate(event.getClaims(), 20L, true));
+            GriefDefender.getEventManager().getBus().subscribe(ChangeClaimEvent.class, event -> new GriefDefenderUpdate(event.getClaims(), 20L, false));
         }
 
         private class GriefDefenderUpdate extends BukkitRunnable {
 
-            public GriefDefenderUpdate(long delay) {
+            private List<Claim> claims;
+            private boolean delete = false;
+
+            public GriefDefenderUpdate(List<Claim> claims, long delay, boolean delete) {
+                this.claims = claims;
+                this.delete = delete;
                 this.runTaskLaterAsynchronously(GDHooksBootstrap.getInstance().getLoader(), delay);
             }
 
             @Override
             public void run() {
                 if (!GDHooks.getInstance().getDynmapProvider().disabled) {
-                    GDHooks.getInstance().getDynmapProvider().updateClaims();
+                    GDHooks.getInstance().getDynmapProvider().updateClaims(this.claims, this.delete);
                 } else {
+                    Thread.dumpStack();
                     this.cancel();
                 }
             }

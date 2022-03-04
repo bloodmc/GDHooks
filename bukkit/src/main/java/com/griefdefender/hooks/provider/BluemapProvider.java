@@ -42,11 +42,13 @@ import com.griefdefender.api.claim.ClaimTypes;
 import com.griefdefender.api.claim.TrustTypes;
 import com.griefdefender.api.event.ChangeClaimEvent;
 import com.griefdefender.api.event.CreateClaimEvent;
+import com.griefdefender.api.event.LoadClaimEvent;
 import com.griefdefender.api.event.RemoveClaimEvent;
 import com.griefdefender.hooks.GDHooks;
 import com.griefdefender.hooks.GDHooksBootstrap;
 import com.griefdefender.hooks.config.category.BluemapCategory;
 import com.griefdefender.hooks.config.category.BluemapOwnerStyleCategory;
+import com.griefdefender.hooks.provider.DynmapProvider.ClaimEventListener;
 
 import de.bluecolored.bluemap.api.BlueMapAPI;
 import de.bluecolored.bluemap.api.BlueMapWorld;
@@ -56,6 +58,7 @@ import de.bluecolored.bluemap.api.marker.MarkerAPI;
 import de.bluecolored.bluemap.api.marker.MarkerSet;
 import de.bluecolored.bluemap.api.marker.Shape;
 import com.griefdefender.lib.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
+import com.griefdefender.lib.kyori.event.EventSubscriber;
 
 public class BluemapProvider {
 
@@ -360,7 +363,24 @@ public class BluemapProvider {
 
     public static class ClaimEventListener {
         public ClaimEventListener() {
-            GriefDefender.getEventManager().getBus().subscribe(CreateClaimEvent.class, event -> new GriefDefenderUpdate(event.getClaims(), 20L, false));
+            GriefDefender.getEventManager().getBus().subscribe(CreateClaimEvent.class, new EventSubscriber<CreateClaimEvent>() {
+                @Override
+                public void on(CreateClaimEvent event) throws Throwable {
+                    if (event instanceof CreateClaimEvent.Pre) {
+                        return;
+                    }
+                    new ClaimEventListener.GriefDefenderUpdate(event.getClaims(), 20L, false);
+                }
+            });
+            GriefDefender.getEventManager().getBus().subscribe(LoadClaimEvent.class, new EventSubscriber<LoadClaimEvent>() {
+                @Override
+                public void on(LoadClaimEvent event) throws Throwable {
+                    if (event instanceof LoadClaimEvent.Pre) {
+                        return;
+                    }
+                    new ClaimEventListener.GriefDefenderUpdate(event.getClaims(), 20L, false);
+                }
+            });
             GriefDefender.getEventManager().getBus().subscribe(RemoveClaimEvent.class, event -> new GriefDefenderUpdate(event.getClaims(), 20L, true));
             GriefDefender.getEventManager().getBus().subscribe(ChangeClaimEvent.class, event -> new GriefDefenderUpdate(event.getClaims(), 20L, false));
         }
