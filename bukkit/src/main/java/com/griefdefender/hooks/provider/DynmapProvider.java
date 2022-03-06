@@ -58,6 +58,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 public class DynmapProvider {
@@ -84,7 +85,7 @@ public class DynmapProvider {
         });
     }
 
-    private Map<String, AreaMarker> areaMarkers = new HashMap<String, AreaMarker>();
+    private Map<String, AreaMarker> areaMarkers = new ConcurrentHashMap<>();
 
     private String getWindowInfo(Claim claim, AreaMarker marker) {
         String info;
