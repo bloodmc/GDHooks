@@ -26,7 +26,6 @@ package com.griefdefender.hooks.provider.shop;
 
 import org.bukkit.Location;
 import org.shanerx.tradeshop.enumys.ShopType;
-import org.shanerx.tradeshop.objects.ShopChest;
 
 public class TradeShopProvider implements GDShopProvider {
 
@@ -35,7 +34,7 @@ public class TradeShopProvider implements GDShopProvider {
 
     @Override
     public boolean isLocationShop(Location location) {
-        return ShopChest.isShopChest(location.getBlock()) || ShopType.isShop(location.getBlock());
+        return ShopType.isShop(location.getBlock());
     }
 
 }
