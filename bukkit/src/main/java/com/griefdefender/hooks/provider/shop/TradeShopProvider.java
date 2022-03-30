@@ -24,21 +24,18 @@
  */
 package com.griefdefender.hooks.provider.shop;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.shanerx.tradeshop.TradeShop;
+import org.shanerx.tradeshop.enumys.ShopType;
+import org.shanerx.tradeshop.objects.ShopChest;
 
 public class TradeShopProvider implements GDShopProvider {
 
-    private final TradeShop plugin;
-
     public TradeShopProvider() {
-        this.plugin =  (TradeShop) Bukkit.getPluginManager().getPlugin("TradeShop");
     }
 
     @Override
     public boolean isLocationShop(Location location) {
-        return this.plugin.getSigns().checkShopChest(location.getBlock());
+        return ShopChest.isShopChest(location.getBlock()) || ShopType.isShop(location.getBlock());
     }
 
 }
