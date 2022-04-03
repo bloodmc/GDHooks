@@ -63,7 +63,6 @@ import java.util.logging.Logger;
 
 public class DynmapProvider {
 
-    private static final String MOD_ID = "GriefDefender";
     private final Logger logger;
     private DynmapCommonAPI dynmap;
     private MarkerAPI markerapi;
@@ -100,10 +99,16 @@ public class DynmapProvider {
         info = info.replace("%claimname%",
                 claim.getData().getDisplayNameComponent().isPresent()
                         ? PlainComponentSerializer.plain().serialize(claim.getDisplayNameComponent().get())
-                        : "none");
+                        : cfg.missingNamePlaceholder);
         final Date lastActive = Date.from(claim.getData().getDateLastActive());
         info = info.replace("%lastseen%", lastActive.toString());
         info = info.replace("%gdtype%", claim.getType().toString());
+
+        info = info.replace("%width%", Integer.toString(claim.getWidth()));
+        info = info.replace("%length%", Integer.toString(claim.getLength()));
+        info = info.replace("%height%", Integer.toString(claim.getHeight()));
+        info = info.replace("%area%", Integer.toString(claim.getArea()));
+        info = info.replace("%volume%", Integer.toString(claim.getVolume()));
 
         final List<UUID> builderList = new ArrayList<>(claim.getUserTrusts(TrustTypes.BUILDER));
         final List<UUID> containerList = new ArrayList<>(claim.getUserTrusts(TrustTypes.CONTAINER));
@@ -352,9 +357,9 @@ public class DynmapProvider {
 
         this.set = this.markerapi.getMarkerSet("griefdefender.markerset");
         if (this.set == null) {
-            this.set = this.markerapi.createMarkerSet("griefdefender.markerset", MOD_ID, null, false);
+            this.set = this.markerapi.createMarkerSet("griefdefender.markerset", cfg.markerSetLabel, null, false);
         } else {
-            this.set.setMarkerSetLabel(MOD_ID);
+            this.set.setMarkerSetLabel(cfg.markerSetLabel);
         }
         if (this.set == null) {
             this.logger.severe("Error creating marker set");

@@ -85,6 +85,12 @@ public class DynmapCategory {
             + "Resident Trust: <span style=\"font-weight:bold;\">%residents%</span></div>"
             + "Access Trust: <span style=\"font-weight:bold;\">%accessors%</span></div>";
 
+    @Setting("marker-set-label")
+    public String markerSetLabel = "GriefDefender";
+
+    @Setting("missing-name-placeholder")
+    public String missingNamePlaceholder = "none";
+
     public DynmapCategory() {
         for (ClaimType type : GriefDefender.getRegistry().getAllOf(ClaimType.class)) {
             if (type == ClaimTypes.WILDERNESS) {
