@@ -46,6 +46,9 @@ public class ProviderCategory extends ConfigCategory {
     @Setting(value = "QuickShop")
     public boolean quickShop = true;
 
+    @Setting(value = "QuickShop-Hikari")
+    public boolean quickShopHikari = true;
+
     @Setting(value = "ShopChest")
     public boolean shopChest = true;
 

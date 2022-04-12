@@ -24,6 +24,7 @@
  */
 package com.griefdefender.hooks;
 
+import com.griefdefender.hooks.provider.shop.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.LocaleUtils;
 import org.bukkit.Bukkit;
@@ -74,17 +75,6 @@ import com.griefdefender.hooks.provider.clan.guilds.GuildsClanProvider;
 import com.griefdefender.hooks.provider.clan.simpleclans.SimpleClanProvider;
 import com.griefdefender.hooks.provider.clan.towny.TownyProvider;
 import com.griefdefender.hooks.provider.clan.uclans.UClansProvider;
-import com.griefdefender.hooks.provider.shop.BossShopProvider;
-import com.griefdefender.hooks.provider.shop.ChestShopProvider;
-import com.griefdefender.hooks.provider.shop.DynamicShopProvider;
-import com.griefdefender.hooks.provider.shop.GDShopProvider;
-import com.griefdefender.hooks.provider.shop.InsaneShopsProvider;
-import com.griefdefender.hooks.provider.shop.QuickShopProvider;
-import com.griefdefender.hooks.provider.shop.ShopChestProvider;
-import com.griefdefender.hooks.provider.shop.ShopProvider;
-import com.griefdefender.hooks.provider.shop.SlabboProvider;
-import com.griefdefender.hooks.provider.shop.TradeShopProvider;
-import com.griefdefender.hooks.provider.shop.UltimateShopsProvider;
 
 import co.aikar.commands.PaperCommandManager;
 import com.griefdefender.lib.kyori.adventure.text.Component;
@@ -194,6 +184,10 @@ public class GDHooks {
             if (Bukkit.getPluginManager().getPlugin("QuickShop") != null && Bukkit.getPluginManager().getPlugin("QuickShop").isEnabled() && this.config.getData().providerCategory.quickShop) {
                 this.shopProvider = new QuickShopProvider();
                 this.getLogger().info("QuickShop provider enabled!");
+            }
+            if (Bukkit.getPluginManager().getPlugin("QuickShop-Hikari") != null && Bukkit.getPluginManager().getPlugin("QuickShop-Hikari").isEnabled() && this.config.getData().providerCategory.quickShopHikari) {
+                this.shopProvider = new QuickShopHikariProvider();
+                this.getLogger().info("QuickShop-Hikari provider enabled!");
             }
             if (Bukkit.getPluginManager().getPlugin("ShopChest") != null && Bukkit.getPluginManager().getPlugin("ShopChest").isEnabled() && this.config.getData().providerCategory.shopChest) {
                 this.shopProvider = new ShopChestProvider();
