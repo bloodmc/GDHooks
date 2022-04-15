@@ -87,15 +87,10 @@ public class DynmapProvider {
     private Map<String, AreaMarker> areaMarkers = new ConcurrentHashMap<>();
 
     private String getWindowInfo(Claim claim, AreaMarker marker) {
-        String info;
-        if (claim.isAdminClaim()) {
-            info = "<div class=\"regioninfo\">" + this.cfg.infoWindowAdmin + "</div>";
-        } else {
-            info = "<div class=\"regioninfo\">" + this.cfg.infoWindowBasic + "</div>";
-        }
+        String info = claim.isAdminClaim() ? this.cfg.infoWindowAdmin : this.cfg.infoWindowBasic;
+
         info = info.replace("%owner%", claim.getOwnerName());
         info = info.replace("%owneruuid%", claim.getOwnerUniqueId().toString());
-        info = info.replace("%area%", Integer.toString(claim.getArea()));
         info = info.replace("%claimname%",
                 claim.getData().getDisplayNameComponent().isPresent()
                         ? PlainComponentSerializer.plain().serialize(claim.getDisplayNameComponent().get())
@@ -191,7 +186,7 @@ public class DynmapProvider {
         }
         info = info.replace("%managers%", trusted);
 
-        return info;
+        return "<div class=\"regioninfo\">" + info + "</div>";
     }
 
     private boolean isVisible(Claim claim, String owner, String worldname) {
