@@ -27,6 +27,7 @@
 * [DynamicShop]: [ [Spigot](https://www.spigotmc.org/resources/65603/) | [Github](https://github.com/7sat/SSDynamicShop) ]
 * [InsaneShops(Paid)]: [ [Spigot](https://www.spigotmc.org/resources/67352/) ]
 * [QuickShop]: [ [Spigot](https://www.spigotmc.org/resources/62575/) | [Github](https://github.com/Ghost-chu/QuickShop-Reremake) ]
+* [QuickShop-Hikari]: [ [Spigot](https://www.spigotmc.org/resources/100125/) | [Github](https://github.com/Ghost-chu/QuickShop-Hikari) ]
 * [ShopChest]: [ [Spigot](https://www.spigotmc.org/resources/11431/) | [Github](https://github.com/EpicEricEE/ShopChest) ]
 * [Shop]: [ [Spigot](https://www.spigotmc.org/resources/shop-a-simple-intuitive-shop-plugin.9628/) ]
 * [Slabbo]: [ [Spigot](https://www.spigotmc.org/resources/81368/) | [Github](https://github.com/sevn65/Slaboo) ]

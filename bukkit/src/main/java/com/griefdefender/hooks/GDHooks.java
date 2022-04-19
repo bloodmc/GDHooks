@@ -80,6 +80,7 @@ import com.griefdefender.hooks.provider.shop.DynamicShopProvider;
 import com.griefdefender.hooks.provider.shop.GDShopProvider;
 import com.griefdefender.hooks.provider.shop.InsaneShopsProvider;
 import com.griefdefender.hooks.provider.shop.QuickShopProvider;
+import com.griefdefender.hooks.provider.shop.QuickShopHikariProvider;
 import com.griefdefender.hooks.provider.shop.ShopChestProvider;
 import com.griefdefender.hooks.provider.shop.ShopProvider;
 import com.griefdefender.hooks.provider.shop.SlabboProvider;
@@ -194,6 +195,10 @@ public class GDHooks {
             if (Bukkit.getPluginManager().getPlugin("QuickShop") != null && Bukkit.getPluginManager().getPlugin("QuickShop").isEnabled() && this.config.getData().providerCategory.quickShop) {
                 this.shopProvider = new QuickShopProvider();
                 this.getLogger().info("QuickShop provider enabled!");
+            }
+            if (Bukkit.getPluginManager().getPlugin("QuickShop-Hikari") != null && Bukkit.getPluginManager().getPlugin("QuickShop-Hikari").isEnabled() && this.config.getData().providerCategory.quickShopHikari) {
+                this.shopProvider = new QuickShopHikariProvider();
+                this.getLogger().info("QuickShop-Hikari provider enabled!");
             }
             if (Bukkit.getPluginManager().getPlugin("ShopChest") != null && Bukkit.getPluginManager().getPlugin("ShopChest").isEnabled() && this.config.getData().providerCategory.shopChest) {
                 this.shopProvider = new ShopChestProvider();
