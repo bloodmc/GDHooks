@@ -102,6 +102,9 @@ public class ProviderCategory extends ConfigCategory {
     @Setting(value = "Nova")
     public boolean nova = true;
 
+    @Setting(value = "OreRegenerator")
+    public boolean oreRegenerator = true;
+
     @Setting(value = "Towny")
     public boolean towny = true;
 

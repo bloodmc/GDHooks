@@ -68,6 +68,7 @@ import com.griefdefender.hooks.provider.McMMOProvider;
 import com.griefdefender.hooks.provider.MyPetProvider;
 import com.griefdefender.hooks.provider.MythicMobsProvider;
 import com.griefdefender.hooks.provider.NovaProvider;
+import com.griefdefender.hooks.provider.OreRegeneratorProvider;
 import com.griefdefender.hooks.provider.SquaremapProvider;
 import com.griefdefender.hooks.provider.RevoltCratesProvider;
 import com.griefdefender.hooks.provider.clan.guilds.GuildsClanProvider;
@@ -135,6 +136,7 @@ public class GDHooks {
     private MyPetProvider myPetProvider;
     private MythicMobsProvider mythicMobsProvider;
     private NovaProvider novaProvider;
+    private OreRegeneratorProvider oreRegeneratorProvider;
     private SquaremapProvider squaremapProvider;
     private RevoltCratesProvider revoltCratesProvider;
 
@@ -269,6 +271,10 @@ public class GDHooks {
         if (Bukkit.getPluginManager().getPlugin("Nova") != null && Bukkit.getPluginManager().getPlugin("Nova").isEnabled() && this.config.getData().providerCategory.nova) {
             this.novaProvider = new NovaProvider();
             this.getLogger().info("Nova provider enabled!");
+        }
+        if (Bukkit.getPluginManager().getPlugin("OreRegenerator") != null && Bukkit.getPluginManager().getPlugin("OreRegenerator").isEnabled() && this.config.getData().providerCategory.oreRegenerator) {
+            this.oreRegeneratorProvider = new OreRegeneratorProvider();
+            this.getLogger().info("OreRegenerator provider enabled!");
         }
         if (Bukkit.getPluginManager().getPlugin("RevoltCrates") != null && Bukkit.getPluginManager().getPlugin("RevoltCrates").isEnabled() && this.config.getData().providerCategory.revoltCrates) {
             this.revoltCratesProvider = new RevoltCratesProvider();
@@ -492,6 +498,10 @@ public class GDHooks {
 
     public NovaProvider getNovaProvider() {
         return this.novaProvider;
+    }
+
+    public OreRegeneratorProvider getOreRegeneratorProvider() {
+        return this.oreRegeneratorProvider;
     }
 
     public RevoltCratesProvider getRevoltCratesProvider() {
