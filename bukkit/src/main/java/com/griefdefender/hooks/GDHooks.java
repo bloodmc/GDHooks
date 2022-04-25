@@ -58,7 +58,7 @@ import com.griefdefender.hooks.config.MessageConfig;
 import com.griefdefender.hooks.config.MessageConfigData;
 import com.griefdefender.hooks.listener.GDPermissionEventListener;
 import com.griefdefender.hooks.listener.GDShopEventListener;
-import com.griefdefender.hooks.provider.AureliumProvider;
+import com.griefdefender.hooks.provider.AureliumSkillsProvider;
 import com.griefdefender.hooks.provider.BluemapProvider;
 import com.griefdefender.hooks.provider.CustomItemsProvider;
 import com.griefdefender.hooks.provider.DynmapProvider;
@@ -125,7 +125,7 @@ public class GDHooks {
     private PaperCommandManager commandManager;
     public MessageConfig messageStorage;
     public MessageConfigData messageData;
-    private AureliumProvider aureliumProvider;
+    private AureliumSkillsProvider aureliumSkillsProvider;
     private BluemapProvider bluemapProvider;
     private ClanProvider clanProvider;
     private CustomItemsProvider customItemsProvider;
@@ -229,7 +229,7 @@ public class GDHooks {
             this.getLogger().info("Could not locate a compatible economy plugin for Vault. Please check with your server administrator.");
         }
         if(Bukkit.getPluginManager().getPlugin("AureliumSkills") != null && Bukkit.getPluginManager().getPlugin("AureliumSkills").isEnabled() && this.config.getData().providerCategory.aureliumSkills) {
-            this.aureliumProvider = new AureliumProvider();
+            this.aureliumSkillsProvider = new AureliumSkillsProvider();
             this.getLogger().info("AureliumSkills provider enabled!");
         }
         if (Bukkit.getPluginManager().getPlugin("BlueMap") != null && Bukkit.getPluginManager().getPlugin("BlueMap").isEnabled()
@@ -470,8 +470,8 @@ public class GDHooks {
 
     }
 
-    public AureliumProvider getAureliumProvider() {
-        return this.aureliumProvider;
+    public AureliumSkillsProvider getAureliumSkillsProvider() {
+        return this.aureliumSkillsProvider;
     }
 
     public ClanProvider getClanProvider() {

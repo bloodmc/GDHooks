@@ -41,7 +41,6 @@ import com.griefdefender.api.permission.flag.Flag;
 import com.griefdefender.api.permission.option.Option;
 import com.griefdefender.hooks.GDHooks;
 import com.griefdefender.hooks.GDHooksBootstrap;
-
 import com.griefdefender.lib.geantyref.TypeToken;
 
 import org.bukkit.Bukkit;
@@ -55,7 +54,7 @@ import org.bukkit.event.Listener;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AureliumProvider implements Listener {
+public class AureliumSkillsProvider implements Listener {
 
     private final AureliumSkills plugin;
     private final Option<Double> XP_GAIN_MODIFIER;
@@ -65,40 +64,39 @@ public class AureliumProvider implements Listener {
     public final Flag MANA_REGEN;
     public final Flag HEALTH_REGEN;
 
-    public AureliumProvider() {
+    public AureliumSkillsProvider() {
         this.plugin = (AureliumSkills) Bukkit.getPluginManager().getPlugin("AureliumSkills");
-        // register custom aurelium options
         XP_GAIN_MODIFIER = Option.builder(Double.class)
-                .id("aurelium:xp-gain-modifier")
-                .name("aurelium:xp-gain-modifier")
+                .id("aureliumskills:xp-gain-modifier")
+                .name("aureliumskills:xp-gain-modifier")
                 .defaultValue(1.0)
                 .build();
         GriefDefender.getRegistry().getRegistryModuleFor(Option.class).get().registerCustomType(XP_GAIN_MODIFIER);
         GDHooks.getInstance().getLogger().info("Registered Aurelium option '" + XP_GAIN_MODIFIER.getName() + "'.");
         ABILITY_ACTIVATE = Flag.builder()
-                .id("aurelium:ability-activate")
+                .id("aureliumskills:ability-activate")
                 .name("ability-activate")
-                .permission("griefdefender.flag.aurelium.ability-activate")
+                .permission("griefdefender.flag.aureliumskills.ability-activate")
                 .build();
         ABILITY_REFRESH = Flag.builder()
-                .id("aurelium:ability-refresh")
+                .id("aureliumskills:ability-refresh")
                 .name("ability-refresh")
-                .permission("griefdefender.flag.aurelium.ability-refresh")
+                .permission("griefdefender.flag.aureliumskills.ability-refresh")
                 .build();
         HEALTH_REGEN = Flag.builder()
-                .id("aurelium:health-regen")
+                .id("aureliumskills:health-regen")
                 .name("health-regen")
-                .permission("griefdefender.flag.aurelium.mana-regen")
+                .permission("griefdefender.flag.aureliumskills.mana-regen")
                 .build();
         LOOT_DROP = Flag.builder()
-                .id("aurelium:loot-drop")
+                .id("aureliumskills:loot-drop")
                 .name("loot-drop")
-                .permission("griefdefender.flag.aurelium.loot-drop")
+                .permission("griefdefender.flag.aureliumskills.loot-drop")
                 .build();
         MANA_REGEN = Flag.builder()
-                .id("aurelium:mana-regen")
+                .id("aureliumskills:mana-regen")
                 .name("mana-regen")
-                .permission("griefdefender.flag.aurelium.mana-regen")
+                .permission("griefdefender.flag.aureliumskills.mana-regen")
                 .build();
         GriefDefender.getRegistry().getRegistryModuleFor(Flag.class).get().registerCustomType(ABILITY_ACTIVATE);
         GriefDefender.getRegistry().getRegistryModuleFor(Flag.class).get().registerCustomType(ABILITY_REFRESH);
@@ -118,12 +116,12 @@ public class AureliumProvider implements Listener {
         }
 
         final Set<Context> contexts = new HashSet<>();
-        contexts.add(new Context("aurelium:mana_ability", String.valueOf(event.getSkill().getManaAbility().name().toLowerCase())));
-        contexts.add(new Context("aurelium:skill_type", skillType));
-        contexts.add(new Context("aurelium:skill_level", String.valueOf(AureliumAPI.getSkillLevel(player, event.getSkill()))));
+        contexts.add(new Context("aureliumskills:mana_ability", String.valueOf(event.getSkill().getManaAbility().name().toLowerCase())));
+        contexts.add(new Context("aureliumskills:skill_type", skillType));
+        contexts.add(new Context("aureliumskills:skill_level", String.valueOf(AureliumAPI.getSkillLevel(player, event.getSkill()))));
         final com.archyx.aureliumskills.data.PlayerData aureliumPlayerData = this.plugin.getPlayerManager().getPlayerData(player);
         if (aureliumPlayerData != null) {
-            contexts.add(new Context("aurelium:power_level", String.valueOf(aureliumPlayerData.getPowerLevel())));
+            contexts.add(new Context("aureliumskills:power_level", String.valueOf(aureliumPlayerData.getPowerLevel())));
         }
         final Location location = player.getLocation();
         final PlayerData playerData = GriefDefender.getCore().getPlayerData(world.getUID(), player.getUniqueId());
@@ -147,11 +145,11 @@ public class AureliumProvider implements Listener {
        final Claim claim = GriefDefender.getCore().getClaimAt(location);
        final String ability = event.getManaAbility().name().toLowerCase().replace(" ", "_");
        final Set<Context> contexts = new HashSet<>();
-       contexts.add(new Context("aurelium:skill_type", event.getManaAbility().getSkill().name().toLowerCase()));
-       contexts.add(new Context("aurelium:skill_level", String.valueOf(AureliumAPI.getSkillLevel(player, event.getManaAbility().getSkill()))));
+       contexts.add(new Context("aureliumskills:skill_type", event.getManaAbility().getSkill().name().toLowerCase()));
+       contexts.add(new Context("aureliumskills:skill_level", String.valueOf(AureliumAPI.getSkillLevel(player, event.getManaAbility().getSkill()))));
        final com.archyx.aureliumskills.data.PlayerData aureliumPlayerData = this.plugin.getPlayerManager().getPlayerData(player);
        if (aureliumPlayerData != null) {
-           contexts.add(new Context("aurelium:power_level", String.valueOf(aureliumPlayerData.getPowerLevel())));
+           contexts.add(new Context("aureliumskills:power_level", String.valueOf(aureliumPlayerData.getPowerLevel())));
        }
 
        final Tristate result = GriefDefender.getPermissionManager().getActiveFlagPermissionValue(event, location, claim, playerData.getUser(), ABILITY_ACTIVATE, player, ability, contexts, null, true);
@@ -172,10 +170,10 @@ public class AureliumProvider implements Listener {
        final PlayerData playerData = GriefDefender.getCore().getPlayerData(world.getUID(), player.getUniqueId());
        final Claim claim = GriefDefender.getCore().getClaimAt(location);
        final Set<Context> contexts = new HashSet<>();
-       contexts.add(new Context("aurelium:regen_amount", String.valueOf(event.getAmount())));
+       contexts.add(new Context("aureliumskills:regen_amount", String.valueOf(event.getAmount())));
        final com.archyx.aureliumskills.data.PlayerData aureliumPlayerData = this.plugin.getPlayerManager().getPlayerData(player);
        if (aureliumPlayerData != null) {
-           contexts.add(new Context("aurelium:power_level", String.valueOf(aureliumPlayerData.getPowerLevel())));
+           contexts.add(new Context("aureliumskills:power_level", String.valueOf(aureliumPlayerData.getPowerLevel())));
        }
 
        final Tristate result = GriefDefender.getPermissionManager().getActiveFlagPermissionValue(event, location, claim, playerData.getUser(), HEALTH_REGEN, player, player, contexts, null, true);
@@ -196,10 +194,10 @@ public class AureliumProvider implements Listener {
        final PlayerData playerData = GriefDefender.getCore().getPlayerData(world.getUID(), player.getUniqueId());
        final Claim claim = GriefDefender.getCore().getClaimAt(location);
        final Set<Context> contexts = new HashSet<>();
-       contexts.add(new Context("aurelium:mana_amount", String.valueOf(event.getAmount())));
+       contexts.add(new Context("aureliumskills:mana_amount", String.valueOf(event.getAmount())));
        final com.archyx.aureliumskills.data.PlayerData aureliumPlayerData = this.plugin.getPlayerManager().getPlayerData(player);
        if (aureliumPlayerData != null) {
-           contexts.add(new Context("aurelium:power_level", String.valueOf(aureliumPlayerData.getPowerLevel())));
+           contexts.add(new Context("aureliumskills:power_level", String.valueOf(aureliumPlayerData.getPowerLevel())));
        }
 
        final Tristate result = GriefDefender.getPermissionManager().getActiveFlagPermissionValue(event, location, claim, playerData.getUser(), MANA_REGEN, player, player, contexts, null, true);
@@ -220,10 +218,10 @@ public class AureliumProvider implements Listener {
        final PlayerData playerData = GriefDefender.getCore().getPlayerData(world.getUID(), player.getUniqueId());
        final Claim claim = GriefDefender.getCore().getClaimAt(location);
        final Set<Context> contexts = new HashSet<>();
-       contexts.add(new Context("aurelium:loot_drop_cause", String.valueOf(event.getCause().name().toLowerCase())));
+       contexts.add(new Context("aureliumskills:loot_drop_cause", String.valueOf(event.getCause().name().toLowerCase())));
        final com.archyx.aureliumskills.data.PlayerData aureliumPlayerData = this.plugin.getPlayerManager().getPlayerData(player);
        if (aureliumPlayerData != null) {
-           contexts.add(new Context("aurelium:power_level", String.valueOf(aureliumPlayerData.getPowerLevel())));
+           contexts.add(new Context("aureliumskills:power_level", String.valueOf(aureliumPlayerData.getPowerLevel())));
        }
 
        final Tristate result = GriefDefender.getPermissionManager().getActiveFlagPermissionValue(event, location, claim, playerData.getUser(), LOOT_DROP, player, event.getItemStack(), contexts, TrustTypes.ACCESSOR, true);
