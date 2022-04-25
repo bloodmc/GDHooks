@@ -24,6 +24,7 @@
  */
 package com.griefdefender.hooks.provider;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -37,10 +38,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.griefdefender.api.GriefDefender;
+import com.griefdefender.api.User;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.ClaimResult;
 import com.griefdefender.api.claim.ClaimTypes;
 import com.griefdefender.api.claim.TrustTypes;
+import com.griefdefender.api.event.CreateClaimEvent;
 import com.griefdefender.api.event.Event;
 import com.griefdefender.api.event.QueryPermissionEvent;
 import com.griefdefender.api.permission.Context;
@@ -49,18 +52,24 @@ import com.griefdefender.hooks.GDHooksBootstrap;
 
 import dev.mrshawn.oreregenerator.OreRegenerator;
 import dev.mrshawn.oreregenerator.api.events.RegionCreateEvent;
+import dev.mrshawn.oreregenerator.api.utils.RegionUtils;
+import dev.mrshawn.oreregenerator.regions.Region;
+import com.griefdefender.lib.kyori.adventure.text.Component;
+import com.griefdefender.lib.kyori.adventure.text.format.NamedTextColor;
 import com.griefdefender.lib.kyori.event.EventBus;
 import com.griefdefender.lib.kyori.event.EventSubscriber;
 
 public class OreRegeneratorProvider implements Listener {
 
     private static final UUID TEMP_USER_UUID = UUID.fromString("99999999-9999-9999-9999-999999999999");
+    private static final String ORE_REGEN_ADMIN = "oreregen.admin";
 
     private final OreRegenerator plugin;
 
     public OreRegeneratorProvider() {
         this.plugin = (OreRegenerator) Bukkit.getPluginManager().getPlugin("OreRegenerator");
         Bukkit.getPluginManager().registerEvents(this, GDHooksBootstrap.getInstance().getLoader());
+        new CreateClaimEventListener();
         new QueryPermissionEventListener();
     }
 
@@ -125,4 +134,40 @@ public class OreRegeneratorProvider implements Listener {
             });
         }
     }
+
+    private class CreateClaimEventListener {
+
+        public CreateClaimEventListener() {
+            GriefDefender.getEventManager().getBus().subscribe(CreateClaimEvent.class, new EventSubscriber<CreateClaimEvent>() {
+                @Override
+                public void on(CreateClaimEvent event) throws Throwable {
+                    if (!(event instanceof CreateClaimEvent.Pre)) {
+                        return;
+                    }
+
+                    final User user = event.getSourceUser();
+                    if (user == null) {
+                        return;
+                    }
+                    final Player player = Bukkit.getPlayer(user.getUniqueId());
+                    if (player == null) {
+                        return;
+                    }
+
+                    final Claim claim = event.getClaim();
+                    final World world = Bukkit.getWorld(claim.getWorldUniqueId());
+                    final Location lesser = new Location(world, claim.getLesserBoundaryCorner().getX(), claim.getLesserBoundaryCorner().getY(), claim.getLesserBoundaryCorner().getZ());
+                    final Location greater = new Location(world, claim.getGreaterBoundaryCorner().getX(), claim.getGreaterBoundaryCorner().getY(), claim.getGreaterBoundaryCorner().getZ());
+                    final List<Region> regions = RegionUtils.getOverlappingRegions(lesser, greater);
+                    if (!regions.isEmpty()) {
+                        if (!player.hasPermission(ORE_REGEN_ADMIN) && !user.canManageAdminClaims()) {
+                            event.cancelled(true);
+                            event.setMessage(Component.text("You do not have permission to create a claim where an Ore Regenerator region exists!.", NamedTextColor.RED));
+                        }
+                    }
+                }
+            });
+        }
+    }
+
 }
