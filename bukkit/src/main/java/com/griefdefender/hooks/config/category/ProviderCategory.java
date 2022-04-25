@@ -66,6 +66,9 @@ public class ProviderCategory extends ConfigCategory {
 
     // Misc
 
+    @Setting(value = "Aurelium")
+    public boolean aurelium = true;
+
     @Setting(value = "CustomItems")
     public boolean customItems = true;
 
