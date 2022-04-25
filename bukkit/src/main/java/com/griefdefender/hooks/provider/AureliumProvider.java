@@ -24,6 +24,7 @@
  */
 package com.griefdefender.hooks.provider;
 
+import com.archyx.aureliumskills.AureliumSkills;
 import com.archyx.aureliumskills.api.AureliumAPI;
 import com.archyx.aureliumskills.api.event.CustomRegenEvent;
 import com.archyx.aureliumskills.api.event.ManaAbilityActivateEvent;
@@ -56,6 +57,7 @@ import java.util.Set;
 
 public class AureliumProvider implements Listener {
 
+    private final AureliumSkills plugin;
     private final Option<Double> XP_GAIN_MODIFIER;
     public final Flag ABILITY_ACTIVATE;
     public final Flag ABILITY_REFRESH;
@@ -64,6 +66,7 @@ public class AureliumProvider implements Listener {
     public final Flag HEALTH_REGEN;
 
     public AureliumProvider() {
+        this.plugin = (AureliumSkills) Bukkit.getPluginManager().getPlugin("AureliumSkills");
         // register custom aurelium options
         XP_GAIN_MODIFIER = Option.builder(Double.class)
                 .id("aurelium:xp-gain-modifier")
@@ -118,6 +121,10 @@ public class AureliumProvider implements Listener {
         contexts.add(new Context("aurelium:mana_ability", String.valueOf(event.getSkill().getManaAbility().name().toLowerCase())));
         contexts.add(new Context("aurelium:skill_type", skillType));
         contexts.add(new Context("aurelium:skill_level", String.valueOf(AureliumAPI.getSkillLevel(player, event.getSkill()))));
+        final com.archyx.aureliumskills.data.PlayerData aureliumPlayerData = this.plugin.getPlayerManager().getPlayerData(player);
+        if (aureliumPlayerData != null) {
+            contexts.add(new Context("aurelium:power_level", String.valueOf(aureliumPlayerData.getPowerLevel())));
+        }
         final Location location = player.getLocation();
         final PlayerData playerData = GriefDefender.getCore().getPlayerData(world.getUID(), player.getUniqueId());
         final Claim claim = GriefDefender.getCore().getClaimAt(location);
@@ -142,6 +149,10 @@ public class AureliumProvider implements Listener {
        final Set<Context> contexts = new HashSet<>();
        contexts.add(new Context("aurelium:skill_type", event.getManaAbility().getSkill().name().toLowerCase()));
        contexts.add(new Context("aurelium:skill_level", String.valueOf(AureliumAPI.getSkillLevel(player, event.getManaAbility().getSkill()))));
+       final com.archyx.aureliumskills.data.PlayerData aureliumPlayerData = this.plugin.getPlayerManager().getPlayerData(player);
+       if (aureliumPlayerData != null) {
+           contexts.add(new Context("aurelium:power_level", String.valueOf(aureliumPlayerData.getPowerLevel())));
+       }
 
        final Tristate result = GriefDefender.getPermissionManager().getActiveFlagPermissionValue(event, location, claim, playerData.getUser(), ABILITY_ACTIVATE, player, ability, contexts, null, true);
        if (result == Tristate.FALSE) {
@@ -161,7 +172,11 @@ public class AureliumProvider implements Listener {
        final PlayerData playerData = GriefDefender.getCore().getPlayerData(world.getUID(), player.getUniqueId());
        final Claim claim = GriefDefender.getCore().getClaimAt(location);
        final Set<Context> contexts = new HashSet<>();
-       contexts.add(new Context("regen_amount", String.valueOf(event.getAmount())));
+       contexts.add(new Context("aurelium:regen_amount", String.valueOf(event.getAmount())));
+       final com.archyx.aureliumskills.data.PlayerData aureliumPlayerData = this.plugin.getPlayerManager().getPlayerData(player);
+       if (aureliumPlayerData != null) {
+           contexts.add(new Context("aurelium:power_level", String.valueOf(aureliumPlayerData.getPowerLevel())));
+       }
 
        final Tristate result = GriefDefender.getPermissionManager().getActiveFlagPermissionValue(event, location, claim, playerData.getUser(), HEALTH_REGEN, player, player, contexts, null, true);
        if (result == Tristate.FALSE) {
@@ -181,7 +196,11 @@ public class AureliumProvider implements Listener {
        final PlayerData playerData = GriefDefender.getCore().getPlayerData(world.getUID(), player.getUniqueId());
        final Claim claim = GriefDefender.getCore().getClaimAt(location);
        final Set<Context> contexts = new HashSet<>();
-       contexts.add(new Context("mana_amount", String.valueOf(event.getAmount())));
+       contexts.add(new Context("aurelium:mana_amount", String.valueOf(event.getAmount())));
+       final com.archyx.aureliumskills.data.PlayerData aureliumPlayerData = this.plugin.getPlayerManager().getPlayerData(player);
+       if (aureliumPlayerData != null) {
+           contexts.add(new Context("aurelium:power_level", String.valueOf(aureliumPlayerData.getPowerLevel())));
+       }
 
        final Tristate result = GriefDefender.getPermissionManager().getActiveFlagPermissionValue(event, location, claim, playerData.getUser(), MANA_REGEN, player, player, contexts, null, true);
        if (result == Tristate.FALSE) {
@@ -201,7 +220,11 @@ public class AureliumProvider implements Listener {
        final PlayerData playerData = GriefDefender.getCore().getPlayerData(world.getUID(), player.getUniqueId());
        final Claim claim = GriefDefender.getCore().getClaimAt(location);
        final Set<Context> contexts = new HashSet<>();
-       contexts.add(new Context("loot_drop_cause", String.valueOf(event.getCause().name().toLowerCase())));
+       contexts.add(new Context("aurelium:loot_drop_cause", String.valueOf(event.getCause().name().toLowerCase())));
+       final com.archyx.aureliumskills.data.PlayerData aureliumPlayerData = this.plugin.getPlayerManager().getPlayerData(player);
+       if (aureliumPlayerData != null) {
+           contexts.add(new Context("aurelium:power_level", String.valueOf(aureliumPlayerData.getPowerLevel())));
+       }
 
        final Tristate result = GriefDefender.getPermissionManager().getActiveFlagPermissionValue(event, location, claim, playerData.getUser(), LOOT_DROP, player, event.getItemStack(), contexts, TrustTypes.ACCESSOR, true);
        if (result == Tristate.FALSE) {

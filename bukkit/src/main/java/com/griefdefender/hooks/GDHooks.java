@@ -228,9 +228,9 @@ public class GDHooks {
         } else {
             this.getLogger().info("Could not locate a compatible economy plugin for Vault. Please check with your server administrator.");
         }
-        if(Bukkit.getPluginManager().getPlugin("Aurelium") != null && Bukkit.getPluginManager().getPlugin("Aurelium").isEnabled() && this.config.getData().providerCategory.aurelium) {
+        if(Bukkit.getPluginManager().getPlugin("AureliumSkills") != null && Bukkit.getPluginManager().getPlugin("AureliumSkills").isEnabled() && this.config.getData().providerCategory.aureliumSkills) {
             this.aureliumProvider = new AureliumProvider();
-            this.getLogger().info("Aurelium provider enabled!");
+            this.getLogger().info("AureliumSkills provider enabled!");
         }
         if (Bukkit.getPluginManager().getPlugin("BlueMap") != null && Bukkit.getPluginManager().getPlugin("BlueMap").isEnabled()
                 && this.config.getData().bluemap.enabled && this.config.getData().providerCategory.bluemap) {
