@@ -45,6 +45,7 @@
 * [MyPet]: [ [Spigot](https://www.spigotmc.org/resources/mypet.12725/) | [Github](https://github.com/xXKeyleXx/MyPet) ]
 * [MythicMobs]: [ [Free](https://www.spigotmc.org/resources/5702/) | [Premium](https://www.spigotmc.org/resources/58415/) ]
 * [Nova]: [ [Spigot](https://www.spigotmc.org/resources/93648/) | [Github](https://github.com/xenondevs/Nova) ]
+* [Oraxen]: [ [Premium](https://www.spigotmc.org/resources/‍72448/) | [Github](https://github.com/oraxen/oraxen) ]
 * [OreRegenerator]: [ [Premium](https://www.spigotmc.org/resources/71743/) ]
 * [RevoltCrates(Paid)]: [ [Spigot](https://www.spigotmc.org/resources/81681/) ]
 

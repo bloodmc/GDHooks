@@ -26,6 +26,7 @@ package com.griefdefender.hooks.listener;
 
 import java.util.Set;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
@@ -51,7 +52,7 @@ public class GDPermissionEventListener {
         GriefDefender.getEventManager().getBus().subscribe(PermissionIdentifyEvent.class, new EventSubscriber<PermissionIdentifyEvent>() {
             @Override
             public void on(@NonNull PermissionIdentifyEvent event) throws Throwable {
-                final Object object = event.getPermissionObject();
+                Object object = event.getPermissionObject();
                 final Set<Context> contexts = event.getContexts();
                 final User user = event.getUser();
                 if (user != null && GDHooks.getInstance().getClanProvider() != null) {
@@ -64,10 +65,20 @@ public class GDPermissionEventListener {
                         }
                     }
                 }
+                if (object instanceof Location) {
+                    object = ((Location) object).getBlock();
+                }
                 if (object instanceof Block) {
                     final Block block = (Block) object;
                     if (GDHooks.getInstance().getNovaProvider() != null) {
                         final String blockId = GDHooks.getInstance().getNovaProvider().getTileEntityId(block.getState());
+                        if (blockId != null) {
+                            event.setNewIdentifier(blockId);
+                            return;
+                        }
+                    }
+                    if (GDHooks.getInstance().getOraxenProvider() != null) {
+                        final String blockId = GDHooks.getInstance().getOraxenProvider().getBlockId(block, event.getContexts());
                         if (blockId != null) {
                             event.setNewIdentifier(blockId);
                             return;
@@ -106,6 +117,13 @@ public class GDPermissionEventListener {
                     }
                     if (GDHooks.getInstance().getFurnitureLibProvider() != null) {
                         final String itemId = GDHooks.getInstance().getFurnitureLibProvider().getItemId(itemstack);
+                        if (itemId != null) {
+                            event.setNewIdentifier(itemId);
+                            return;
+                        }
+                    }
+                    if (GDHooks.getInstance().getOraxenProvider() != null) {
+                        final String itemId = GDHooks.getInstance().getOraxenProvider().getItemId(itemstack, event.getContexts());
                         if (itemId != null) {
                             event.setNewIdentifier(itemId);
                             return;

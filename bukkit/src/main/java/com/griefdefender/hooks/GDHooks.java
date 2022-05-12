@@ -69,6 +69,7 @@ import com.griefdefender.hooks.provider.McMMOProvider;
 import com.griefdefender.hooks.provider.MyPetProvider;
 import com.griefdefender.hooks.provider.MythicMobsProvider;
 import com.griefdefender.hooks.provider.NovaProvider;
+import com.griefdefender.hooks.provider.OraxenProvider;
 import com.griefdefender.hooks.provider.OreRegeneratorProvider;
 import com.griefdefender.hooks.provider.SquaremapProvider;
 import com.griefdefender.hooks.provider.RevoltCratesProvider;
@@ -138,6 +139,7 @@ public class GDHooks {
     private MyPetProvider myPetProvider;
     private MythicMobsProvider mythicMobsProvider;
     private NovaProvider novaProvider;
+    private OraxenProvider oraxenProvider;
     private OreRegeneratorProvider oreRegeneratorProvider;
     private SquaremapProvider squaremapProvider;
     private RevoltCratesProvider revoltCratesProvider;
@@ -277,6 +279,10 @@ public class GDHooks {
         if (Bukkit.getPluginManager().getPlugin("Nova") != null && Bukkit.getPluginManager().getPlugin("Nova").isEnabled() && this.config.getData().providerCategory.nova) {
             this.novaProvider = new NovaProvider();
             this.getLogger().info("Nova provider enabled!");
+        }
+        if (Bukkit.getPluginManager().getPlugin("Oraxen") != null && Bukkit.getPluginManager().getPlugin("Oraxen").isEnabled() && this.config.getData().providerCategory.oraxen) {
+            this.oraxenProvider = new OraxenProvider();
+            this.getLogger().info("Oraxen provider enabled!");
         }
         if (Bukkit.getPluginManager().getPlugin("OreRegenerator") != null && Bukkit.getPluginManager().getPlugin("OreRegenerator").isEnabled() && this.config.getData().providerCategory.oreRegenerator) {
             this.oreRegeneratorProvider = new OreRegeneratorProvider();
@@ -508,6 +514,10 @@ public class GDHooks {
 
     public NovaProvider getNovaProvider() {
         return this.novaProvider;
+    }
+
+    public OraxenProvider getOraxenProvider() {
+        return this.oraxenProvider;
     }
 
     public OreRegeneratorProvider getOreRegeneratorProvider() {
