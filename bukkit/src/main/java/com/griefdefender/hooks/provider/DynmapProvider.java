@@ -28,6 +28,7 @@ package com.griefdefender.hooks.provider;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.ClaimTypes;
+import com.griefdefender.api.claim.TrustType;
 import com.griefdefender.api.claim.TrustTypes;
 import com.griefdefender.api.event.ChangeClaimEvent;
 import com.griefdefender.api.event.CreateClaimEvent;
@@ -39,6 +40,8 @@ import com.griefdefender.hooks.config.category.DynmapCategory;
 import com.griefdefender.hooks.config.category.DynmapOwnerStyleCategory;
 
 import com.griefdefender.lib.flowpowered.math.vector.Vector3i;
+import com.griefdefender.lib.kyori.adventure.text.Component;
+import com.griefdefender.lib.kyori.adventure.text.TextComponent;
 import com.griefdefender.lib.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 import com.griefdefender.lib.kyori.event.EventSubscriber;
 
@@ -51,19 +54,12 @@ import org.dynmap.markers.AreaMarker;
 import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerSet;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 public class DynmapProvider {
 
-    private static final String MOD_ID = "GriefDefender";
     private final Logger logger;
     private DynmapCommonAPI dynmap;
     private MarkerAPI markerapi;
@@ -88,105 +84,53 @@ public class DynmapProvider {
     private Map<String, AreaMarker> areaMarkers = new ConcurrentHashMap<>();
 
     private String getWindowInfo(Claim claim, AreaMarker marker) {
-        String info;
-        if (claim.isAdminClaim()) {
-            info = "<div class=\"regioninfo\">" + this.cfg.infoWindowAdmin + "</div>";
-        } else {
-            info = "<div class=\"regioninfo\">" + this.cfg.infoWindowBasic + "</div>";
+        String template = claim.isAdminClaim() ? this.cfg.infoWindowAdmin : this.cfg.infoWindowBasic;
+
+        // Claim Details
+        String displayName = claim.getData().getDisplayName();
+        template = template.replace("%claimname%", displayName != null ? displayName : cfg.missingNamePlaceholder);
+        template = template.replace("%gdtype%", claim.getType().toString());
+
+        // Claim Owner Details
+        template = template.replace("%owner%", claim.getOwnerName());
+        template = template.replace("%owneruuid%", claim.getOwnerUniqueId().toString());
+        template = template.replace("%lastseen%", (Date.from(claim.getData().getDateLastActive())).toString());
+
+        // Claim Sizes
+        template = template.replace("%width%", Integer.toString(claim.getWidth()));
+        template = template.replace("%length%", Integer.toString(claim.getLength()));
+        template = template.replace("%height%", Integer.toString(claim.getHeight()));
+        template = template.replace("%area%", Integer.toString(claim.getArea()));
+        template = template.replace("%volume%", Integer.toString(claim.getVolume()));
+
+        // Claim Members
+        template = template.replace("%builders%", composePlayerList(claim, TrustTypes.BUILDER));
+        template = template.replace("%containers%", composePlayerList(claim, TrustTypes.CONTAINER));
+        template = template.replace("%accessors%", composePlayerList(claim, TrustTypes.ACCESSOR));
+        template = template.replace("%residents%", composePlayerList(claim, TrustTypes.RESIDENT));
+        template = template.replace("%managers%", composePlayerList(claim, TrustTypes.MANAGER));
+
+        return String.format("<div class=\"%s\">%s</div>", "regioninfo", template);
+    }
+
+    private String composePlayerList(Claim claim, TrustType trustType) {
+        List<String> names = new ArrayList<>();
+        Set<UUID> uuids = claim.getUserTrusts(trustType);
+
+        for (UUID uuid : uuids) {
+            String username = GriefDefender.getRegistry().lookupUsername(uuid);
+
+            // While the previously called #lookupUsername() method is expected to just
+            // return the string "unknown" when a user couldn't be found, its return value
+            // is marked as nullable, so we're comparing for both.
+            if (username == null || username.equalsIgnoreCase("unknown")) {
+                username = uuid.toString();
+            }
+
+            names.add(username);
         }
-        info = info.replace("%owner%", claim.getOwnerName());
-        info = info.replace("%owneruuid%", claim.getOwnerUniqueId().toString());
-        info = info.replace("%area%", Integer.toString(claim.getArea()));
-        info = info.replace("%claimname%",
-                claim.getData().getDisplayNameComponent().isPresent()
-                        ? PlainComponentSerializer.plain().serialize(claim.getDisplayNameComponent().get())
-                        : "none");
-        final Date lastActive = Date.from(claim.getData().getDateLastActive());
-        info = info.replace("%lastseen%", lastActive.toString());
-        info = info.replace("%gdtype%", claim.getType().toString());
 
-        final List<UUID> builderList = new ArrayList<>(claim.getUserTrusts(TrustTypes.BUILDER));
-        final List<UUID> containerList = new ArrayList<>(claim.getUserTrusts(TrustTypes.CONTAINER));
-        final List<UUID> accessorList = new ArrayList<>(claim.getUserTrusts(TrustTypes.ACCESSOR));
-        final List<UUID> residentList = new ArrayList<>(claim.getUserTrusts(TrustTypes.RESIDENT));
-        final List<UUID> managerList = new ArrayList<>(claim.getUserTrusts(TrustTypes.MANAGER));
-
-        String trusted = "";
-        for (int i = 0; i < builderList.size(); i++) {
-            if (i > 0) {
-                trusted += ", ";
-            }
-            final UUID uuid = builderList.get(i);
-            final String userName = GriefDefender.getRegistry().lookupUsername(uuid);
-            if (userName.equalsIgnoreCase("unknown")) {
-                trusted += uuid.toString();
-            } else {
-                trusted += userName;
-            }
-        }
-        info = info.replace("%builders%", trusted);
-
-        trusted = "";
-        for (int i = 0; i < containerList.size(); i++) {
-            if (i > 0) {
-                trusted += ", ";
-            }
-            final UUID uuid = containerList.get(i);
-            final String userName = GriefDefender.getRegistry().lookupUsername(uuid);
-            if (userName.equalsIgnoreCase("unknown")) {
-                trusted += uuid.toString();
-            } else {
-                trusted += userName;
-            }
-        }
-        info = info.replace("%containers%", trusted);
-
-        trusted = "";
-        for (int i = 0; i < accessorList.size(); i++) {
-            if (i > 0) {
-                trusted += ", ";
-            }
-            final UUID uuid = accessorList.get(i);
-            final String userName = GriefDefender.getRegistry().lookupUsername(uuid);
-            if (userName.equalsIgnoreCase("unknown")) {
-                trusted += uuid.toString();
-            } else {
-                trusted += userName;
-            }
-        }
-        info = info.replace("%accessors%", trusted);
-
-        trusted = "";
-        for (int i = 0; i < residentList.size(); i++) {
-            if (i > 0) {
-                trusted += ", ";
-            }
-            final UUID uuid = residentList.get(i);
-            final String userName = GriefDefender.getRegistry().lookupUsername(uuid);
-            if (userName.equalsIgnoreCase("unknown")) {
-                trusted += uuid.toString();
-            } else {
-                trusted += userName;
-            }
-        }
-        info = info.replace("%residents%", trusted);
-
-        trusted = "";
-        for (int i = 0; i < managerList.size(); i++) {
-            if (i > 0) {
-                trusted += ", ";
-            }
-            final UUID uuid = managerList.get(i);
-            final String userName = GriefDefender.getRegistry().lookupUsername(uuid);
-            if (userName.equalsIgnoreCase("unknown")) {
-                trusted += uuid.toString();
-            } else {
-                trusted += userName;
-            }
-        }
-        info = info.replace("%managers%", trusted);
-
-        return info;
+        return String.join(", ", names);
     }
 
     private boolean isVisible(Claim claim, String owner, String worldname) {
@@ -352,9 +296,9 @@ public class DynmapProvider {
 
         this.set = this.markerapi.getMarkerSet("griefdefender.markerset");
         if (this.set == null) {
-            this.set = this.markerapi.createMarkerSet("griefdefender.markerset", MOD_ID, null, false);
+            this.set = this.markerapi.createMarkerSet("griefdefender.markerset", cfg.markerSetLabel, null, false);
         } else {
-            this.set.setMarkerSetLabel(MOD_ID);
+            this.set.setMarkerSetLabel(cfg.markerSetLabel);
         }
         if (this.set == null) {
             this.logger.severe("Error creating marker set");
