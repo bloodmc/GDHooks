@@ -64,6 +64,7 @@ import com.griefdefender.hooks.provider.BreweryProvider;
 import com.griefdefender.hooks.provider.CustomItemsProvider;
 import com.griefdefender.hooks.provider.DynmapProvider;
 import com.griefdefender.hooks.provider.EliteMobsProvider;
+import com.griefdefender.hooks.provider.ExcellentCratesProvider;
 import com.griefdefender.hooks.provider.FurnitureLibProvider;
 import com.griefdefender.hooks.provider.MMOItemsProvider;
 import com.griefdefender.hooks.provider.McMMOProvider;
@@ -134,6 +135,7 @@ public class GDHooks {
     private CustomItemsProvider customItemsProvider;
     private DynmapProvider dynmapProvider;
     private EliteMobsProvider eliteMobsProvider;
+    private ExcellentCratesProvider excellentCratesProvider;
     private FurnitureLibProvider furnitureLibProvider;
     private GDShopProvider shopProvider;
     private McMMOProvider mcmmoProvider;
@@ -261,6 +263,10 @@ public class GDHooks {
         if (Bukkit.getPluginManager().getPlugin("EliteMobs") != null && Bukkit.getPluginManager().getPlugin("EliteMobs").isEnabled() && this.config.getData().providerCategory.eliteMobs) {
             this.eliteMobsProvider = new EliteMobsProvider();
             this.getLogger().info("EliteMobs provider enabled!");
+        }
+        if (Bukkit.getPluginManager().getPlugin("ExcellentCrates") != null && Bukkit.getPluginManager().getPlugin("ExcellentCrates").isEnabled() && this.config.getData().providerCategory.excellentCratesProvider) {
+            this.excellentCratesProvider = new ExcellentCratesProvider();
+            this.getLogger().info("ExcellentCrates provider enabled!");
         }
         if (Bukkit.getPluginManager().getPlugin("FurnitureLib") != null && Bukkit.getPluginManager().getPlugin("FurnitureLib").isEnabled() && this.config.getData().providerCategory.furnitureLib) {
             this.furnitureLibProvider = new FurnitureLibProvider();
@@ -500,6 +506,13 @@ public class GDHooks {
 
     public EliteMobsProvider getEliteMobsProvider() {
         return this.eliteMobsProvider;
+    }
+
+    public ExcellentCratesProvider getExcellentCratesProvider() {
+        if (this.excellentCratesProvider == null) {
+            this.excellentCratesProvider = new ExcellentCratesProvider();
+        }
+        return this.excellentCratesProvider;
     }
 
     public FurnitureLibProvider getFurnitureLibProvider() {

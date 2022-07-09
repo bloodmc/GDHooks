@@ -75,6 +75,9 @@ public class ProviderCategory extends ConfigCategory {
     @Setting(value = "EliteMobs")
     public boolean eliteMobs = true;
 
+    @Setting(value = "ExcellentCratesProvider")
+    public boolean excellentCratesProvider = true;
+
     @Setting(value = "FurnitureLib")
     public boolean furnitureLib = true;
 

@@ -40,6 +40,7 @@
 * [Brewery]: [ [Spigot](https://www.spigotmc.org/resources/3082/) | [Github](https://github.com/DieReicheErethons/Brewery) ]
 * [CustomItems(Paid)]: [ [Spigot](https://www.spigotmc.org/resources/36128/) ]
 * [EliteMobs]: [ [Spigot](https://www.spigotmc.org/resources/40090/) | [Github](https://github.com/MagmaGuy/EliteMobs) ]
+* [ExcellentCrates]: [ [Spigot](https://www.spigotmc.org/resources/48732/) ]
 * [FurnitureLib]: [ [Spigot](https://www.spigotmc.org/resources/furniturelibary-protectionlib.9368/) | [Github](https://github.com/Ste3et/FurnitureLib) ]
 * [MMOItems(Paid)]: [ [Spigot](https://www.spigotmc.org/resources/39267/) ]
 * [McMMO]: [ [Spigot](https://www.spigotmc.org/resources/64348/updates) | [Github](https://github.com/mcMMO-Dev/mcMMO) ]

@@ -84,6 +84,13 @@ public class GDPermissionEventListener {
                             return;
                         }
                     }
+                    if (GDHooks.getInstance().getExcellentCratesProvider() != null) {
+                        final String blockId = GDHooks.getInstance().getExcellentCratesProvider().getBlockId(block);
+                        if (blockId != null) {
+                            event.setNewIdentifier(blockId);
+                            return;
+                        }
+                    }
                     if (GDHooks.getInstance().getBreweryProvider() != null) {
                         final String blockId = GDHooks.getInstance().getBreweryProvider().getBlockId(block);
                         if (blockId != null) {
@@ -138,6 +145,13 @@ public class GDPermissionEventListener {
                     }
                     if (GDHooks.getInstance().getNovaProvider() != null) {
                         final String itemId = GDHooks.getInstance().getNovaProvider().getItemId(itemstack);
+                        if (itemId != null) {
+                            event.setNewIdentifier(itemId);
+                            return;
+                        }
+                    }
+                    if (GDHooks.getInstance().getExcellentCratesProvider() != null) {
+                        final String itemId = GDHooks.getInstance().getExcellentCratesProvider().getItemId(itemstack);
                         if (itemId != null) {
                             event.setNewIdentifier(itemId);
                             return;
