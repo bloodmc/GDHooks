@@ -37,6 +37,7 @@
 **Misc**
 
 * [AureliumSkills]: [ [Spigot](https://www.spigotmc.org/resources/81069) | [Github](https://github.com/Archy-X/AureliumSkills) ]
+* [Brewery]: [ [Spigot](https://www.spigotmc.org/resources/3082/) | [Github](https://github.com/DieReicheErethons/Brewery) ]
 * [CustomItems(Paid)]: [ [Spigot](https://www.spigotmc.org/resources/36128/) ]
 * [EliteMobs]: [ [Spigot](https://www.spigotmc.org/resources/40090/) | [Github](https://github.com/MagmaGuy/EliteMobs) ]
 * [FurnitureLib]: [ [Spigot](https://www.spigotmc.org/resources/furniturelibary-protectionlib.9368/) | [Github](https://github.com/Ste3et/FurnitureLib) ]

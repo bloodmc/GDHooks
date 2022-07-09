@@ -84,6 +84,13 @@ public class GDPermissionEventListener {
                             return;
                         }
                     }
+                    if (GDHooks.getInstance().getBreweryProvider() != null) {
+                        final String blockId = GDHooks.getInstance().getBreweryProvider().getBlockId(block);
+                        if (blockId != null) {
+                            event.setNewIdentifier(blockId);
+                            return;
+                        }
+                    }
                 }
                 if (object instanceof BlockState) {
                     final BlockState state = (BlockState) object;

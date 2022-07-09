@@ -60,6 +60,7 @@ import com.griefdefender.hooks.listener.GDPermissionEventListener;
 import com.griefdefender.hooks.listener.GDShopEventListener;
 import com.griefdefender.hooks.provider.AureliumSkillsProvider;
 import com.griefdefender.hooks.provider.BluemapProvider;
+import com.griefdefender.hooks.provider.BreweryProvider;
 import com.griefdefender.hooks.provider.CustomItemsProvider;
 import com.griefdefender.hooks.provider.DynmapProvider;
 import com.griefdefender.hooks.provider.EliteMobsProvider;
@@ -127,6 +128,7 @@ public class GDHooks {
     public MessageConfig messageStorage;
     public MessageConfigData messageData;
     private AureliumSkillsProvider aureliumSkillsProvider;
+    private BreweryProvider breweryProvider;
     private BluemapProvider bluemapProvider;
     private ClanProvider clanProvider;
     private CustomItemsProvider customItemsProvider;
@@ -233,6 +235,10 @@ public class GDHooks {
         if(Bukkit.getPluginManager().getPlugin("AureliumSkills") != null && Bukkit.getPluginManager().getPlugin("AureliumSkills").isEnabled() && this.config.getData().providerCategory.aureliumSkills) {
             this.aureliumSkillsProvider = new AureliumSkillsProvider();
             this.getLogger().info("AureliumSkills provider enabled!");
+        }
+        if(Bukkit.getPluginManager().getPlugin("Brewery") != null && Bukkit.getPluginManager().getPlugin("Brewery").isEnabled() && this.config.getData().providerCategory.aureliumSkills) {
+            this.breweryProvider = new BreweryProvider();
+            this.getLogger().info("Brewery provider enabled!");
         }
         if (Bukkit.getPluginManager().getPlugin("BlueMap") != null && Bukkit.getPluginManager().getPlugin("BlueMap").isEnabled()
                 && this.config.getData().bluemap.enabled && this.config.getData().providerCategory.bluemap) {
@@ -478,6 +484,10 @@ public class GDHooks {
 
     public AureliumSkillsProvider getAureliumSkillsProvider() {
         return this.aureliumSkillsProvider;
+    }
+
+    public BreweryProvider getBreweryProvider() {
+        return this.breweryProvider;
     }
 
     public ClanProvider getClanProvider() {

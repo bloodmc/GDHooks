@@ -100,10 +100,10 @@ public class GDHooksBootstrap implements LoaderBootstrap {
             bukkitJsonVersion = "1.16.4";
         } else if (Bukkit.getVersion().contains("1.17")) {
             bukkitJsonVersion = "1.17.0";
-        } else if (Bukkit.getVersion().contains("1.18")) {
+        } else if (Bukkit.getVersion().contains("1.18") || Bukkit.getVersion().contains("1.19")) {
             bukkitJsonVersion = "1.18.0";
         } else {
-            this.logger.severe("Detected unsupported version '" + Bukkit.getVersion() + "'. GDHooks only supports 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.X, 1.17.X, 1.18.X GDHooks will NOT load.");
+            this.logger.severe("Detected unsupported version '" + Bukkit.getVersion() + "'. GDHooks only supports 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.X, 1.17.X, 1.18.X, and 1.19.x. GDHooks will NOT load.");
             return;
         }
         try {
