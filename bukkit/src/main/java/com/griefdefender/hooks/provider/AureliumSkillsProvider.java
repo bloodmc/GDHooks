@@ -116,7 +116,9 @@ public class AureliumSkillsProvider implements Listener {
         }
 
         final Set<Context> contexts = new HashSet<>();
-        contexts.add(new Context("aureliumskills:mana_ability", String.valueOf(event.getSkill().getManaAbility().name().toLowerCase())));
+        if (event.getSkill().getManaAbility() != null) {
+            contexts.add(new Context("aureliumskills:mana_ability", String.valueOf(event.getSkill().getManaAbility().name().toLowerCase())));
+        }
         contexts.add(new Context("aureliumskills:skill_type", skillType));
         contexts.add(new Context("aureliumskills:skill_level", String.valueOf(AureliumAPI.getSkillLevel(player, event.getSkill()))));
         final com.archyx.aureliumskills.data.PlayerData aureliumPlayerData = this.plugin.getPlayerManager().getPlayerData(player);
