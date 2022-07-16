@@ -45,7 +45,7 @@ import com.griefdefender.hooks.listener.UClansEventHandler;
 import com.griefdefender.hooks.provider.clan.BaseClanProvider;
 
 import me.ulrich.clans.data.ClanData;
-import me.ulrich.clans.packets.interfaces.UClans;
+import me.ulrich.clans.interfaces.UClans;
 
 public class UClansProvider extends BaseClanProvider {
 

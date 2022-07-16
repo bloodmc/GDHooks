@@ -38,7 +38,7 @@ import com.griefdefender.api.clan.Rank;
 import com.griefdefender.api.data.PlayerData;
 import com.griefdefender.hooks.GDHooks;
 
-import me.ulrich.clans.packets.interfaces.UClans;
+import me.ulrich.clans.interfaces.UClans;
 
 public class GDClanPlayer implements ClanPlayer {
 

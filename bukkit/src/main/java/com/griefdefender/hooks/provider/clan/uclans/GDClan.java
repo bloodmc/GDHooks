@@ -41,7 +41,7 @@ import com.griefdefender.hooks.provider.clan.GDClanHome;
 import com.griefdefender.lib.flowpowered.math.vector.Vector3i;
 
 import me.ulrich.clans.data.HomesData;
-import me.ulrich.clans.packets.interfaces.UClans;
+import me.ulrich.clans.interfaces.UClans;
 import com.griefdefender.lib.kyori.adventure.text.Component;
 
 public class GDClan implements Clan {

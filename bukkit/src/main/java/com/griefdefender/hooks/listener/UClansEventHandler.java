@@ -41,9 +41,12 @@ import com.griefdefender.hooks.GDHooks;
 import com.griefdefender.hooks.provider.clan.uclans.GDClanPlayer;
 import com.griefdefender.hooks.provider.clan.uclans.UClansProvider;
 
-import me.ulrich.clans.data.ClanEnum.ClanEvents;
-import me.ulrich.clans.events.ClanGlobalEvent;
-import me.ulrich.clans.packets.interfaces.UClans;
+import me.ulrich.clans.data.ClanData;
+import me.ulrich.clans.events.ClanCreateEvent;
+import me.ulrich.clans.events.ClanPlayerJoinEvent;
+import me.ulrich.clans.events.ClanPlayerLeaveEvent;
+import me.ulrich.clans.events.ClanPlayerRoleChangeEvent;
+import me.ulrich.clans.interfaces.UClans;
 import com.griefdefender.lib.kyori.adventure.text.Component;
 
 public class UClansEventHandler implements Listener {
@@ -54,13 +57,10 @@ public class UClansEventHandler implements Listener {
         this.plugin  = (UClans) Bukkit.getPluginManager().getPlugin("UltimateClans");
     }
 
+    /* Disable until player can be obtained
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onClanSetHome(ClanGlobalEvent event) {
-        if (ClanEvents.CLANCHANGEHOME != event.getEvent() || event.getExtraVar2() == null) {
-            return;
-        }
-
-        final Location location = UClansProvider.locFromString(event.getExtraVar2());
+    public void onClanSetHome(ClanHomeCreateEvent event) {
+        final Location location = event.getLocation();
         if (location == null) {
             return;
         }
@@ -91,14 +91,10 @@ public class UClansEventHandler implements Listener {
             event.setCancelled(true);
             GriefDefender.getAudienceProvider().getSender(player).sendMessage(Component.text("You do not own this claim."));
         }
-    }
+    }*/
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onClanCreate(ClanGlobalEvent event) {
-        if (ClanEvents.CREATE != event.getEvent()) {
-            return;
-        }
-
+    public void onClanCreate(ClanCreateEvent event) {
         final Player player = Bukkit.getPlayer(event.getSender());
         if (player == null) {
             return;
@@ -107,8 +103,12 @@ public class UClansEventHandler implements Listener {
         if (!GriefDefender.getCore().isEnabled(world.getUID())) {
             return;
         }
+        final ClanData clanData = plugin.getClanAPI().getClan(event.getClanID());
+        if (clanData == null) {
+            return;
+        }
         if (!GDHooks.getInstance().getConfig().getData().clan.clanRequireTown) {
-            ((UClansProvider) GDHooks.getInstance().getClanProvider()).addClan(event.getClan());
+            ((UClansProvider) GDHooks.getInstance().getClanProvider()).addClan(clanData);
             GDHooks.getInstance().updateClanCompletions();
             return;
         }
@@ -116,7 +116,7 @@ public class UClansEventHandler implements Listener {
         final PlayerData playerData  = GriefDefender.getCore().getPlayerData(world.getUID(), player.getUniqueId());
         for (Claim claim : playerData.getClaims()) {
             if (claim.isTown()) {
-                ((UClansProvider) GDHooks.getInstance().getClanProvider()).addClan(event.getClan());
+                ((UClansProvider) GDHooks.getInstance().getClanProvider()).addClan(clanData);
                 GDHooks.getInstance().updateClanCompletions();
                 return;
             }
@@ -126,12 +126,8 @@ public class UClansEventHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onClanPlayerJoin(ClanGlobalEvent event) {
-        if (ClanEvents.PLAYERJOIN != event.getEvent()) {
-            return;
-        }
-
-        final Player player = Bukkit.getPlayer(event.getSender());
+    public void onClanPlayerJoin(ClanPlayerJoinEvent event) {
+        final Player player = Bukkit.getPlayer(event.getPlayer());
         if (player == null) {
             return;
         }
@@ -144,12 +140,8 @@ public class UClansEventHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onClanPlayerKick(ClanGlobalEvent event) {
-        if (ClanEvents.PLAYERKICK != event.getEvent()) {
-            return;
-        }
-
-        final Player player = Bukkit.getPlayer(event.getSender());
+    public void onClanPlayerKick(ClanPlayerLeaveEvent event) {
+        final Player player = Bukkit.getPlayer(event.getPlayer());
         if (player == null) {
             return;
         }
@@ -162,12 +154,8 @@ public class UClansEventHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerRankUpdate(ClanGlobalEvent event) {
-        if (ClanEvents.PLAYERPROMOTE != event.getEvent()) {
-            return;
-        }
-
-        final Player player = Bukkit.getPlayer(event.getSender());
+    public void onPlayerRankUpdate(ClanPlayerRoleChangeEvent event) {
+        final Player player = Bukkit.getPlayer(event.getPlayer());
         if (player == null) {
             return;
         }

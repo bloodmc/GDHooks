@@ -12,7 +12,7 @@
 * [Guilds]: [ [Spigot](https://www.spigotmc.org/resources/66176/) | [Github](https://github.com/guilds-plugin/Guilds) ]
 * [SimpleClans]: [ [Spigot](https://www.spigotmc.org/resources/71242/) | [Github](https://github.com/RoinujNosde/SimpleClans) ]
 * [Towny]: [ [Spigot](https://www.spigotmc.org/resources/72694/) | [Github](https://github.com/TownyAdvanced/Towny) ]
-* [UltimateClans(Paid)]: [ [Spigot](https://www.spigotmc.org/resources/85615/) ]
+* [UltimateClans(Paid)]: [ [Polymart](https://polymart.org/resource/ultimate-clans-v5.1162) ]
 
 **Map**
 
