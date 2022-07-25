@@ -76,6 +76,7 @@ import com.griefdefender.hooks.provider.OreRegeneratorProvider;
 import com.griefdefender.hooks.provider.SquaremapProvider;
 import com.griefdefender.hooks.provider.RevoltCratesProvider;
 import com.griefdefender.hooks.provider.clan.guilds.GuildsClanProvider;
+import com.griefdefender.hooks.provider.clan.parties.PartiesClanProvider;
 import com.griefdefender.hooks.provider.clan.simpleclans.SimpleClanProvider;
 import com.griefdefender.hooks.provider.clan.towny.TownyProvider;
 import com.griefdefender.hooks.provider.clan.uclans.UClansProvider;
@@ -322,6 +323,10 @@ public class GDHooks {
             this.clanProvider = new UClansProvider();
             this.registerClanCommands();
             this.getLogger().info("UltimateClans provider enabled!");
+        } else if (Bukkit.getPluginManager().getPlugin("Parties") != null && Bukkit.getPluginManager().getPlugin("Parties").isEnabled() && this.config.getData().providerCategory.parties) {
+            this.clanProvider = new PartiesClanProvider();
+            this.registerClanCommands();
+            this.getLogger().info("Parties provider enabled!");
         }
         new GDPermissionEventListener();
         this.getLogger().info("GDHooks loaded successfully.");
