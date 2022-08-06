@@ -84,15 +84,15 @@ public class GDPermissionEventListener {
                             return;
                         }
                     }
-                    if (GDHooks.getInstance().getExcellentCratesProvider() != null) {
-                        final String blockId = GDHooks.getInstance().getExcellentCratesProvider().getBlockId(block);
+                    if (GDHooks.getInstance().getBreweryProvider() != null) {
+                        final String blockId = GDHooks.getInstance().getBreweryProvider().getBlockId(block);
                         if (blockId != null) {
                             event.setNewIdentifier(blockId);
                             return;
                         }
                     }
-                    if (GDHooks.getInstance().getBreweryProvider() != null) {
-                        final String blockId = GDHooks.getInstance().getBreweryProvider().getBlockId(block);
+                    if (GDHooks.getInstance().getExcellentCratesProvider() != null) {
+                        final String blockId = GDHooks.getInstance().getExcellentCratesProvider().getBlockId(block);
                         if (blockId != null) {
                             event.setNewIdentifier(blockId);
                             return;

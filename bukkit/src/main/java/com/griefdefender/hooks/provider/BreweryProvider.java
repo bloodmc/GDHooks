@@ -28,6 +28,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.dre.brewery.BCauldron;
@@ -45,6 +47,7 @@ public class BreweryProvider implements Listener {
         Bukkit.getPluginManager().registerEvents(this, GDHooksBootstrap.getInstance().getLoader());
     }
 
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBarrelAccess(BarrelAccessEvent event) {
         final Player player = event.getPlayer();
         final PlayerData playerData = GriefDefender.getCore().getPlayerData(player.getWorld().getUID(), player.getUniqueId());
