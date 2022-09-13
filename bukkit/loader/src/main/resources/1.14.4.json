@@ -2,6 +2,12 @@
     "version": "1.14.4",
     "libraries": [
         {
+            "name": "com.griefdefender.hooks:adapter:1.17.0-SNAPSHOT",
+            "sha1": "b9b8ca9098ac06a5f39f79836cc8fc00868b539b",
+            "path": "com/griefdefender/hooks/adapter/1.17.0-SNAPSHOT/adapter-1.17.0-20220912.234016-2.jar",
+            "url": "https://repo.glaremasters.me/repository/bloodshot/com/griefdefender/hooks/adapter/1.17.0-SNAPSHOT/adapter-1.17.0-20220912.234016-2.jar"
+        },
+        {
             "name": "com.griefdefender:reflect-helper:1.0",
             "sha1": "7a50bffa9f0062ac4ca376d95a0e6599aa5f3257",
             "path": "com/griefdefender/reflect-helper/1.0/reflect-helper-1.0.jar",

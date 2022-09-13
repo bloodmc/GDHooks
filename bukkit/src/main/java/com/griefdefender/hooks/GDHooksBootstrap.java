@@ -87,17 +87,13 @@ public class GDHooksBootstrap implements LoaderBootstrap {
         if (Bukkit.getVersion().contains("1.12.2")) {
             bukkitJsonVersion = "1.12.2";
         } else if (Bukkit.getVersion().contains("1.13.2")) {
-            bukkitJsonVersion = "1.13.2";
+            bukkitJsonVersion = "1.12.2";
         } else if (Bukkit.getVersion().contains("1.14.4")) {
-            bukkitJsonVersion = "1.14.4";
+            bukkitJsonVersion = "1.12.2";
         } else if (Bukkit.getVersion().contains("1.15.2")) {
-            bukkitJsonVersion = "1.15.2";
-        } else if (Bukkit.getVersion().contains("1.16.1")) {
-            bukkitJsonVersion = "1.16.1";
-        } else if (Bukkit.getVersion().contains("1.16.2") || Bukkit.getVersion().contains("1.16.3")) {
-            bukkitJsonVersion = "1.16.2";
+            bukkitJsonVersion = "1.12.2";
         } else if (Bukkit.getVersion().contains("1.16.4") || Bukkit.getVersion().contains("1.16.5")) {
-            bukkitJsonVersion = "1.16.4";
+            bukkitJsonVersion = "1.17.0";
         } else if (Bukkit.getVersion().contains("1.17")) {
             bukkitJsonVersion = "1.17.0";
         } else if (Bukkit.getVersion().contains("1.18")) {
