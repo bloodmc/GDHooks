@@ -75,8 +75,8 @@ public class BluemapCategory {
     public boolean hideByDefaultTown = false;
 
     @Setting("depth-check")
-    @Comment("Whether markers should be hidden behind map terrain. (Default: false)")
-    public boolean depthCheck = false;
+    @Comment("Whether markers should be hidden behind map terrain. (Default: true)")
+    public boolean depthCheck = true;
 
     @Setting("claimtype-styles")
     public Map<String, BluemapOwnerStyleCategory> claimTypeStyles = new HashMap<>();
@@ -105,6 +105,9 @@ public class BluemapCategory {
             + "Container Trust: <span style=\"font-weight:bold;\">%containers%</span><br/>"
             + "Resident Trust: <span style=\"font-weight:bold;\">%residents%</span></div>"
             + "Access Trust: <span style=\"font-weight:bold;\">%accessors%</span></div>";
+
+    @Setting("missing-name-placeholder")
+    public String missingNamePlaceholder = "none";
 
     public BluemapCategory() {
         for (ClaimType type : GriefDefender.getRegistry().getAllOf(ClaimType.class)) {
