@@ -75,8 +75,8 @@ public class BluemapCategory {
     public boolean hideByDefaultTown = false;
 
     @Setting("depth-check")
-    @Comment("Whether markers should be hidden behind map terrain. (Default: true)")
-    public boolean depthCheck = true;
+    @Comment("Whether markers should be hidden behind map terrain. (Default: false)")
+    public boolean depthCheck = false;
 
     @Setting("claimtype-styles")
     public Map<String, BluemapOwnerStyleCategory> claimTypeStyles = new HashMap<>();
