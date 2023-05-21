@@ -66,7 +66,7 @@ public class GuildsClanProvider extends BaseClanProvider {
             this.clanRankMap.put(role.getName().toLowerCase(), rank);
             this.ranks.add(rank);
         }
-        for (Guild clan : this.plugin.getGuildHandler().getGuilds()) {
+        for (Guild clan : this.plugin.getGuildHandler().getGuilds().values()) {
             final GDClan gdClan = new GDClan(clan);
             this.clanMap.put(clan.getPrefix().toLowerCase(), gdClan);
             final Path clanConfigPath = CLAN_DATA_PATH.resolve(clan.getPrefix().toLowerCase() + ".conf");
@@ -87,7 +87,7 @@ public class GuildsClanProvider extends BaseClanProvider {
     }
 
     public boolean clanExists(String clanName) {
-        for (Guild clan : this.plugin.getGuildHandler().getGuilds()) {
+        for (Guild clan : this.plugin.getGuildHandler().getGuilds().values()) {
             if (clan.getName().equalsIgnoreCase(clanName)) {
                 return true;
             }
