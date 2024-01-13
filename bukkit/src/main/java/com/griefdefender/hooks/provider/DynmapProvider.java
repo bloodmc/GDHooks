@@ -34,6 +34,7 @@ import com.griefdefender.api.event.ChangeClaimEvent;
 import com.griefdefender.api.event.CreateClaimEvent;
 import com.griefdefender.api.event.LoadClaimEvent;
 import com.griefdefender.api.event.RemoveClaimEvent;
+import com.griefdefender.api.event.TransferClaimEvent;
 import com.griefdefender.hooks.GDHooks;
 import com.griefdefender.hooks.GDHooksBootstrap;
 import com.griefdefender.hooks.config.category.DynmapCategory;
@@ -368,6 +369,7 @@ public class DynmapProvider {
             });
             GriefDefender.getEventManager().getBus().subscribe(RemoveClaimEvent.class, event -> new GriefDefenderUpdate(event.getClaims(), 20L, true));
             GriefDefender.getEventManager().getBus().subscribe(ChangeClaimEvent.class, event -> new GriefDefenderUpdate(event.getClaims(), 20L, false));
+            GriefDefender.getEventManager().getBus().subscribe(TransferClaimEvent.class, event -> new GriefDefenderUpdate(event.getClaims(), 20L, false));
         }
 
         private class GriefDefenderUpdate extends BukkitRunnable {

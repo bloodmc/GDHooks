@@ -73,7 +73,7 @@ public class UClansProvider extends BaseClanProvider {
             final ClanConfig clanConfig = new ClanConfig(clanConfigPath);
             GDHooks.getInstance().getClanConfigMap().put(clanData.getTag().toLowerCase(), clanConfig);
             for (UUID memberUniqueId : clanData.getMembers()) {
-                final me.ulrich.clans.data.PlayerData playerData = this.plugin.getPlayerAPI().getPlayerData(memberUniqueId);
+                final me.ulrich.clans.data.PlayerData playerData = this.plugin.getPlayerAPI().getPlayerData(memberUniqueId).orElse(null);
                 if (playerData == null) {
                     continue;
                 }

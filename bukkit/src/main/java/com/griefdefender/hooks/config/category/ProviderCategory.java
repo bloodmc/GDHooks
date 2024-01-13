@@ -84,6 +84,9 @@ public class ProviderCategory extends ConfigCategory {
     @Setting(value = "Guilds")
     public boolean guilds = true;
 
+    @Setting(value = "ItemsAdder")
+    public boolean itemsAdder = true;
+
     @Setting(value = "Oraxen")
     public boolean oraxen = true;
     

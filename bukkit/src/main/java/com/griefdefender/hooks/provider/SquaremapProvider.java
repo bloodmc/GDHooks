@@ -352,6 +352,9 @@ public class SquaremapProvider {
               return;
           }
           provider.get(world.getName().toLowerCase()).handleClaim(claim);
+          for (Claim child : claim.getChildren(true)) {
+              provider.get(world.getName().toLowerCase()).handleClaim(child);
+          }
       });
     }
 }

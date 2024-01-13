@@ -136,6 +136,20 @@ public class GDPermissionEventListener {
                             return;
                         }
                     }
+                    if (GDHooks.getInstance().getCustomItemsProvider() != null) {
+                        final String itemId = GDHooks.getInstance().getCustomItemsProvider().getItemId(itemstack);
+                        if (itemId != null) {
+                            event.setNewIdentifier(itemId);
+                            return;
+                        }
+                    }
+                    if (GDHooks.getInstance().getItemsAdderProvider() != null) {
+                        final String itemId = GDHooks.getInstance().getItemsAdderProvider().getItemId(itemstack);
+                        if (itemId != null) {
+                            event.setNewIdentifier(itemId);
+                            return;
+                        }
+                    }
                     if (GDHooks.getInstance().getOraxenProvider() != null) {
                         final String itemId = GDHooks.getInstance().getOraxenProvider().getItemId(itemstack, event.getContexts());
                         if (itemId != null) {

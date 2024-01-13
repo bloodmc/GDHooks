@@ -66,6 +66,7 @@ import com.griefdefender.hooks.provider.DynmapProvider;
 import com.griefdefender.hooks.provider.EliteMobsProvider;
 import com.griefdefender.hooks.provider.ExcellentCratesProvider;
 import com.griefdefender.hooks.provider.FurnitureLibProvider;
+import com.griefdefender.hooks.provider.ItemsAdderProvider;
 import com.griefdefender.hooks.provider.MMOItemsProvider;
 import com.griefdefender.hooks.provider.McMMOProvider;
 import com.griefdefender.hooks.provider.MyPetProvider;
@@ -139,6 +140,7 @@ public class GDHooks {
     private ExcellentCratesProvider excellentCratesProvider;
     private FurnitureLibProvider furnitureLibProvider;
     private GDShopProvider shopProvider;
+    private ItemsAdderProvider itemsAdderProvider;
     private McMMOProvider mcmmoProvider;
     private MMOItemsProvider mmoItemsProvider;
     private MyPetProvider myPetProvider;
@@ -272,6 +274,10 @@ public class GDHooks {
         if (Bukkit.getPluginManager().getPlugin("FurnitureLib") != null && Bukkit.getPluginManager().getPlugin("FurnitureLib").isEnabled() && this.config.getData().providerCategory.furnitureLib) {
             this.furnitureLibProvider = new FurnitureLibProvider();
             this.getLogger().info("FurnitureLib provider enabled!");
+        }
+        if (Bukkit.getPluginManager().getPlugin("ItemsAdder") != null && Bukkit.getPluginManager().getPlugin("ItemsAdder").isEnabled() && this.config.getData().providerCategory.itemsAdder) {
+            this.itemsAdderProvider = new ItemsAdderProvider();
+            this.getLogger().info("ItemsAdder provider enabled!");
         }
         if (Bukkit.getPluginManager().getPlugin("MMOItems") != null && Bukkit.getPluginManager().getPlugin("MMOItems").isEnabled() && this.config.getData().providerCategory.mmoItems) {
             this.mmoItemsProvider = new MMOItemsProvider();
@@ -522,6 +528,10 @@ public class GDHooks {
 
     public FurnitureLibProvider getFurnitureLibProvider() {
         return this.furnitureLibProvider;
+    }
+
+    public ItemsAdderProvider getItemsAdderProvider() {
+        return this.itemsAdderProvider;
     }
 
     public MMOItemsProvider getMMOItemsProvider() {

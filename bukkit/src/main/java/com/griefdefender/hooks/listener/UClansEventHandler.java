@@ -103,7 +103,7 @@ public class UClansEventHandler implements Listener {
         if (!GriefDefender.getCore().isEnabled(world.getUID())) {
             return;
         }
-        final ClanData clanData = plugin.getClanAPI().getClan(event.getClanID());
+        final ClanData clanData = plugin.getClanAPI().getClan(event.getClanID()).orElse(null);
         if (clanData == null) {
             return;
         }
@@ -135,8 +135,11 @@ public class UClansEventHandler implements Listener {
         if (!GriefDefender.getCore().isEnabled(world.getUID())) {
             return;
         }
-
-        ((UClansProvider) GDHooks.getInstance().getClanProvider()).getClanPlayerMap().put(player.getUniqueId(), new GDClanPlayer(this.plugin.getPlayerAPI().getPlayerData(player.getUniqueId())));
+        final me.ulrich.clans.data.PlayerData playerData = this.plugin.getPlayerAPI().getPlayerData(player.getUniqueId()).orElse(null);
+        if (playerData == null) {
+            return;
+        }
+        ((UClansProvider) GDHooks.getInstance().getClanProvider()).getClanPlayerMap().put(player.getUniqueId(), new GDClanPlayer(playerData));
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)

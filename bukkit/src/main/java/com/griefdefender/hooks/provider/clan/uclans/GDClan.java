@@ -110,7 +110,7 @@ public class GDClan implements Clan {
     public List<Clan> getAllies() {
         List<Clan> clans = new ArrayList<>();
         for (UUID clanUniqueId : this.pluginClan.getRivalAlly().getAlly()) {
-            final me.ulrich.clans.data.ClanData clanData = this.plugin.getClanAPI().getClan(clanUniqueId);
+            final me.ulrich.clans.data.ClanData clanData = this.plugin.getClanAPI().getClan(clanUniqueId).orElse(null);
             if (clanData == null) {
                 continue;
             }
@@ -126,7 +126,7 @@ public class GDClan implements Clan {
     public List<Clan> getRivals() {
         List<Clan> clans = new ArrayList<>();
         for (UUID clanUniqueId : this.pluginClan.getRivalAlly().getRival()) {
-            final me.ulrich.clans.data.ClanData clanData = this.plugin.getClanAPI().getClan(clanUniqueId);
+            final me.ulrich.clans.data.ClanData clanData = this.plugin.getClanAPI().getClan(clanUniqueId).orElse(null);
             if (clanData == null) {
                 continue;
             }

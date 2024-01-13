@@ -7,7 +7,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
     }
 }
 
@@ -16,6 +16,9 @@ plugins {
     id 'java'
     id 'maven-publish'
 }
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 repositories {
     maven {

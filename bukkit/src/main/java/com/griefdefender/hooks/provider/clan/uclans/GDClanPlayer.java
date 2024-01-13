@@ -79,7 +79,7 @@ public class GDClanPlayer implements ClanPlayer {
 
     @Override
     public Clan getClan() {
-        final me.ulrich.clans.data.ClanData clanData = this.plugin.getClanAPI().getClan(this.pluginClanPlayer.getClan_id());
+        final me.ulrich.clans.data.ClanData clanData = this.plugin.getClanAPI().getClan(this.pluginClanPlayer.getClan_id()).orElse(null);
         if (clanData == null) {
             return null;
         }
@@ -93,7 +93,7 @@ public class GDClanPlayer implements ClanPlayer {
 
     @Override
     public Rank getRank() {
-        final String role = this.plugin.getPlayerAPI().getPlayerRole(this.getUniqueId());
+        final String role = this.pluginClanPlayer.getRole();
         if (role == null) {
             return null;
         }
@@ -112,6 +112,10 @@ public class GDClanPlayer implements ClanPlayer {
 
     @Override
     public boolean isLeader() {
-        return this.plugin.getClanAPI().isLeader(this.user.getUniqueId());
+        final me.ulrich.clans.data.ClanData clanData = this.plugin.getClanAPI().getClan(this.pluginClanPlayer.getClan_id()).orElse(null);
+        if (clanData == null) {
+            return false;
+        }
+        return this.user.getUniqueId().equals(clanData.getLeader());
     }
 }

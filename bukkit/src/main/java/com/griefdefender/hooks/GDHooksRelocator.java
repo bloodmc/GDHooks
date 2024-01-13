@@ -55,7 +55,7 @@ public class GDHooksRelocator {
                 final String relocated = parts[1];
                 if (!this.relocationKeys.contains(key)) {
                     this.relocationKeys.add(key);
-                    this.rules.add(new Relocation(key, "com.griefdefender.lib." + relocated));
+                    this.rules.add(new Relocation(key, "com.griefdefender.hooks.lib." + relocated));
                 }
             }
         }

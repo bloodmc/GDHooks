@@ -7,12 +7,12 @@ buildscript {
     }
 
     dependencies {
-        classpath 'gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
     }
 }
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
     id 'java'
     id 'maven-publish'
 }
@@ -70,10 +70,6 @@ repositories {
         url = 'https://repo.extendedclip.com/content/repositories/placeholderapi'
     }
     maven {
-        name = 'sk89q'
-        url = 'https://maven.sk89q.com/repo'
-    }
-    maven {
         name = 'sonatype_releases'
         url = 'https://oss.sonatype.org/content/repositories/releases'
     }
@@ -106,7 +102,7 @@ repositories {
 dependencies {
     compileOnly fileTree(dir: 'libs', include: ['*.jar'])
     compileOnly project (':common:loader-utils')
-    compileOnly "com.griefdefender:api:2.1.0-20220122.032038-5"
+    compileOnly "com.griefdefender:api:2.1.0-SNAPSHOT"
     compileOnly "com.griefdefender.hooks:adapter:$adapterVersion"
     compileOnly "org.bukkit:bukkit:1.16.4-R0.1-SNAPSHOT"
     compileOnly "com.flowpowered:flow-math:1.0.3"
@@ -119,8 +115,8 @@ dependencies {
     compileOnly "org.spongepowered:configurate-yaml:4.1.2"
     compileOnly "net.kyori:event-api:5.0.0-SNAPSHOT"
     compileOnly "com.googlecode.json-simple:json-simple:1.1"
-    compileOnly "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
-    compileOnly "co.aikar:acf-paper:0.5.0-SNAPSHOT"
+    compileOnly "co.aikar:acf-bukkit:0.5.1-20231002.212553-32"
+    compileOnly "co.aikar:acf-paper:0.5.1-20231002.212553-31"
     compileOnly "commons-io:commons-io:2.6"
     compileOnly "xyz.jpenilla:squaremap-api:1.1.0-SNAPSHOT"
     compileOnly "com.alessiodp.parties:parties-api:3.2.6"
@@ -139,6 +135,11 @@ tasks.assemble {
    dependsOn(tasks.shadowJar)
 }
 
+tasks.withType(JavaCompile) { 
+    sourceCompatibility = "1.8"
+    targetCompatibility = "1.8" 
+}
+
 artifacts {
     archives shadowJar
 }
@@ -150,22 +151,22 @@ shadowJar {
         include(dependency('com.griefdefender.hooks:.*'))
     }
     classifier = ""
-    relocate("co.aikar.commands", "com.griefdefender.lib.aikar.commands")
-    relocate("com.github.benmanes.caffeine", "com.griefdefender.lib.caffeine")
-    relocate("com.google.inject", "com.griefdefender.lib.google.inject")
-    relocate("com.typesafe", "com.griefdefender.lib.typesafe")
-    relocate("it.unimi.dsi", "com.griefdefender.lib.fastutil")
-    relocate("net.jodah", "com.griefdefender.lib.jodah")
-    relocate("net.kyori", "com.griefdefender.lib.kyori")
-    relocate("org.spongepowered.configurate", "com.griefdefender.lib.configurate")
-    relocate("okhttp3", "com.griefdefender.lib.okhttp3")
-    relocate("okio", "com.griefdefender.lib.okio")
-    relocate("org.apache.commons.io", "com.griefdefender.lib.commonsio")
-    relocate("org.apache.commons.lang3", "com.griefdefender.lib.commonslang3")
-    relocate("org.checkerframework", "com.griefdefender.lib.checkerframework")
-    relocate("org.jetbrains", "com.griefdefender.lib.jetbrains")
-    relocate("org.objectweb.asm", "com.griefdefender.lib.asm")
-    relocate("io.leangen.geantyref", "com.griefdefender.lib.geantyref")
+    relocate("co.aikar.commands", "com.griefdefender.hooks.lib.aikar.commands")
+    relocate("com.github.benmanes.caffeine", "com.griefdefender.hooks.lib.caffeine")
+    relocate("com.google.inject", "com.griefdefender.hooks.lib.google.inject")
+    relocate("com.typesafe", "com.griefdefender.hooks.lib.typesafe")
+    relocate("it.unimi.dsi", "com.griefdefender.hooks.lib.fastutil")
+    relocate("net.jodah", "com.griefdefender.hooks.lib.jodah")
+    relocate("net.kyori", "com.griefdefender.hooks.lib.kyori")
+    relocate("org.spongepowered.configurate", "com.griefdefender.hooks.lib.configurate")
+    relocate("okhttp3", "com.griefdefender.hooks.lib.okhttp3")
+    relocate("okio", "com.griefdefender.hooks.lib.okio")
+    relocate("org.apache.commons.io", "com.griefdefender.hooks.lib.commonsio")
+    relocate("org.apache.commons.lang3", "com.griefdefender.hooks.lib.commonslang3")
+    relocate("org.checkerframework", "com.griefdefender.hooks.lib.checkerframework")
+    relocate("org.jetbrains", "com.griefdefender.hooks.lib.jetbrains")
+    relocate("org.objectweb.asm", "com.griefdefender.hooks.lib.asm")
+    relocate("io.leangen.geantyref", "com.griefdefender.hooks.lib.geantyref")
 
     exclude "dummyThing"
 }

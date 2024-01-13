@@ -3,9 +3,9 @@
     "libraries": [
         {
             "name": "com.griefdefender.hooks:adapter:1.19.0-SNAPSHOT",
-            "sha1": "f17f5cd1a57abc59ae8f56ab03031a0972612710",
-            "path": "com/griefdefender/hooks/adapter/1.19.0-SNAPSHOT/adapter-1.19.0-20220914.171347-7.jar",
-            "url": "https://repo.glaremasters.me/repository/bloodshot/com/griefdefender/hooks/adapter/1.19.0-SNAPSHOT/adapter-1.19.0-20220914.171347-7.jar"
+            "sha1": "9bfbb4b6d286acc6b050db577dfaa2359862d819",
+            "path": "com/griefdefender/hooks/adapter/1.19.0-SNAPSHOT/adapter-1.19.0-20231117.010947-10.jar",
+            "url": "https://repo.glaremasters.me/repository/bloodshot/com/griefdefender/hooks/adapter/1.19.0-SNAPSHOT/adapter-1.19.0-20231117.010947-10.jar"
         },
         {
             "name": "com.griefdefender:reflect-helper:1.0",
@@ -40,25 +40,25 @@
             "url": "https://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.12.0/commons-lang3-3.12.0.jar"
         },
         {
-            "name": "co.aikar:acf-core:0.5.0-SNAPSHOT",
-            "sha1": "8785ffc97be023724bb80c1977b4a2a944c364af",
-            "path": "co/aikar/acf-core/0.5.0-SNAPSHOT/acf-core-0.5.0-20210210.142858-171.jar",
+            "name": "co.aikar:acf-core:0.5.1-SNAPSHOT",
+            "sha1": "73fb291250a5a3905c362e99783251ae7d183063",
+            "path": "co/aikar/acf-core/0.5.1-SNAPSHOT/acf-core-0.5.1-20231002.212553-32.jar",
             "relocate": "co.aikar.commands:aikar.commands",
-            "url": "https://repo.glaremasters.me/repository/public/co/aikar/acf-core/0.5.0-SNAPSHOT/acf-core-0.5.0-20210210.142858-171.jar"
+            "url": "https://repo.aikar.co/nexus/content/groups/aikar/co/aikar/acf-core/0.5.1-SNAPSHOT/acf-core-0.5.1-20231002.212553-32.jar"
         },
         {
-            "name": "co.aikar:acf-bukkit:0.5.0-SNAPSHOT",
-            "sha1": "5a924594e4d12a3232f9911d434cb77870ca8b5b",
-            "path": "co/aikar/acf-bukkit/0.5.0-SNAPSHOT/acf-bukkit-0.5.0-20210210.142902-174.jar",
+            "name": "co.aikar:acf-bukkit:0.5.1-SNAPSHOT",
+            "sha1": "368e0037a4f4196c3790b8188f90809e2c967bb2",
+            "path": "co/aikar/acf-bukkit/0.5.1-SNAPSHOT/acf-bukkit-0.5.1-20230929.015444-1.jar",
             "relocate": "co.aikar.commands:aikar.commands",
-            "url": "https://repo.glaremasters.me/repository/public/co/aikar/acf-bukkit/0.5.0-SNAPSHOT/acf-bukkit-0.5.0-20210210.142902-174.jar"
+            "url": "https://repo.aikar.co/nexus/content/groups/aikar/co/aikar/acf-bukkit/0.5.1-SNAPSHOT/acf-bukkit-0.5.1-20231002.212553-32.jar"
         },
         {
-            "name": "co.aikar:acf-paper:0.5.0-SNAPSHOT",
-            "sha1": "4a77b8ef33bca672e400dadba765366012ebb04f",
-            "path": "co/aikar/acf-paper/0.5.0-SNAPSHOT/acf-paper-0.5.0-20210210.142912-169.jar",
+            "name": "co.aikar:acf-paper:0.5.1-SNAPSHOT",
+            "sha1": "0ee7e4296fb588567150fe1fe6b4d7cdfa32ec85",
+            "path": "co/aikar/acf-paper/0.5.1-SNAPSHOT/acf-paper-0.5.1-20231002.212553-31.jar",
             "relocate": "co.aikar.commands:aikar.commands",
-            "url": "https://repo.glaremasters.me/repository/public/co/aikar/acf-paper/0.5.0-SNAPSHOT/acf-paper-0.5.0-20210210.142912-169.jar"
+            "url": "https://repo.aikar.co/nexus/content/groups/aikar/co/aikar/acf-paper/0.5.1-SNAPSHOT/acf-paper-0.5.1-20231002.212553-31.jar"
         },
         {
             "name": "co.aikar:locales:1.0-SNAPSHOT",

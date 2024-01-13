@@ -42,6 +42,7 @@
 * [EliteMobs]: [ [Spigot](https://www.spigotmc.org/resources/40090/) | [Github](https://github.com/MagmaGuy/EliteMobs) ]
 * [ExcellentCrates]: [ [Spigot](https://www.spigotmc.org/resources/48732/) ]
 * [FurnitureLib]: [ [Spigot](https://www.spigotmc.org/resources/furniturelibary-protectionlib.9368/) | [Github](https://github.com/Ste3et/FurnitureLib) ]
+* [ItemsAdder]: [ [Spigot](https://www.spigotmc.org/resources/73355/) ]
 * [MMOItems(Paid)]: [ [Spigot](https://www.spigotmc.org/resources/39267/) ]
 * [McMMO]: [ [Spigot](https://www.spigotmc.org/resources/64348/updates) | [Github](https://github.com/mcMMO-Dev/mcMMO) ]
 * [MyPet]: [ [Spigot](https://www.spigotmc.org/resources/mypet.12725/) | [Github](https://github.com/xXKeyleXx/MyPet) ]
