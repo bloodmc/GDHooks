@@ -25,6 +25,9 @@
 package com.griefdefender.hooks.provider.shop;
 
 import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Sign;
 
 import com.Acrobot.ChestShop.ChestShop;
 import com.Acrobot.ChestShop.Signs.ChestShopSign;
@@ -39,7 +42,27 @@ public class ChestShopProvider implements GDShopProvider {
 
     @Override
     public boolean isLocationShop(Location location) {
-        return ChestShopSign.isShopBlock(location.getBlock());
+        final Block block = location.getBlock();
+        if (isShopSign(block)) {
+            return true;
+        }
+        return ChestShopSign.isShopBlock(block);
     }
 
+    private boolean isShopSign(Block block) {
+        if (block == null) {
+            return false;
+        }
+
+        final BlockState state = block.getState();
+        if (!(state instanceof Sign)) {
+            return false;
+        }
+
+        final String signData = (ChestShopSign.getItem((Sign) state));
+        if (signData != null && !signData.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
 }
